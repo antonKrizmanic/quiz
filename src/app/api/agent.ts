@@ -5,6 +5,8 @@ import { quizHistory } from '../../index';
 import { PagedViewModel } from "../models/pagedViewModel";
 import { QuizCategoryQueryParameters } from "../models/quizCategoryQueryParameters";
 import { QuizCategoryViewModel } from "../models/quizCategoryViewModel";
+import { QuizQueryParameters } from "../models/quizQueryParameters";
+import { QuizViewModel } from "../models/quizViewModel";
 
 axios.defaults.baseURL = "https://localhost:5011/api";
 
@@ -75,6 +77,10 @@ const QuizCategories = {
     list: (params: QuizCategoryQueryParameters) => requests.get<PagedViewModel<QuizCategoryViewModel>>(`/Quizzes/PublicQuizCategory/GetList/1?${serialize(params, '')}`)
 };
 
+const Quiz = {
+    list: (params: QuizQueryParameters) => requests.get<PagedViewModel<QuizViewModel>>(`/Quizzes/PublicQuiz/GetList/1?${serialize(params, '')}`)
+}
+
 const serialize = (obj: any, prefix: string): string => {
     var str = [], p;
     for (p in obj) {
@@ -89,7 +95,8 @@ const serialize = (obj: any, prefix: string): string => {
 }
 
 const agent = {
-    QuizCategories
+    QuizCategories,
+    Quiz
 };
 
 export default agent;

@@ -1,29 +1,27 @@
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import MyPageTitle from "../../app/components/MyPageTitle";
-import RedButton from "../../app/components/RedButton";
-import { QuizCategoryQueryParameters } from "../../app/models/quizCategoryQueryParameters";
+import { QuizQueryParameters } from "../../app/models/quizQueryParameters";
 import { useStore } from "../../app/stores/store";
-import CategoriesList from "./CategoriesList";
+import QuizList from "./QuizList";
 
-
-const ChooseCategory = () => {
+const QuizIndex = () => {
     const { id } = useParams<{ id: string }>();
     const [idNumber, setIdNumber] = useState(0);
-    const { quizCategoryStore } = useStore();
-    const { quizCategories, loadCategories, loadingInitial } = quizCategoryStore;
+    const { quizStore } = useStore();
+    const { quizes, loadQuizes, loadingInitial } = quizStore;
 
     useEffect(() => {
         setIdNumber(parseInt(id ? id : '', 10));
         if (idNumber > 0)
-            loadCategories(new QuizCategoryQueryParameters({ quizTheme: idNumber }));
-    }, [idNumber]);
+            loadQuizes(new QuizQueryParameters({ quizTheme: idNumber }));
+    }, [idNumber])
 
     if (loadingInitial) {
         return (
             <MyPageTitle>
-                Učitavanje kategorija u tijeku...
+                Učitavanje kvizova u tijeku...
             </MyPageTitle>
         );
     }
@@ -31,16 +29,16 @@ const ChooseCategory = () => {
     return (
         <>
             <MyPageTitle>
-                Odaberite kategoriju kviza
+                Odaberite kviz
             </MyPageTitle>
 
             <div className="bg-gray-100 px-6 my-3 w-3/4 md:w-1/4 mx-auto">
                 <div className="flex flex-col justify-center">
-                    <CategoriesList categories={quizCategories} quizTheme={idNumber} />
+                    <QuizList quizes={quizes} quizTheme={idNumber} />
                 </div>
             </div>
         </>
     );
-};
+}
 
-export default observer(ChooseCategory);
+export default observer(QuizIndex);
