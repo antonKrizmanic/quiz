@@ -5,6 +5,7 @@ import App from "./app/layout/App";
 import { BrowserRouter, Router, useLocation } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
 import { createMemoryHistory } from "history";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 
 export const quizHistory = createMemoryHistory();

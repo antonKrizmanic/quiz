@@ -12,7 +12,7 @@ const QuizList: FC<IProps> = ({ quizes, quizTheme }) => {
         return (
             <>
                 <p className="text-center">Nije dohvaćena ni jedan kviz</p>
-                <RedButton href={`/choose-category/${quizTheme}`}><i className="fas fa-arrow-left"></i> Natrag</RedButton>
+                <RedButton href={`/choose-category/${quizTheme}`}><i className="bi-arrow-left-circle"></i> Natrag</RedButton>
             </>
         );
     }
@@ -24,7 +24,7 @@ const QuizList: FC<IProps> = ({ quizes, quizTheme }) => {
                     <RedButton key={quiz.id} href={`/init-quiz/${quizTheme}/${quiz.quizCategoryId}/${quiz.id}`}>{quiz.title}</RedButton>
                 );
             })}
-            <RedButton href={`/choose-category/${quizTheme}`}><i className="fas fa-arrow-left"></i> Natrag</RedButton>
+            <RedButton href={`/choose-category/${quizTheme}`}><i className="bi-arrow-left-circle"></i> Natrag</RedButton>
         </>
     );
 }

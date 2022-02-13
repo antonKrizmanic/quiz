@@ -10,7 +10,7 @@ const CategoriesList: FC<IProps> = ({ categories, quizTheme }) => {
         return (
             <>
                 <p className="text-center">Nije dohvaćena ni jedna kategorija</p>
-                <RedButton href="/"><i className="fas fa-arrow-left"></i> Natrag</RedButton>
+                <RedButton href="/"><i className="bi-arrow-left-circle"></i> Natrag</RedButton>
             </>
         );
     }
@@ -24,7 +24,7 @@ const CategoriesList: FC<IProps> = ({ categories, quizTheme }) => {
                 );
             })}
             <RedButton href={`/choose-quiz/${quizTheme}`}>Pogledaj već kreirane kvizove</RedButton>
-            <RedButton href="/"><i className="fas fa-arrow-left"></i> Natrag</RedButton>
+            <RedButton href="/"><i className="bi-arrow-left-circle"></i> Natrag</RedButton>
         </>
     );
 }
