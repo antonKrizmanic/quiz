@@ -4,6 +4,10 @@ export class QueryStringParameters {
     searchTerm: string = "";
     type: string = "";
     field: string = "";
-    ignorePageSize: boolean = false;
+    ignorePageSize: boolean = true;
     perPage: number = 10;
+
+    public constructor(init?: Partial<QueryStringParameters>) {
+        Object.assign(this, init);
+    }
 }

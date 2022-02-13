@@ -15,12 +15,9 @@ export class QuizCategoryStore {
 
     loadCategories = async (params: QuizCategoryQueryParameters) => {
         this._setLoadingInitial(false);
-
         try {
             const paged = await agent.QuizCategories.list(params);
-            console.log(paged);
             this._mapQuizCategoriesPagedToArray(paged.list);
-            console.log(this.quizCategories);
         } catch (error) {
             console.warn(error);
         } finally {
@@ -28,13 +25,11 @@ export class QuizCategoryStore {
         }
     };
 
-    private _setLoadingInitial = (ladingInitial: boolean) => {
-        this.loadingInitial = ladingInitial;
+    private _setLoadingInitial = (loadingInitial: boolean) => {
+        this.loadingInitial = loadingInitial;
     };
 
     private _mapQuizCategoriesPagedToArray = (categories: QuizCategoryViewModel[]) => {
-        categories.forEach((category) => {
-            this.quizCategories.push(category);
-        })
+        this.quizCategories = categories;
     }
 }
