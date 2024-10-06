@@ -1,8 +1,6 @@
 import { Metadata } from 'next';
-
 import { roboto } from '@/config/fonts';
-import ThemeRegistry from '@/components/providers/ThemeRegistry/ThemeRegistry';
-import '@/styles/global.scss';
+import '@/styles/global.css';
 
 // Checks whether the app is running in a production or development mode
 const isProduction = process.env.NODE_ENV === 'production';
@@ -12,10 +10,10 @@ const isProduction = process.env.NODE_ENV === 'production';
  */
 export const metadata: Metadata = {
   title: {
-    default: `React starter ${isProduction ? '' : '- development'}`,
-    template: `%s ${isProduction ? '' : '- development'}`
+    default: `GDCK Buje kviz ${isProduction ? '' : '- development'}`,    
+    template: `%s | GDCK Buje kviz`
   },
-  description: 'Enterwell\'s template for web apps based on the React and Next.js.',
+  description: 'Kviz za potrebe GDCK Buje. Kviz omogućava rješavanje kvizova iz područja prve pomoći i poznavanja pokreta Crvenog križa.',
   icons: {
     icon: [
       {
@@ -44,10 +42,8 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={roboto.className}>
-        <ThemeRegistry>
-          {children}
-        </ThemeRegistry>
+      <body className="min-h-screen flex flex-col bg-rose-100	">        
+          {children}        
       </body>
     </html>
   );

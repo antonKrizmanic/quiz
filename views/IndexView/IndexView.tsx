@@ -11,7 +11,7 @@ import styles from './IndexView.module.scss';
  */
 export default function IndexView() {
   return (
-    <div className={styles.container}>
+    <div className='text-3xl font-bold underline'>
       <span>
         Not much to see here. If you are intereseted in Pokemons, visit
       </span>
