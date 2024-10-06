@@ -42,7 +42,7 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen flex flex-col bg-rose-100	">        
+      <body className="min-h-screen flex flex-col bg-red-100	">        
           {children}        
       </body>
     </html>
