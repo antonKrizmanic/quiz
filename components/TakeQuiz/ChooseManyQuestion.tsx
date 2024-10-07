@@ -1,12 +1,18 @@
 import React from 'react';
 
+interface Answer {
+  id: number;
+  text: string;
+  questionId: number;
+}
+
 interface ChooseManyQuestionProps {
-  question: {
-    id: number;
-    text: string;
-    options: string[];
-  };
-  onAnswer: (answers: string[]) => void;
+question: {
+  id: number;
+  text: string;
+  answers: Answer[];
+};
+onAnswer: (answer: string) => void;
 }
 
 const ChooseManyQuestion: React.FC<ChooseManyQuestionProps> = ({ question, onAnswer }) => {
@@ -27,16 +33,16 @@ const ChooseManyQuestion: React.FC<ChooseManyQuestionProps> = ({ question, onAns
   return (
     <div>
       <p>{question.text}</p>
-      {question.options.map((option) => (
-        <div key={option}>
+      {question.answers.map((option) => (
+        <div key={option.id}>
           <input
             type="checkbox"
-            id={option}
+            id={option.id}
             name={`question-${question.id}`}
-            value={option}
-            onChange={() => handleChange(option)}
+            value={option.id}
+            onChange={() => handleChange(option.text)}
           />
-          <label htmlFor={option}>{option}</label>
+          <label htmlFor={option.id}>{option.text}</label>
         </div>
       ))}
     </div>

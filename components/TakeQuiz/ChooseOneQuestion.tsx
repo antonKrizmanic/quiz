@@ -20,12 +20,12 @@ const ChooseOneQuestion: React.FC<ChooseOneQuestionProps> = ({ question, onAnswe
     <div>
       <p>{question.text}</p>
       {question.answers.map((option) => (
-        <div key={option}>
+        <div key={option.id}>
           <input
             type="radio"
             id={option.id}
             name={`question-${question.id}`}
-            value={option}
+            value={option.id}
             onChange={() => onAnswer(option.text)}
           />
           <label htmlFor={option.id}>{option.text}</label>

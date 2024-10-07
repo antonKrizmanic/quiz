@@ -37,12 +37,13 @@ const QuizPage = () => {
     const [quiz, setQuiz] = useState<QuizDetail | null>(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(true);
+    const [answers, setAnswers] = useState<any>({});
 
     useEffect(() => {
         const fetchQuizDetails = async () => {
             try {
-                const response = await get(`/quizzes/PublicQuiz/GetDetail/${quizId}`);
-                setQuiz(response.data);
+                const response = await get(`quizzes/PublicQuiz/GetDetail/${quizId}`);
+                setQuiz(response.data);                
             } catch (error) {
                 console.error('Error fetching quiz details:', error);
             } finally {
@@ -60,7 +61,7 @@ const QuizPage = () => {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
         } else {
             // Navigate to the next step, e.g., user name input
-            router.push('/user-name');
+            router.push('/user-info');
         }
     };
 
@@ -74,9 +75,12 @@ const QuizPage = () => {
         router.back();
     };
 
-    const handleAnswer = (answer: any) => {
-        // Handle the answer submission logic here
-    };
+    const handleAnswer = (questionId: number, answer: any) => {
+        setAnswers((prevAnswers: any) => ({
+          ...prevAnswers,
+          [questionId]: answer,
+        }));
+      };
 
 
     if (loading) {

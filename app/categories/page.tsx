@@ -59,7 +59,7 @@ const CategoriesPage = () => {
           categories.map((category) => (
             <BigRedButton
               key={category.id}              
-              onClick={() => handleCategorySelection(category.name)}
+              onClick={() => handleCategorySelection(category.id.toString())}
             >
               {category.name}
             </BigRedButton>

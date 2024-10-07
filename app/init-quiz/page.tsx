@@ -2,21 +2,16 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { get, post } from '../../services/HttpService';
+import { post } from '../../services/HttpService';
 import BigRedButton from '@/components/Buttons/BigRedButton';
 import BigGrayButton from '@/components/Buttons/BigGrayButton';
-
-interface QuizInitData {
-    quizId: number;
-    // Add other relevant fields if needed
-}
 
 const InitQuizPage = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const theme = searchParams.get('theme');
     const category = searchParams.get('category');
-    const [quizInitData, setQuizInitData] = useState<QuizInitData | null>(null);
+    const [quizId, setQuizId] = useState<number | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -28,8 +23,9 @@ const InitQuizPage = () => {
                     CityAssociationId: 1,
                   };
           
-                  const response = await post('/quizzes/PublicQuiz', data);
-                setQuizInitData(response.data);
+                  const response = await post('quizzes/PublicQuiz', data);
+                  console.log(response.data);
+                setQuizId(response.data);
             } catch (error) {
                 console.error('Error initializing quiz:', error);
             } finally {
@@ -43,8 +39,8 @@ const InitQuizPage = () => {
     }, [theme, category]);
 
     const handleStartQuiz = () => {
-        if (quizInitData) {
-            router.push(`/quiz?quizId=${quizInitData.quizId}`);
+        if (quizId) {
+            router.push(`/quiz?quizId=${quizId}`);
         }
     };
 
@@ -59,7 +55,7 @@ const InitQuizPage = () => {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
             <h2 className="text-2xl mb-4">Malo o pravilima</h2>
-            {quizInitData ? (
+            {quizId ? (
                 <div className="w-full max-w-screen-md mx-auto px-6">
                     <div className="flex justify-center p-4 px-3">
                         <div className="w-full">
