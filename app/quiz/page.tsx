@@ -43,7 +43,7 @@ const QuizPage = () => {
         const fetchQuizDetails = async () => {
             try {
                 const response = await get(`quizzes/PublicQuiz/GetDetail/${quizId}`);
-                setQuiz(response.data);                
+                setQuiz(response.data);
             } catch (error) {
                 console.error('Error fetching quiz details:', error);
             } finally {
@@ -77,10 +77,10 @@ const QuizPage = () => {
 
     const handleAnswer = (questionId: number, answer: any) => {
         setAnswers((prevAnswers: any) => ({
-          ...prevAnswers,
-          [questionId]: answer,
+            ...prevAnswers,
+            [questionId]: answer,
         }));
-      };
+    };
 
 
     if (loading) {
@@ -110,22 +110,23 @@ const QuizPage = () => {
         <div className="lg:max-w-screen-md w-screen mx-auto md:px-6 mt-6">
             <div className="flex justify-center px-3">
                 <div className="w-full">
-                    <div className="bg-white shadow-md rounded-lg px-3">                        
+                    <div className="bg-white shadow-md rounded-lg px-3">
                         {currentQuestion.questionType === 1 && (
-                            <ChooseOneQuestion question={currentQuestion} onAnswer={handleAnswer} />
+                            <ChooseOneQuestion question={currentQuestion} questionIndex={currentQuestionIndex} onAnswer={handleAnswer} />
                         )}
                         {currentQuestion.questionType === 2 && (
-                            <ChooseManyQuestion question={currentQuestion} onAnswer={handleAnswer} />
+                            <ChooseManyQuestion question={currentQuestion} questionIndex={currentQuestionIndex} onAnswer={handleAnswer} />
                         )}
                         {currentQuestion.questionType === 3 && (
-                            <TypeAnswerQuestion question={currentQuestion} onAnswer={handleAnswer} />
+                            <TypeAnswerQuestion question={currentQuestion} questionIndex={currentQuestionIndex} onAnswer={handleAnswer} />
                         )}
                         {currentQuestion.questionType === 4 && (
-                            <MakeMatchQuestion question={currentQuestion} onAnswer={handleAnswer} />
+                            <MakeMatchQuestion question={currentQuestion} questionIndex={currentQuestionIndex} onAnswer={handleAnswer} />
                         )}
-                        <div className="block bg-white py-3 px-3 -mx-3 -mb-2 rounded-b-lg flex items-center justify-between"></div>
-                        <BigGrayButton onClick={handlePreviousQuestion}>Prethodno pitanje</BigGrayButton>
-                        <BigRedButton onClick={handleNextQuestion}>Sljedeće pitanje</BigRedButton>
+                        <div className="block bg-white py-3 px-3 -mx-3 -mb-2 rounded-b-lg flex items-center justify-between">
+                            <BigGrayButton onClick={handlePreviousQuestion}>Prethodno pitanje</BigGrayButton>
+                            <BigRedButton onClick={handleNextQuestion}>Sljedeće pitanje</BigRedButton>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -7,15 +7,16 @@ interface Answer {
 }
 
 interface ChooseManyQuestionProps {
-question: {
-  id: number;
-  text: string;
-  answers: Answer[];
-};
-onAnswer: (answer: string) => void;
+  question: {
+    id: number;
+    text: string;
+    answers: Answer[];
+  };
+  questionIndex: number;
+  onAnswer: (answer: string) => void;
 }
 
-const ChooseManyQuestion: React.FC<ChooseManyQuestionProps> = ({ question, onAnswer }) => {
+const ChooseManyQuestion: React.FC<ChooseManyQuestionProps> = ({ question, questionIndex, onAnswer }) => {
   const handleChange = (option: string) => {
     const answers = [...selectedAnswers];
     if (answers.includes(option)) {
@@ -32,19 +33,27 @@ const ChooseManyQuestion: React.FC<ChooseManyQuestionProps> = ({ question, onAns
 
   return (
     <div>
-      <p>{question.text}</p>
-      {question.answers.map((option) => (
-        <div key={option.id}>
-          <input
-            type="checkbox"
-            id={option.id}
-            name={`question-${question.id}`}
-            value={option.id}
-            onChange={() => handleChange(option.text)}
-          />
-          <label htmlFor={option.id}>{option.text}</label>
-        </div>
-      ))}
+      <div className="py-3">
+        <p className="text-lg font-semibold">{questionIndex + 1}. {question.text}</p>
+        <span className="text-sm font-light text-gray-600">(Možeš odabrati više odgovora)</span>
+      </div>
+      <div className="flex flex-col">
+        {question.answers.map((option) => (
+          <div key={option.id}>
+            <label htmlFor={option.id} className="inline-block w-full py-1 lg:py-0 pl-1 lg:pl-0">
+              <input
+                className="mr-1"
+                type="checkbox"
+                id={option.id}
+                name={`question-${question.id}`}
+                value={option.id}
+                onChange={() => handleChange(option.text)}
+              />
+              {option.text}
+            </label>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

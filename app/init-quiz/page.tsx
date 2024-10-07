@@ -21,10 +21,10 @@ const InitQuizPage = () => {
                     QuizCategoryId: category ? parseInt(category) : null,
                     QuizTheme: theme ? parseInt(theme) : null,
                     CityAssociationId: 1,
-                  };
-          
-                  const response = await post('quizzes/PublicQuiz', data);
-                  console.log(response.data);
+                };
+
+                const response = await post('quizzes/PublicQuiz', data);
+                console.log(response.data);
                 setQuizId(response.data);
             } catch (error) {
                 console.error('Error initializing quiz:', error);
@@ -53,12 +53,13 @@ const InitQuizPage = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen">
-            <h2 className="text-2xl mb-4">Malo o pravilima</h2>
+        <>
+
             {quizId ? (
                 <div className="w-full max-w-screen-md mx-auto px-6">
-                    <div className="flex justify-center p-4 px-3">
+                    <div className="flex justify-center p-4 px-3">                    
                         <div className="w-full">
+                        <h2 className="text-2xl text-center mb-4">Malo o pravilima</h2>
                             <div className="bg-white shadow-md rounded-lg px-3 py-2 mb-4">
                                 <div className="pb-3 text-sm">
                                     <div className="flex justify-start text-gray-700 rounded-md px-2 py-2 my-2">
@@ -79,12 +80,12 @@ const InitQuizPage = () => {
                                     </div>
                                 </div>
                                 <div className="block bg-white text-center mb-2 rounded-b-lg">
-                                    <BigGrayButton                                        
+                                    <BigGrayButton
                                         onClick={handleBack}
                                     >
                                         Natrag
                                     </BigGrayButton>
-                                    <BigRedButton                                        
+                                    <BigRedButton
                                         onClick={handleStartQuiz}
                                     >
                                         Start
@@ -97,7 +98,7 @@ const InitQuizPage = () => {
             ) : (
                 <p>Error initializing quiz. Please try again.</p>
             )}
-        </div>
+        </>
     );
 };
 

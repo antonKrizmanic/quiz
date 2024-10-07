@@ -12,15 +12,13 @@ const UserNamePage = () => {
     const searchParams = useSearchParams();
     const quizId = searchParams.get('quizId');
     const [userName, setUserName] = useState<string>('');
-    const [role, setRole] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [role, setRole] = useState<string | null>(null);    
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setLoading(true);
 
         try {
-            const response = await post('/quizzes/submit', {
+            const response = await post('/quizzes/publicQuizTake', {
                 quizId,
                 userName,
                 role,
@@ -34,8 +32,6 @@ const UserNamePage = () => {
             }
         } catch (error) {
             console.error('Error submitting quiz:', error);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -58,7 +54,7 @@ const UserNamePage = () => {
                                     type="text"
                                     value={userName}
                                     onChange={(e) => setUserName(e.target.value)}
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    className="border border-gray-300 p-2 rounded block w-full"
                                     required
                                 />
                             </div>
@@ -70,7 +66,7 @@ const UserNamePage = () => {
                                     id="role"
                                     value={role}
                                     onChange={(e) => setRole(e.target.value)}
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    className="border border-gray-300 p-2 rounded block w-full"
                                     required
                                 >
                                     <option value="Vozač">Vozač</option>
