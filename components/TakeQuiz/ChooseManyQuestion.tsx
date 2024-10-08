@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface Answer {
   id: number;
@@ -13,23 +13,36 @@ interface ChooseManyQuestionProps {
     answers: Answer[];
   };
   questionIndex: number;
-  onAnswer: (answer: string) => void;
+  onAnswer: (questionId: number, answers: Answer[]) => void;
+  initialAnswers?: Answer[];
 }
 
-const ChooseManyQuestion: React.FC<ChooseManyQuestionProps> = ({ question, questionIndex, onAnswer }) => {
-  const handleChange = (option: string) => {
+const ChooseManyQuestion: React.FC<ChooseManyQuestionProps> = ({ question, questionIndex, onAnswer, initialAnswers }) => {
+  const [selectedAnswers, setSelectedAnswers] = React.useState<Answer[]>([]);
+
+  useEffect(() => {
+    if (initialAnswers) {
+      setSelectedAnswers(initialAnswers);
+    }
+  }, [initialAnswers]);
+
+  
+  const handleChange = (answerId: number) => {
     const answers = [...selectedAnswers];
-    if (answers.includes(option)) {
-      const index = answers.indexOf(option);
+    const index = answers.findIndex((answer) => answer.id === answerId);
+    if (index > -1) {
       answers.splice(index, 1);
     } else {
-      answers.push(option);
+      const selectedAnswer = question.answers.find((answer) => answer.id === answerId);
+      if (selectedAnswer) {
+        answers.push(selectedAnswer);
+      }
     }
     setSelectedAnswers(answers);
-    onAnswer(answers);
+    onAnswer(question.id, answers);
   };
 
-  const [selectedAnswers, setSelectedAnswers] = React.useState<string[]>([]);
+  
 
   return (
     <div>
@@ -47,7 +60,8 @@ const ChooseManyQuestion: React.FC<ChooseManyQuestionProps> = ({ question, quest
                 id={option.id}
                 name={`question-${question.id}`}
                 value={option.id}
-                onChange={() => handleChange(option.text)}
+                checked={selectedAnswers.some((answer) => answer.id === option.id)}
+                onChange={() => handleChange(option.id)}
               />
               {option.text}
             </label>

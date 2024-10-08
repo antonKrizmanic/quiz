@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface TypeAnswerQuestionProps {
   question: {
@@ -6,10 +6,25 @@ interface TypeAnswerQuestionProps {
     text: string;
   };
   questionIndex: number;
-  onAnswer: (answer: string) => void;
+  onAnswer: (questionId: number, answer: string) => void;
+  initialAnswer?: string;
 }
 
-const TypeAnswerQuestion: React.FC<TypeAnswerQuestionProps> = ({ question, questionIndex, onAnswer }) => {
+const TypeAnswerQuestion: React.FC<TypeAnswerQuestionProps> = ({ question, questionIndex, onAnswer, initialAnswer }) => {
+  const [answer, setAnswer] = useState<string>('');
+
+  useEffect(() => {
+    if (initialAnswer) {
+      setAnswer(initialAnswer);
+    }
+  }, [initialAnswer]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setAnswer(value);
+    onAnswer(question.id, value);
+  };
+
   return (
     <div>
       <div className="py-3">
@@ -19,7 +34,8 @@ const TypeAnswerQuestion: React.FC<TypeAnswerQuestionProps> = ({ question, quest
       <div className="mb-4">
         <input
           type="text"
-          onChange={(e) => onAnswer(e.target.value)}
+          value={answer}
+          onChange={handleChange}
           className="border border-gray-300 p-2 rounded block w-full"
         />
       </div>

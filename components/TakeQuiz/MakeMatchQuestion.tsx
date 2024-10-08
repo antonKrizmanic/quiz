@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
+interface QuizTakeAnswerDto {
+  questionId: number;
+  answerId: number;
+  parentId?: number;
+  text: string;
+}
+
 interface Answer {
   id: number;
   text: string;
@@ -19,12 +26,12 @@ interface Question {
 interface MakeMatchQuestionProps {
   question: Question;
   questionIndex: number;
-  onAnswer: (answer: { questionId: string; answerId: string }[]) => void;
+  onAnswer: (questionId: number, answer: QuizTakeAnswerDto[]) => void;
 }
 
 const MakeMatchQuestion: React.FC<MakeMatchQuestionProps> = ({ question, questionIndex, onAnswer }) => {
   const [possibleAnswers, setPossibleAnswers] = useState<Answer[]>([]);
-  const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: string }>({});
+  const [selectedAnswers, setSelectedAnswers] = useState<QuizTakeAnswerDto[]>([]);
 
   useEffect(() => {
     const answers = question.children?.map((child) => child.answers).flat() || [];
@@ -32,14 +39,22 @@ const MakeMatchQuestion: React.FC<MakeMatchQuestionProps> = ({ question, questio
   }, [question]);
 
   const handleSelectChange = (childId: number, answerId: string) => {
-    const updatedSelectedAnswers = { ...selectedAnswers, [childId]: answerId };
-    setSelectedAnswers(updatedSelectedAnswers);
+    console.log('something')
+    const answer:QuizTakeAnswerDto = {
+      questionId: childId,
+      answerId: parseInt(answerId),
+      parentId: question.id,
+      text: '',
+    };
 
-    const answersArray = Object.keys(updatedSelectedAnswers).map((key) => ({
-      questionId: key,
-      answerId: updatedSelectedAnswers[parseInt(key)],
-    }));
-
+    const answersArray = [...selectedAnswers];
+    const index = answersArray.findIndex((a) => a.questionId === childId);
+    if (index > -1) {
+      answersArray[index] = answer;
+    } else {
+      answersArray.push(answer);
+    }
+    setSelectedAnswers(answersArray);
     onAnswer(answersArray);
   };
 
@@ -57,7 +72,7 @@ const MakeMatchQuestion: React.FC<MakeMatchQuestionProps> = ({ question, questio
           </div>
           <div>
             <select
-              value={selectedAnswers[child.id] || ''}
+              value={selectedAnswers[child.id] || null}
               onChange={(e) => handleSelectChange(child.id, e.target.value)}
               className="border border-gray-300 p-2 rounded block w-full"
             >

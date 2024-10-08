@@ -81,6 +81,7 @@ const InitQuizPage = () => {
                                 </div>
                                 <div className="block bg-white text-center mb-2 rounded-b-lg">
                                     <BigGrayButton
+                                    cssClasses="m-2"
                                         onClick={handleBack}
                                     >
                                         Natrag

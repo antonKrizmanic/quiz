@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 
 interface Answer {
   id: number;
@@ -13,10 +14,27 @@ interface ChooseOneQuestionProps {
     answers: Answer[];
   };
   questionIndex: number;
-  onAnswer: (answer: string) => void;
+  onAnswer: (questionId: number, answer: Answer) => void;
+  initialAnswer?: Answer;
 }
 
-const ChooseOneQuestion: React.FC<ChooseOneQuestionProps> = ({ question, questionIndex, onAnswer }) => {
+const ChooseOneQuestion: React.FC<ChooseOneQuestionProps> = ({ question, questionIndex, onAnswer, initialAnswer }) => {
+  const [selectedAnswerId, setSelectedAnswerId] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (initialAnswer) {
+      setSelectedAnswerId(initialAnswer.id);
+    }
+  }, [initialAnswer]);
+
+  const onAnswerSelect = (answerId: number) => {
+    const selectedAnswer = question.answers.find((answer) => answer.id === answerId);
+    if (selectedAnswer) {
+      setSelectedAnswerId(answerId);
+      onAnswer(question.id,selectedAnswer);
+    }
+  }
+
   return (
     <div>
       <div className="py-3">
@@ -33,7 +51,8 @@ const ChooseOneQuestion: React.FC<ChooseOneQuestionProps> = ({ question, questio
               id={option.id}
               name={`question-${question.id}`}
               value={option.id}
-              onChange={() => onAnswer(option.text)}
+              checked={selectedAnswerId === option.id}
+              onChange={() => onAnswerSelect(option.id)}
             />
             {option.text}</label>
           </div>
