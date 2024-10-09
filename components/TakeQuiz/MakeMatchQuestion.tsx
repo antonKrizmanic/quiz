@@ -27,16 +27,21 @@ interface MakeMatchQuestionProps {
   question: Question;
   questionIndex: number;
   onAnswer: (questionId: number, answer: QuizTakeAnswerDto[]) => void;
+  initialAnswer?: QuizTakeAnswerDto[];
 }
 
-const MakeMatchQuestion: React.FC<MakeMatchQuestionProps> = ({ question, questionIndex, onAnswer }) => {
+const MakeMatchQuestion: React.FC<MakeMatchQuestionProps> = ({ question, questionIndex, onAnswer, initialAnswer }) => {
   const [possibleAnswers, setPossibleAnswers] = useState<Answer[]>([]);
   const [selectedAnswers, setSelectedAnswers] = useState<QuizTakeAnswerDto[]>([]);
 
   useEffect(() => {
     const answers = question.children?.map((child) => child.answers).flat() || [];
     setPossibleAnswers(answers);
-  }, [question]);
+    
+    if (initialAnswer) {
+      setSelectedAnswers(initialAnswer);
+    }
+  }, [question, initialAnswer]);
 
   const handleSelectChange = (childId: number, answerId: string) => {
     console.log('something')
@@ -54,8 +59,8 @@ const MakeMatchQuestion: React.FC<MakeMatchQuestionProps> = ({ question, questio
     } else {
       answersArray.push(answer);
     }
-    setSelectedAnswers(answersArray);
-    onAnswer(answersArray);
+    setSelectedAnswers(answersArray);    
+    onAnswer(question.id, answersArray);
   };
 
   return (
@@ -72,7 +77,7 @@ const MakeMatchQuestion: React.FC<MakeMatchQuestionProps> = ({ question, questio
           </div>
           <div>
             <select
-              value={selectedAnswers[child.id] || null}
+              value={selectedAnswers.find((a) => a.questionId === child.id)?.answerId || ''}
               onChange={(e) => handleSelectChange(child.id, e.target.value)}
               className="border border-gray-300 p-2 rounded block w-full"
             >

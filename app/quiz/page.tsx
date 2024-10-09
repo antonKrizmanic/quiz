@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { get } from '../../services/HttpService';
+import { get, post } from '../../services/HttpService';
 import BigRedButton from '@/components/Buttons/BigRedButton';
 import BigGrayButton from '@/components/Buttons/BigGrayButton';
 import ChooseOneQuestion from '@/components/TakeQuiz/ChooseOneQuestion';
@@ -11,12 +11,31 @@ import TypeAnswerQuestion from '@/components/TakeQuiz/TypeAnswerQuestion';
 import MakeMatchQuestion from '@/components/TakeQuiz/MakeMatchQuestion';
 import UserInfo from '@/components/TakeQuiz/UserInfo';
 
+interface QuizTakeDto {
+    quizId: number;
+    startedAt: string;
+    endedAt: string;
+    takeUserName: string;
+    takeUserType: number;
+    questions: QuizTakeQuestionDto[];
+    cityAssociationId: number;
+}
+  
+  interface QuizTakeQuestionDto {
+    id: number;
+    questionId: number;
+    index: number;
+    parentId?: number | null;
+    answers: QuizTakeAnswerDto[];
+}
+  
+
 interface QuizTakeAnswerDto {
     questionId: number;
     answerId: number;
     parentId?: number;
     text: string;
-  }
+}
 
 interface Answer {
     id: number;
@@ -135,17 +154,39 @@ const QuizPage = () => {
     }
 
     const handleAnswer = (questionId: number, answer: QuizTakeAnswerDto[]) => {
-        console.log('handle anser');
-        setEnableNext(true);
-        // const updatedAnswers = {
-        //     ...answers,
-        //     [questionId]: answer,
-        // };
-        // setAnswers(updatedAnswers);      
+        console.log('handle anser', answer);
+        setEnableNext(true);        
+        const updatedAnswers = {
+            ...answers,
+            [questionId]: answer,
+        };
+        setAnswers(updatedAnswers);      
     };
 
     const submitQuiz = async (name: string, role: string) => {
-        console.log(answers);
+        const quizTakeDto = {
+            quizId: parseInt(quizId!),
+            startedAt: "2024-10-09T18:21:56.337+02:00",
+            endedAt: "2024-10-09T18:21:56.337+02:00",
+            takeUserName: name,
+            takeUserType: parseInt(role),
+            questions: Object.keys(quiz.questions).map((key, index) => {
+                const question = quiz.questions[key];
+                const answer = answers[question.id];                
+                const quizTakeQuestionDto: QuizTakeQuestionDto = {
+                    id: 0,
+                    questionId: question.id,
+                    index: index,
+                    parentId: question.parentId,
+                    answers: Array.isArray(answer) ? answer : [answer],
+                };
+                return quizTakeQuestionDto;
+            }),
+            cityAssociationId: 1
+        };
+        const response = await post(`quizzes/PublicQuizTake`, quizTakeDto);
+        console.log(response.data);
+        router.push(`/take-result?take-id=${response.data}`);
     };
 
 

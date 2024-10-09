@@ -46,9 +46,9 @@ const UserInfo: React.FC<UserInfoProps> = ({ onSubmit, onBack }) => {
                     onChange={(e) => setRole(e.target.value)}
                     className="border border-gray-300 p-2 rounded block w-full"
                     required
-                >
-                    <option value="Vozač">Vozač</option>
-                    <option value="Volonter">Volonter</option>
+                >                    
+                    <option value="1">Volonter</option>
+                    <option value="2">Vozač</option>
                 </select>
             </div>
             <div className="block bg-white py-3 px-3 -mx-3 -mb-2 rounded-b-lg flex items-center justify-between">
