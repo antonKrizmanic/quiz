@@ -10,6 +10,8 @@ import ChooseManyQuestion from '@/components/TakeQuiz/ChooseManyQuestion';
 import TypeAnswerQuestion from '@/components/TakeQuiz/TypeAnswerQuestion';
 import MakeMatchQuestion from '@/components/TakeQuiz/MakeMatchQuestion';
 import UserInfo from '@/components/TakeQuiz/UserInfo';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 interface QuizTakeDto {
     quizId: number;
@@ -178,7 +180,7 @@ const QuizPage = () => {
                     questionId: question.id,
                     index: index,
                     parentId: question.parentId,
-                    answers: Array.isArray(answer) ? answer : [answer],
+                    answers: Array.isArray(answer) ? answer.map(a => ({ ...a, answerId: a.id })) : [{ ...answer, answerId: answer.id }],
                 };
                 return quizTakeQuestionDto;
             }),
@@ -202,7 +204,7 @@ const QuizPage = () => {
                         <div className="bg-white shadow-md rounded-lg px-3">
                             <p className="mb-3 text-center">Nažalost, ovaj kviz nema ni jedno pitanje, odaberite drugi</p>
                             <BigRedButton onClick={handleBack}>
-                                <i className="fas fa-arrow-left"></i> Natrag
+                                <FontAwesomeIcon icon={faArrowLeft} /> Natrag
                             </BigRedButton>
                         </div>
                     </div>
