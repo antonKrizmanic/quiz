@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Typography } from "@material-tailwind/react";
 
 interface TypeAnswerQuestionProps {
   question: {
@@ -26,10 +27,10 @@ const TypeAnswerQuestion: React.FC<TypeAnswerQuestionProps> = ({ question, quest
   };
 
   return (
-    <div>
+    <>
       <div className="py-3">
-        <p className="text-lg font-semibold">{questionIndex + 1}. {question.text}</p>
-        <span className="text-sm font-light text-gray-600">(Upiši točan odgovor)</span>
+        <Typography type="lead" className="font-semibold">{questionIndex + 1}. {question.text}</Typography>
+        <Typography type="small" className="font-light text-gray-600">(Upiši točan odgovor)</Typography>
       </div>
       <div className="mb-4">
         <input
@@ -40,7 +41,7 @@ const TypeAnswerQuestion: React.FC<TypeAnswerQuestionProps> = ({ question, quest
         />
       </div>
 
-    </div>
+    </>
   );
 };
 

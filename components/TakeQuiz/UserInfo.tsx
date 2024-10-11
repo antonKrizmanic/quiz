@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Button } from "@material-tailwind/react";
 import BigGrayButton from '@/components/Buttons/BigGrayButton';
 import BigRedButton from '../Buttons/BigRedButton';
 
@@ -22,7 +23,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ onSubmit, onBack }) => {
     }
 
     return (
-        <div>
+        <>
             <div className="py-3">
                 <p className="text-lg font-semibold">Tvoje ime</p>
             </div>
@@ -51,13 +52,11 @@ const UserInfo: React.FC<UserInfoProps> = ({ onSubmit, onBack }) => {
                     <option value="2">Vozač</option>
                 </select>
             </div>
-            <div className="block bg-white py-3 px-3 -mx-3 -mb-2 rounded-b-lg flex items-center justify-between">
-                <BigGrayButton onClick={handleBack}>
-                    Prethodno pitanje
-                </BigGrayButton>
-                <BigRedButton disabled={!userName && !role} onClick={handleSubmit}>Završi</BigRedButton>
+            <div className="flex justify-between">
+                <Button onClick={handleBack} variant='outline' size={'lg'}>Prethodno pitanje</Button>
+                <Button onClick={handleSubmit} disabled={!userName && !role} variant='outline' size={'lg'}>Završi</Button>                
             </div>
-        </div>
+        </>
     );
 };
 

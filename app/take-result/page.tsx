@@ -10,6 +10,7 @@ import MultiSelectAnswer from '@/components/TakeAnswer/MultiSelectAnswer';
 import MatchTermAnswer from '@/components/TakeAnswer/MatchTermAnswer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { Alert, Button, Card, Typography } from '@material-tailwind/react';
 
 interface QuizTakeDetailViewModel extends QuizTakeViewModel {
     quizTakeQuestions: QuizTakeQuestionViewModel[];
@@ -111,7 +112,7 @@ const TakeResultPage = () => {
                         <div className="bg-white shadow-md rounded-lg px-3">
                             <p className="mb-3 text-center">Nije pronađen rezultat za ovaj kviz.</p>
                             <BigRedButton onClick={() => router.back()}>
-                            <FontAwesomeIcon icon={faArrowLeft} /> Natrag
+                                <FontAwesomeIcon icon={faArrowLeft} /> Natrag
                             </BigRedButton>
                         </div>
                     </div>
@@ -122,54 +123,49 @@ const TakeResultPage = () => {
 
     return (
         <>
-            <h1 className="text-3xl text-center font-bold px-2 mb-2">
-                Tvoj rezultat je {results.score}/{results.questionNumber}
-            </h1>
-            <div className="w-full max-w-screen-md mx-auto px-6">
-                <div className="flex flex-col justify-center">
-                    <div className="w-full">
-                        <div className="bg-white shadow-md rounded-lg px-3 py-2 mb-4 pb-4">
-                        {Array.from(questionDictionary.entries()).map(([takeQuestion, question], index) => {
-                                const cssClass = takeQuestion.isCorrect ? 'bg-green-100' : 'bg-red-100';
-                                const fullCssClass = `flex mb-4 ${cssClass}`;
+            <Typography type="h2" className="mb-4">Tvoj rezultat je {results.score}/{results.questionNumber}</Typography>
 
-                                let questionContent;
-                                switch (question.questionType) {                                    
-                                    case 1:
-                                        questionContent = <SingleSelectAnswer givenAnswer={takeQuestion.answers[0]} questionId={question.id} />;
-                                        break;
-                                    case 2:
-                                        questionContent = <MultiSelectAnswer givenAnswers={takeQuestion.answers} questionId={question.id} />;
-                                        break;
-                                    case 3:
-                                        questionContent = <TextInputAnswer givenAnswer={takeQuestion.answers[0]} questionId={question.id} />;
-                                        break;
-                                    case 4:
-                                        questionContent = <MatchTermAnswer quizTakeChildren={takeQuestion.children} questionId={question.id} />;
-                                        break;
-                                    default:
-                                        questionContent = <p>Nepoznata vrsta pitanja</p>;
-                                }
 
-                                return (
-                                    <div key={index} className={fullCssClass}>
-                                        <div className="w-auto text-grey-100 items-center p-4">
-                                            <p className="text-lg font-semibold">{takeQuestion.index + 1}. {question.text}</p>
-                                            {questionContent}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                            <div className="text-center">
-                                <BigRedButton onClick={() => router.push('/')}>
-                                    <FontAwesomeIcon icon={faArrowLeft} /> &nbsp;
-                                    Natrag na početnu stranicu
-                                </BigRedButton>
-                            </div>
-                        </div>
+            <Card>
+                <Card.Body>
+                    {Array.from(questionDictionary.entries()).map(([takeQuestion, question], index) => {                        
+                        const cssClass = `mb-4`;
+
+                        let questionContent;
+                        switch (question.questionType) {
+                            case 1:
+                                questionContent = <SingleSelectAnswer givenAnswer={takeQuestion.answers[0]} questionId={question.id} />;
+                                break;
+                            case 2:
+                                questionContent = <MultiSelectAnswer givenAnswers={takeQuestion.answers} questionId={question.id} />;
+                                break;
+                            case 3:
+                                questionContent = <TextInputAnswer givenAnswer={takeQuestion.answers[0]} questionId={question.id} />;
+                                break;
+                            case 4:
+                                questionContent = <MatchTermAnswer quizTakeChildren={takeQuestion.children} questionId={question.id} />;
+                                break;
+                            default:
+                                questionContent = <p>Nepoznata vrsta pitanja</p>;
+                        }
+
+                        return (
+                            <Alert key={index} className={cssClass}>
+                                <div className="w-auto text-grey-100 items-center p-4">
+                                    <p className="text-lg font-semibold">{takeQuestion.index + 1}. {question.text}</p>
+                                    {questionContent}
+                                </div>
+                            </Alert>
+                        );
+                    })}
+                </Card.Body>
+                <Card.Footer>
+                    <div className="text-center">
+                        <Button onClick={() => router.push('/')} variant='outline' size={'lg'}><FontAwesomeIcon icon={faArrowLeft} /> &nbsp;Natrag na početnu stranicu</Button>
                     </div>
-                </div>
-            </div>
+                </Card.Footer>
+            </Card>
+
         </>
     );
 };

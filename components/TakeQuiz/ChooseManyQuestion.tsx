@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Checkbox, Typography } from "@material-tailwind/react";
 
 interface Answer {
   id: number;
@@ -26,7 +27,7 @@ const ChooseManyQuestion: React.FC<ChooseManyQuestionProps> = ({ question, quest
     }
   }, [initialAnswers]);
 
-  
+
   const handleChange = (answerId: number) => {
     const answers = [...selectedAnswers];
     const index = answers.findIndex((answer) => answer.id === answerId);
@@ -42,14 +43,34 @@ const ChooseManyQuestion: React.FC<ChooseManyQuestionProps> = ({ question, quest
     onAnswer(question.id, answers);
   };
 
-  
+
 
   return (
-    <div>
+    <>
       <div className="py-3">
-        <p className="text-lg font-semibold">{questionIndex + 1}. {question.text}</p>
-        <span className="text-sm font-light text-gray-600">(Možeš odabrati više odgovora)</span>
+        <Typography type="lead" className="font-semibold">{questionIndex + 1}. {question.text}</Typography>
+        <Typography type="small" className="font-light text-gray-600">(Odaberi samo jedan odgovor)</Typography>
       </div>
+
+      {/* {question.answers.map((option) => (
+        <div className="flex items-center gap-2">
+          <Checkbox
+            key={option.id}
+            id={option.id}
+            onChange={() => handleChange(option.id)}
+            checked={selectedAnswers.some((answer) => answer.id === option.id)}
+          >
+            <Checkbox.Indicator />
+          </Checkbox>
+          <Typography
+            as="label"
+            htmlFor={option.id}
+            className="cursor-pointer text-foreground"
+          >
+            {option.text}
+          </Typography>
+        </div>
+      ))} */}
       <div className="flex flex-col">
         {question.answers.map((option) => (
           <div key={option.id}>
@@ -68,7 +89,7 @@ const ChooseManyQuestion: React.FC<ChooseManyQuestionProps> = ({ question, quest
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 };
 

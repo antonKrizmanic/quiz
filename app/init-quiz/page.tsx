@@ -3,8 +3,11 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { post } from '../../services/HttpService';
-import BigRedButton from '@/components/Buttons/BigRedButton';
-import BigGrayButton from '@/components/Buttons/BigGrayButton';
+import { Card, Typography, List, ListItem, Button } from "@material-tailwind/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+
+
 
 const InitQuizPage = () => {
     const router = useRouter();
@@ -52,50 +55,39 @@ const InitQuizPage = () => {
         return <div>Loading...</div>;
     }
 
+    const infoItems = [
+        "Nema vremenskog ograničenja",
+        "Moraš odgovoriti na sva pitanja",
+        "Ako napustiš ovu stranicu za vrijeme rješavanja kviza, morat ćeš početi ispočetka",
+        "Na kraju ćeš moći pregledati svoj rezultat"
+    ];
+
     return (
         <>
 
             {quizId ? (
-                <div className="w-full max-w-screen-md mx-auto px-2">
-                    <div className="flex justify-center">                    
-                        <div className="w-full">
-                        <h2 className="text-3xl text-center mb-4">Malo o pravilima</h2>
-                            <div className="bg-white shadow-md rounded-lg px-3 py-2 mb-4">
-                                <div className="pb-3 text-sm">
-                                    <div className="flex justify-start text-gray-700 rounded-md px-2 py-2 my-2">
-                                        <span className="bg-red-400 h-2 w-2 m-2 rounded-full"></span>
-                                        <div className="flex-grow font-medium px-2">Nema vremenskog ograničenja</div>
-                                    </div>
-                                    <div className="flex justify-start text-gray-700 rounded-md px-2 py-2 my-2">
-                                        <span className="bg-red-400 h-2 w-2 m-2 rounded-full"></span>
-                                        <div className="flex-grow font-medium px-2">Moraš odgovoriti na sva pitanja</div>
-                                    </div>
-                                    <div className="flex justify-start text-gray-700 rounded-md px-2 py-2 my-2">
-                                        <span className="bg-red-400 h-2 w-2 m-2 rounded-full"></span>
-                                        <div className="flex-grow font-medium px-2">Ako napustiš ovu stranicu za vrijeme rješavanja kviza, morat ćeš početi ispočetka</div>
-                                    </div>
-                                    <div className="flex justify-start text-gray-700 rounded-md px-2 py-2 my-2">
-                                        <span className="bg-red-400 h-2 w-2 m-2 rounded-full"></span>
-                                        <div className="flex-grow font-medium px-2">Na kraju ćeš moći pregledati svoj rezultat</div>
-                                    </div>
-                                </div>
-                                <div className="block bg-white text-center mb-2 rounded-b-lg">
-                                    <BigGrayButton
-                                    cssClasses="m-2"
-                                        onClick={handleBack}
-                                    >
-                                        Natrag
-                                    </BigGrayButton>
-                                    <BigRedButton
-                                        onClick={handleStartQuiz}
-                                    >
-                                        Start
-                                    </BigRedButton>
-                                </div>
+                <>
+                    <Typography type="h2">Malo o pravilima</Typography>
+                    <Card>
+                        <Card.Body>
+                            <List className="pb-3 text-sm">
+                                {infoItems.map((item, index) => (
+                                    <ListItem key={index}>
+                                        <FontAwesomeIcon icon={faCircle} className="text-red-400 h-2 w-2 m-2 rounded-full" />
+                                        {item}
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Card.Body>
+                        <Card.Footer>
+                            <div className="flex justify-between">
+                                <Button onClick={handleBack} variant="outline" size={'lg'}><FontAwesomeIcon icon={faArrowLeft} /> &nbsp; Natrag</Button>
+                                <Button onClick={handleStartQuiz} variant="outline" size={'lg'}>Start</Button>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        </Card.Footer>
+                    </Card>
+
+                </>
             ) : (
                 <p>Error initializing quiz. Please try again.</p>
             )}

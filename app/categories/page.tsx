@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { get } from '../../services/HttpService';
 import BigRedButton from '@/components/Buttons/BigRedButton';
+import { Button, Typography } from "@material-tailwind/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -52,31 +53,26 @@ const CategoriesPage = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h2 className="text-3xl text-center px-2">Odaberite kategoriju kviza</h2>
-      <div className="px-6 my-3 w-3/4 md:w-1/4 mx-auto">
+    <>
+      <Typography type="h2" className="mt-3">Odaberite kategoriju kviza</Typography>      
+      <div className="px-6 my-3">
         <div className="flex flex-col">
           {categories.length === 0 ? (
-            <p>Nije dohvaćena ni jedna kategorija</p>
+            <Typography>Nije dohvaćena ni jedna kategorija</Typography>
           ) : (
             categories.map((category) => (
-              <BigRedButton
-                key={category.id}
-                onClick={() => handleCategorySelection(category.id.toString())}
-              >
+              <Button isFullWidth className="mt-3" onClick={() => handleCategorySelection(category.id.toString())} variant="outline" size={'lg'} key={category.id}>
                 {category.name}
-              </BigRedButton>
+              </Button>              
             ))
           )}
-          <BigRedButton
-            onClick={handleBack}
-          >
+          <Button isFullWidth className="mt-3" onClick={handleBack} variant="outline" size={'lg'}>
             <FontAwesomeIcon icon={faArrowLeft} /> &nbsp;
             Natrag
-          </BigRedButton>
+          </Button>          
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

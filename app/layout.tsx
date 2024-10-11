@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { roboto } from '@/config/fonts';
 import '@/styles/global.css';
 
 // Checks whether the app is running in a production or development mode
@@ -37,10 +36,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col bg-gray-100	">
-        <div className="flex flex-col items-center justify-center min-h-screen">
-          <div className="flex flex-col w-full">
+        <div className="flex flex-col items-center justify-center min-h-screen lg:w-1/2 mx-auto">        
             {children}
-          </div>
         </div>
       </body>
     </html>

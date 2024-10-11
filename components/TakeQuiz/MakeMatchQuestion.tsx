@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Typography } from "@material-tailwind/react";
 
 interface QuizTakeAnswerDto {
   questionId: number;
@@ -64,10 +65,10 @@ const MakeMatchQuestion: React.FC<MakeMatchQuestionProps> = ({ question, questio
   };
 
   return (
-    <div>
+    <>
       <div className="py-3">
-        <p className="text-lg font-semibold">{questionIndex + 1}. {question.text}</p>
-        <span className="text-sm font-light text-gray-600">(Spoji odgovarajuće pojmove)</span>
+        <Typography type="lead" className="font-semibold">{questionIndex + 1}. {question.text}</Typography>
+        <Typography type="small" className="font-light text-gray-600">(Spoji odgovarajuće pojmove)</Typography>
       </div>
       {question.children?.map((child) => (
         <div key={child.id} className="py-1">
@@ -93,7 +94,7 @@ const MakeMatchQuestion: React.FC<MakeMatchQuestionProps> = ({ question, questio
           </div>
         </div>
       ))}
-    </div>
+    </>
   );
 };
 
