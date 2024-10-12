@@ -2,8 +2,10 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import {get} from '../../services/HttpService';
-import BigRedButton from '@/components/Buttons/BigRedButton';
+import { get } from '../../services/HttpService';
+import { Button, Stack, Typography } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 interface Category {
   id: number;
@@ -23,7 +25,7 @@ const CategoriesPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await get(`Quizzes/PublicQuizCategory/GetList/1?QuizTheme=${theme}&ActiveStatusId=1&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);        
+        const response = await get(`Quizzes/PublicQuizCategory/GetList/1?QuizTheme=${theme}&ActiveStatusId=1&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);
         setCategories(response.data.list);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -50,28 +52,24 @@ const CategoriesPage = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h2 className="text-2xl mb-4">Odaberite kategoriju kviza</h2>
-      <div className="flex flex-col space-y-4">
+    <>
+      <Typography variant="h1" gutterBottom>Odaberite kategoriju kviza</Typography>
+      <Stack spacing={1} sx={{marginBottom:3}}>
         {categories.length === 0 ? (
-          <p>Nije dohvaćena ni jedna kategorija</p>
+          <Typography>Nije dohvaćena ni jedna kategorija</Typography>
         ) : (
           categories.map((category) => (
-            <BigRedButton
-              key={category.id}              
-              onClick={() => handleCategorySelection(category.name)}
-            >
+            <Button onClick={() => handleCategorySelection(category.id.toString())} variant="outlined" key={category.id}>
               {category.name}
-            </BigRedButton>
+            </Button>
           ))
         )}
-        <BigRedButton          
-          onClick={handleBack}
-        >
+        <Button onClick={handleBack} variant="outlined">
+          <FontAwesomeIcon icon={faArrowLeft} /> &nbsp;
           Natrag
-        </BigRedButton>
-      </div>
-    </div>
+        </Button>
+      </Stack>
+    </>
   );
 };
 

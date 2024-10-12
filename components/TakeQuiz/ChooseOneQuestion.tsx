@@ -1,9 +1,12 @@
+import { Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material';
 import React from 'react';
+import { useEffect, useState } from 'react';
+
 
 interface Answer {
-    id: number;
-    text: string;
-    questionId: number;
+  id: number;
+  text: string;
+  questionId: number;
 }
 
 interface ChooseOneQuestionProps {
@@ -12,26 +15,58 @@ interface ChooseOneQuestionProps {
     text: string;
     answers: Answer[];
   };
-  onAnswer: (answer: string) => void;
+  questionIndex: number;
+  onAnswer: (questionId: number, answer: Answer) => void;
+  initialAnswer?: Answer;
 }
 
-const ChooseOneQuestion: React.FC<ChooseOneQuestionProps> = ({ question, onAnswer }) => {
+const ChooseOneQuestion: React.FC<ChooseOneQuestionProps> = ({ question, questionIndex, onAnswer, initialAnswer }) => {
+  const [selectedAnswerId, setSelectedAnswerId] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (initialAnswer) {
+      setSelectedAnswerId(initialAnswer.id);
+    }
+  }, [initialAnswer]);
+
+  const onAnswerSelect = (answerId: number) => {
+    const selectedAnswer = question.answers.find((answer) => answer.id === answerId);
+    if (selectedAnswer) {
+      setSelectedAnswerId(answerId);
+      onAnswer(question.id, selectedAnswer);
+    }
+  }
+
   return (
-    <div>
-      <p>{question.text}</p>
-      {question.answers.map((option) => (
-        <div key={option}>
-          <input
-            type="radio"
-            id={option.id}
-            name={`question-${question.id}`}
-            value={option}
-            onChange={() => onAnswer(option.text)}
-          />
-          <label htmlFor={option.id}>{option.text}</label>
-        </div>
-      ))}
-    </div>
+    <>
+      <Box sx={{ marginBottom: '16px' }}>
+        <Typography
+          variant='subtitle1'
+          sx={{ lineHeight: 1, fontWeight: 600 }}>
+          {questionIndex + 1}. {question.text}</Typography>
+        <Typography
+          variant='caption'>
+          (Odaberi samo jedan odgovor)
+        </Typography>
+      </Box>
+      <Box>
+        <FormControl>          
+          <RadioGroup
+            aria-labelledby="radio-buttons-group-label"            
+            name="radio-buttons-group"
+          >
+            {question.answers.map((option) => (
+              <FormControlLabel 
+              key={option.id}
+              value={option.id} 
+              control={<Radio checked={selectedAnswerId === option.id}/>} 
+              onChange={() => onAnswerSelect(option.id)}
+              label={option.text} />
+            ))}
+          </RadioGroup>
+        </FormControl>
+      </Box>      
+    </>
   );
 };
 

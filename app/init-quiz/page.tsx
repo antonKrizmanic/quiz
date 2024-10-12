@@ -2,21 +2,20 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { get, post } from '../../services/HttpService';
-import BigRedButton from '@/components/Buttons/BigRedButton';
-import BigGrayButton from '@/components/Buttons/BigGrayButton';
+import { post } from '../../services/HttpService';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { Button, Card, CardActions, CardContent, List, ListItem, Typography } from '@mui/material';
+import CircleIcon from '@mui/icons-material/Circle';
+import { red } from '@mui/material/colors';
 
-interface QuizInitData {
-    quizId: number;
-    // Add other relevant fields if needed
-}
 
 const InitQuizPage = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const theme = searchParams.get('theme');
     const category = searchParams.get('category');
-    const [quizInitData, setQuizInitData] = useState<QuizInitData | null>(null);
+    const [quizId, setQuizId] = useState<number | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -26,10 +25,11 @@ const InitQuizPage = () => {
                     QuizCategoryId: category ? parseInt(category) : null,
                     QuizTheme: theme ? parseInt(theme) : null,
                     CityAssociationId: 1,
-                  };
-          
-                  const response = await post('/quizzes/PublicQuiz', data);
-                setQuizInitData(response.data);
+                };
+
+                const response = await post('quizzes/PublicQuiz', data);
+                console.log(response.data);
+                setQuizId(response.data);
             } catch (error) {
                 console.error('Error initializing quiz:', error);
             } finally {
@@ -43,8 +43,8 @@ const InitQuizPage = () => {
     }, [theme, category]);
 
     const handleStartQuiz = () => {
-        if (quizInitData) {
-            router.push(`/quiz?quizId=${quizInitData.quizId}`);
+        if (quizId) {
+            router.push(`/quiz?quizId=${quizId}`);
         }
     };
 
@@ -56,52 +56,40 @@ const InitQuizPage = () => {
         return <div>Loading...</div>;
     }
 
+    const infoItems = [
+        "Nema vremenskog ograničenja",
+        "Moraš odgovoriti na sva pitanja",
+        "Ako napustiš ovu stranicu za vrijeme rješavanja kviza, morat ćeš početi ispočetka",
+        "Na kraju ćeš moći pregledati svoj rezultat"
+    ];
+
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen">
-            <h2 className="text-2xl mb-4">Malo o pravilima</h2>
-            {quizInitData ? (
-                <div className="w-full max-w-screen-md mx-auto px-6">
-                    <div className="flex justify-center p-4 px-3">
-                        <div className="w-full">
-                            <div className="bg-white shadow-md rounded-lg px-3 py-2 mb-4">
-                                <div className="pb-3 text-sm">
-                                    <div className="flex justify-start text-gray-700 rounded-md px-2 py-2 my-2">
-                                        <span className="bg-red-400 h-2 w-2 m-2 rounded-full"></span>
-                                        <div className="flex-grow font-medium px-2">Nema vremenskog ograničenja</div>
-                                    </div>
-                                    <div className="flex justify-start text-gray-700 rounded-md px-2 py-2 my-2">
-                                        <span className="bg-red-400 h-2 w-2 m-2 rounded-full"></span>
-                                        <div className="flex-grow font-medium px-2">Moraš odgovoriti na sva pitanja</div>
-                                    </div>
-                                    <div className="flex justify-start text-gray-700 rounded-md px-2 py-2 my-2">
-                                        <span className="bg-red-400 h-2 w-2 m-2 rounded-full"></span>
-                                        <div className="flex-grow font-medium px-2">Ako napustiš ovu stranicu za vrijeme rješavanja kviza, morat ćeš početi ispočetka</div>
-                                    </div>
-                                    <div className="flex justify-start text-gray-700 rounded-md px-2 py-2 my-2">
-                                        <span className="bg-red-400 h-2 w-2 m-2 rounded-full"></span>
-                                        <div className="flex-grow font-medium px-2">Na kraju ćeš moći pregledati svoj rezultat</div>
-                                    </div>
-                                </div>
-                                <div className="block bg-white text-center mb-2 rounded-b-lg">
-                                    <BigGrayButton                                        
-                                        onClick={handleBack}
-                                    >
-                                        Natrag
-                                    </BigGrayButton>
-                                    <BigRedButton                                        
-                                        onClick={handleStartQuiz}
-                                    >
-                                        Start
-                                    </BigRedButton>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <>
+            {quizId ? (
+                <>
+                    <Typography variant="h1" gutterBottom>Malo o pravilima</Typography>
+                    <Card sx={{width:'100%'}}>
+                        <CardContent>
+                            <List>
+                                {infoItems.map((item, index) => (
+                                    <ListItem key={index}>
+                                        <CircleIcon sx={{ color: red[500], fontSize: 12 }} /> &nbsp;
+                                        {item}
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </CardContent>
+                        <CardActions sx={{justifyContent: 'space-between'}}>
+                            <Button onClick={handleBack} variant="outlined"><FontAwesomeIcon icon={faArrowLeft} /> &nbsp; Natrag</Button>
+                            <Button onClick={handleStartQuiz} variant="outlined" sx={{marginLeft:'auto'}}>Start</Button>
+                        </CardActions>
+                    </Card>
+
+                </>
             ) : (
                 <p>Error initializing quiz. Please try again.</p>
             )}
-        </div>
+        </>
     );
 };
 
