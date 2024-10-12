@@ -1,7 +1,6 @@
 {
   "name": "react-starter",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.0",  
   "scripts": {
     "dev": "next dev",
     "dev-open": "start http://localhost:3000 && pnpm dev",
