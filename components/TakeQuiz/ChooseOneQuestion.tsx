@@ -1,6 +1,6 @@
+import { Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material';
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Radio, Typography } from "@material-tailwind/react";
 
 
 interface Answer {
@@ -35,51 +35,37 @@ const ChooseOneQuestion: React.FC<ChooseOneQuestionProps> = ({ question, questio
       setSelectedAnswerId(answerId);
       onAnswer(question.id, selectedAnswer);
     }
-    console.log(selectedAnswerId);
-
   }
 
   return (
     <>
-      <div className="py-3">
-        <Typography type="lead" className="font-semibold">{questionIndex + 1}. {question.text}</Typography>
-        <Typography type="small" className="font-light text-gray-600">(Odaberi samo jedan odgovor)</Typography>
-        {!selectedAnswerId && <Typography type="small" className="font-light text-red-600">Molimo odaberite odgovor</Typography>}
-      </div>
-      {/* <Radio>
-      {question.answers.map((option) => (        
-          <div className="flex items-center gap-2">
-            <Radio.Item
+      <Box sx={{ marginBottom: '16px' }}>
+        <Typography
+          variant='subtitle1'
+          sx={{ lineHeight: 1, fontWeight: 600 }}>
+          {questionIndex + 1}. {question.text}</Typography>
+        <Typography
+          variant='caption'>
+          (Odaberi samo jedan odgovor)
+        </Typography>
+      </Box>
+      <Box>
+        <FormControl>          
+          <RadioGroup
+            aria-labelledby="radio-buttons-group-label"            
+            name="radio-buttons-group"
+          >
+            {question.answers.map((option) => (
+              <FormControlLabel 
               key={option.id}
-              id={option.id}              
-              checked={selectedAnswerId === option.id}
-              onChange={() => onAnswerSelect(option.id)}>
-              <Radio.Indicator />
-            </Radio.Item>
-            <Typography as="label" htmlFor={option.id} className="text-foreground">
-              {option.text}
-            </Typography>
-          </div>
-        
-      ))}
-      </Radio> */}
-<div className="flex flex-col">
-        {question.answers.map((option) => (
-          <div key={option.id}>
-            <label htmlFor={option.id} className="inline-block w-full py-1 lg:py-0 pl-1 lg:pl-0">
-              <input
-                className="mr-1"
-                type="radio"
-                id={option.id}
-                name={`question-${question.id}`}
-                value={option.id}
-                checked={selectedAnswerId === option.id}
-                onChange={() => onAnswerSelect(option.id)}
-              />
-              {option.text}</label>
-          </div>
-        ))}
-      </div>
+              value={option.id} 
+              control={<Radio checked={selectedAnswerId === option.id}/>} 
+              onChange={() => onAnswerSelect(option.id)}
+              label={option.text} />
+            ))}
+          </RadioGroup>
+        </FormControl>
+      </Box>      
     </>
   );
 };

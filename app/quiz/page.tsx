@@ -8,9 +8,9 @@ import ChooseManyQuestion from '@/components/TakeQuiz/ChooseManyQuestion';
 import TypeAnswerQuestion from '@/components/TakeQuiz/TypeAnswerQuestion';
 import MakeMatchQuestion from '@/components/TakeQuiz/MakeMatchQuestion';
 import UserInfo from '@/components/TakeQuiz/UserInfo';
-import { Card, Typography, List, ListItem, Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 
 interface QuizTakeDto {
     quizId: number;
@@ -198,12 +198,12 @@ const QuizPage = () => {
     if (!quiz || quiz.questions.length === 0) {
         return (
             <Card>
-                <Card.Body>
-                    <Typography>Nažalost, ovaj kviz nema ni jedno pitanje, odaberite drugi</Typography>
-                    <Card.Footer>
-                        <Button onClick={handleBack} variant="outline" size={'lg'}><FontAwesomeIcon icon={faArrowLeft} /> &nbsp; Natrag</Button>
-                    </Card.Footer>
-                </Card.Body>
+                <CardContent>
+                    <Typography variant="body1">Nažalost, ovaj kviz nema ni jedno pitanje, odaberite drugi</Typography>
+                </CardContent>
+                <CardActions>
+                    <Button onClick={handleBack} variant="outlined"><FontAwesomeIcon icon={faArrowLeft} /> &nbsp; Natrag</Button>
+                </CardActions>
             </Card>
         );
     }
@@ -211,8 +211,8 @@ const QuizPage = () => {
     const currentQuestion = quiz.questions[currentQuestionIndex];
 
     return (
-        <Card>
-            <Card.Body>
+        <Card sx={{width:'100%'}}>
+            <CardContent>
                 {showUserInfo && (
                     <UserInfo onBack={handlePreviousQuestion} onSubmit={submitQuiz} />
                 )}
@@ -228,15 +228,13 @@ const QuizPage = () => {
                 {!showUserInfo && currentQuestion.questionType === 4 && (
                     <MakeMatchQuestion question={currentQuestion} questionIndex={currentQuestionIndex} onAnswer={handleAnswer} initialAnswer={answers[currentQuestion.id]} />
                 )}
-            </Card.Body>
+            </CardContent>
             {!showUserInfo && (
-                    <Card.Footer>
-                        <div className="flex justify-between">
-                            <Button onClick={handlePreviousQuestion} disabled={!enablePrevious} variant="outline" size={'lg'}><FontAwesomeIcon icon={faArrowLeft} />&nbsp;Prethodno pitanje</Button>                            
-                            <Button onClick={handleNextQuestion} disabled={!enableNext} variant="outline" size={'lg'}>Sljedeće pitanje&nbsp;<FontAwesomeIcon icon={faArrowRight} /></Button>                            
-                        </div>
-                    </Card.Footer>
-                )}
+                <CardActions sx={{justifyContent: 'space-between'}}>
+                        <Button onClick={handlePreviousQuestion} disabled={!enablePrevious} variant="outlined"><FontAwesomeIcon icon={faArrowLeft} />&nbsp;Prethodno pitanje</Button>
+                        <Button onClick={handleNextQuestion} disabled={!enableNext} variant="outlined">Sljedeće pitanje&nbsp;<FontAwesomeIcon icon={faArrowRight} /></Button>                    
+                </CardActions>
+            )}
         </Card>
     );
 };

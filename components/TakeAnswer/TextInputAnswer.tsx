@@ -2,15 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { get } from '../../services/HttpService';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-
-interface Answer {
-    questionId: number;
-    answerId: number;
-    text: string;
-    isCorrect: boolean;
-}
+import { List, ListItem, Typography } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { Answer } from '@/component-models/types';
 
 interface TextInputAnswerProps {
     givenAnswer?: Answer;
@@ -31,30 +26,30 @@ const TextInputAnswer: React.FC<TextInputAnswerProps> = ({ givenAnswer, question
     },[]);
 
     return (
-        <div>
+        <>
             {(!givenAnswer || !givenAnswer.text) ? (
-                <p className="font-semibold">Nisi odgovorio!</p>
+                <Typography sx={{fontWeight: 500}}>Nisi odgovorio!</Typography>
             ) : (
                 <>
-                    <p className="font-semibold">Tvoj odgovor:</p>
-                    <p>
+                    <Typography sx={{fontWeight:500}}>Tvoj odgovor:</Typography>
+                    <Typography>
                         {givenAnswer.text}  &nbsp;
                         {givenAnswer.isCorrect ? (
-                            <FontAwesomeIcon icon={faCheckCircle} className="text-green-600" />                            
+                            <CheckCircleIcon color='success' />
                         ) : (
-                            <FontAwesomeIcon icon={faTimesCircle} className="text-red-600" />
+                            <CancelIcon color='error'/>
                         )}
-                    </p>
+                    </Typography>
                 </>
             )}
 
-            <p className="font-semibold">Odgovori koji se priznaju:</p>
-            <ul className="list-disc list-inside">
+            <Typography>Odgovori koji se priznaju:</Typography>
+            <List>
                 {answers.map((correctAnswer, index) => (
-                    <li key={index}>{correctAnswer.text}</li>
+                    <ListItem key={index}>{index + 1}. {correctAnswer.text}</ListItem>
                 ))}
-            </ul>
-        </div>
+            </List>
+        </>
     );
 };
 

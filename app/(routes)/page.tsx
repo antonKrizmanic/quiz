@@ -1,10 +1,8 @@
 'use client';
 
-import BigRedButton from '@/components/Buttons/BigRedButton';
+import { Button, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Button, Typography } from "@material-tailwind/react";
-
 
 const HomePage = () => {
   const router = useRouter();
@@ -17,12 +15,12 @@ const HomePage = () => {
 
   return (
     <>
-      <Typography type="h2">Odaberite temu kviza</Typography>      
+      <Typography variant="h1" gutterBottom>Odaberite temu kviza</Typography>      
       
-      <div className="mt-3">
-        <Button isFullWidth className="mt-3"  onClick={() => handleThemeSelection('100')} variant="outline" size={'lg'}>Prva pomoć</Button>
-        <Button isFullWidth className="mt-3" onClick={() => handleThemeSelection('200')} variant="outline" size={'lg'}>Pokret Crvenog križa</Button>
-      </div>
+      <Stack spacing={1}>
+        <Button onClick={() => handleThemeSelection('100')} variant="outlined">Prva pomoć</Button>
+        <Button onClick={() => handleThemeSelection('200')} variant="outlined">Pokret Crvenog križa</Button>
+      </Stack>
     </>
   );
 };

@@ -1,5 +1,5 @@
+import { Box, Checkbox, FormControlLabel, FormGroup, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Checkbox, Typography } from "@material-tailwind/react";
 
 interface Answer {
   id: number;
@@ -47,48 +47,28 @@ const ChooseManyQuestion: React.FC<ChooseManyQuestionProps> = ({ question, quest
 
   return (
     <>
-      <div className="py-3">
-        <Typography type="lead" className="font-semibold">{questionIndex + 1}. {question.text}</Typography>
-        <Typography type="small" className="font-light text-gray-600">(Odaberi samo jedan odgovor)</Typography>
-      </div>
-
-      {/* {question.answers.map((option) => (
-        <div className="flex items-center gap-2">
-          <Checkbox
-            key={option.id}
-            id={option.id}
-            onChange={() => handleChange(option.id)}
-            checked={selectedAnswers.some((answer) => answer.id === option.id)}
-          >
-            <Checkbox.Indicator />
-          </Checkbox>
-          <Typography
-            as="label"
-            htmlFor={option.id}
-            className="cursor-pointer text-foreground"
-          >
-            {option.text}
-          </Typography>
-        </div>
-      ))} */}
-      <div className="flex flex-col">
-        {question.answers.map((option) => (
-          <div key={option.id}>
-            <label htmlFor={option.id} className="inline-block w-full py-1 lg:py-0 pl-1 lg:pl-0">
-              <input
-                className="mr-1"
-                type="checkbox"
-                id={option.id}
-                name={`question-${question.id}`}
-                value={option.id}
-                checked={selectedAnswers.some((answer) => answer.id === option.id)}
-                onChange={() => handleChange(option.id)}
-              />
-              {option.text}
-            </label>
-          </div>
-        ))}
-      </div>
+      <Box sx={{ marginBottom: '16px' }}>
+        <Typography
+          variant='subtitle1'
+          sx={{ lineHeight: 1, fontWeight: 600 }}>
+          {questionIndex + 1}. {question.text}</Typography>
+        <Typography
+          variant='caption'>
+          (Odaberi više odgovora)
+        </Typography>
+      </Box>
+      <Box>
+        <FormGroup>
+          {question.answers.map((option) => (
+            <FormControlLabel
+              key={option.id}
+              control={<Checkbox checked={selectedAnswers.some((answer) => answer.id === option.id)}/>}
+              label={option.text}
+              onChange={() => handleChange(option.id)}
+            />
+          ))}          
+        </FormGroup>
+      </Box>      
     </>
   );
 };

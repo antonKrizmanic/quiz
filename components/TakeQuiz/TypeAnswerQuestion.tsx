@@ -1,5 +1,5 @@
+import { Box, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Typography } from "@material-tailwind/react";
 
 interface TypeAnswerQuestionProps {
   question: {
@@ -28,19 +28,24 @@ const TypeAnswerQuestion: React.FC<TypeAnswerQuestionProps> = ({ question, quest
 
   return (
     <>
-      <div className="py-3">
-        <Typography type="lead" className="font-semibold">{questionIndex + 1}. {question.text}</Typography>
-        <Typography type="small" className="font-light text-gray-600">(Upiši točan odgovor)</Typography>
-      </div>
-      <div className="mb-4">
-        <input
-          type="text"
+      <Box sx={{ marginBottom: '16px' }}>
+        <Typography
+          variant='subtitle1'
+          sx={{ lineHeight: 1, fontWeight: 600 }}>
+          {questionIndex + 1}. {question.text}</Typography>
+        <Typography
+          variant='caption'>
+          (Upiši točan odgovor)
+        </Typography>
+      </Box>
+      <Box>
+        <TextField
+          variant="outlined"
           value={answer}
           onChange={handleChange}
-          className="border border-gray-300 p-2 rounded block w-full"
-        />
-      </div>
-
+          size='small'
+          fullWidth />
+      </Box>
     </>
   );
 };
