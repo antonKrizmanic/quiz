@@ -33,18 +33,7 @@ const nextConfig = {
       'tests',
       'view-models', 'views'
     ]
-  },
-  basePath: '/quiz', 
-  assetPrefix: '/quiz/',
-  trailingSlash: true,
-  exportPathMap: async function (
-    defaultPathMap,
-    { dev, dir, outDir, distDir, buildId }
-  ) {
-    return {
-      ...defaultPathMap,
-    };
-  },
+  }
 };
 
 module.exports = withBundleAnalyzer(withReactSvg(nextConfig));
