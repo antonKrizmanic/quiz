@@ -3,10 +3,11 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { post } from '../../services/HttpService';
-import { Card, Typography, List, ListItem, Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-
+import { Button, Card, CardActions, CardContent, List, ListItem, Typography } from '@mui/material';
+import CircleIcon from '@mui/icons-material/Circle';
+import { red } from '@mui/material/colors';
 
 
 const InitQuizPage = () => {
@@ -64,27 +65,24 @@ const InitQuizPage = () => {
 
     return (
         <>
-
             {quizId ? (
                 <>
-                    <Typography type="h2">Malo o pravilima</Typography>
-                    <Card>
-                        <Card.Body>
-                            <List className="pb-3 text-sm">
+                    <Typography variant="h1" gutterBottom>Malo o pravilima</Typography>
+                    <Card sx={{width:'100%'}}>
+                        <CardContent>
+                            <List>
                                 {infoItems.map((item, index) => (
                                     <ListItem key={index}>
-                                        <FontAwesomeIcon icon={faCircle} className="text-red-400 h-2 w-2 m-2 rounded-full" />
+                                        <CircleIcon sx={{ color: red[500], fontSize: 12 }} /> &nbsp;
                                         {item}
                                     </ListItem>
                                 ))}
                             </List>
-                        </Card.Body>
-                        <Card.Footer>
-                            <div className="flex justify-between">
-                                <Button onClick={handleBack} variant="outline" size={'lg'}><FontAwesomeIcon icon={faArrowLeft} /> &nbsp; Natrag</Button>
-                                <Button onClick={handleStartQuiz} variant="outline" size={'lg'}>Start</Button>
-                            </div>
-                        </Card.Footer>
+                        </CardContent>
+                        <CardActions sx={{justifyContent: 'space-between'}}>
+                            <Button onClick={handleBack} variant="outlined"><FontAwesomeIcon icon={faArrowLeft} /> &nbsp; Natrag</Button>
+                            <Button onClick={handleStartQuiz} variant="outlined" sx={{marginLeft:'auto'}}>Start</Button>
+                        </CardActions>
                     </Card>
 
                 </>

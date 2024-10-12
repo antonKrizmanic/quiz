@@ -1,5 +1,5 @@
+import { Box, FormControl, InputLabel, MenuItem, NativeSelect, Select, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Typography } from "@material-tailwind/react";
 
 interface QuizTakeAnswerDto {
   questionId: number;
@@ -38,7 +38,7 @@ const MakeMatchQuestion: React.FC<MakeMatchQuestionProps> = ({ question, questio
   useEffect(() => {
     const answers = question.children?.map((child) => child.answers).flat() || [];
     setPossibleAnswers(answers);
-    
+
     if (initialAnswer) {
       setSelectedAnswers(initialAnswer);
     }
@@ -46,7 +46,7 @@ const MakeMatchQuestion: React.FC<MakeMatchQuestionProps> = ({ question, questio
 
   const handleSelectChange = (childId: number, answerId: string) => {
     console.log('something')
-    const answer:QuizTakeAnswerDto = {
+    const answer: QuizTakeAnswerDto = {
       questionId: childId,
       answerId: parseInt(answerId),
       parentId: question.id,
@@ -60,39 +60,42 @@ const MakeMatchQuestion: React.FC<MakeMatchQuestionProps> = ({ question, questio
     } else {
       answersArray.push(answer);
     }
-    setSelectedAnswers(answersArray);    
+    setSelectedAnswers(answersArray);
     onAnswer(question.id, answersArray);
   };
 
   return (
     <>
-      <div className="py-3">
-        <Typography type="lead" className="font-semibold">{questionIndex + 1}. {question.text}</Typography>
-        <Typography type="small" className="font-light text-gray-600">(Spoji odgovarajuće pojmove)</Typography>
-      </div>
+      <Box sx={{ marginBottom: '16px' }}>
+        <Typography
+          variant='subtitle1'
+          sx={{ lineHeight: 1, fontWeight: 600 }}>
+          {questionIndex + 1}. {question.text}</Typography>
+        <Typography
+          variant='caption'>
+          (Spoji odgovarajuće pojmove)
+        </Typography>
+      </Box>
       {question.children?.map((child) => (
-        <div key={child.id} className="py-1">
-          <div>
-            <span>{child.text}
-            </span>
-          </div>
-          <div>
-            <select
+        <>
+          <InputLabel>
+            {child.text}
+          </InputLabel>
+          <FormControl fullWidth sx={{ marginBottom: 3 }}>
+            <Select
+              id="demo-simple-select"
               value={selectedAnswers.find((a) => a.questionId === child.id)?.answerId || ''}
+              displayEmpty
               onChange={(e) => handleSelectChange(child.id, e.target.value)}
-              className="border border-gray-300 p-2 rounded block w-full"
             >
-              <option value="" disabled>
-                Select an answer
-              </option>
               {possibleAnswers.map((answer) => (
-                <option key={answer.id} value={answer.id.toString()}>
+                <MenuItem key={answer.id} value={answer.id}>
                   {answer.text}
-                </option>
+                </MenuItem>
               ))}
-            </select>
-          </div>
-        </div>
+            </Select>            
+          </FormControl>
+        </>
       ))}
     </>
   );

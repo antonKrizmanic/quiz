@@ -3,8 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { get } from '../../services/HttpService';
-import BigRedButton from '@/components/Buttons/BigRedButton';
-import { Button, Typography } from "@material-tailwind/react";
+import { Button, Stack, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -54,24 +53,22 @@ const CategoriesPage = () => {
 
   return (
     <>
-      <Typography type="h2" className="mt-3">Odaberite kategoriju kviza</Typography>      
-      <div className="px-6 my-3">
-        <div className="flex flex-col">
-          {categories.length === 0 ? (
-            <Typography>Nije dohvaćena ni jedna kategorija</Typography>
-          ) : (
-            categories.map((category) => (
-              <Button isFullWidth className="mt-3" onClick={() => handleCategorySelection(category.id.toString())} variant="outline" size={'lg'} key={category.id}>
-                {category.name}
-              </Button>              
-            ))
-          )}
-          <Button isFullWidth className="mt-3" onClick={handleBack} variant="outline" size={'lg'}>
-            <FontAwesomeIcon icon={faArrowLeft} /> &nbsp;
-            Natrag
-          </Button>          
-        </div>
-      </div>
+      <Typography variant="h1" gutterBottom>Odaberite kategoriju kviza</Typography>
+      <Stack spacing={1} sx={{marginBottom:3}}>
+        {categories.length === 0 ? (
+          <Typography>Nije dohvaćena ni jedna kategorija</Typography>
+        ) : (
+          categories.map((category) => (
+            <Button onClick={() => handleCategorySelection(category.id.toString())} variant="outlined" key={category.id}>
+              {category.name}
+            </Button>
+          ))
+        )}
+        <Button onClick={handleBack} variant="outlined">
+          <FontAwesomeIcon icon={faArrowLeft} /> &nbsp;
+          Natrag
+        </Button>
+      </Stack>
     </>
   );
 };

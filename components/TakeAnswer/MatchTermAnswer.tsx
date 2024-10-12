@@ -4,22 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { get } from '../../services/HttpService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-
-interface Answer {
-    id: number;
-    text: string;
-    isCorrect: boolean;
-}
-
-interface Question {
-    id: number;
-    text: string;
-}
-
-interface QuizTakeQuestion {
-    questionId: number;
-    answers: Answer[];
-}
+import { Answer, Question, QuizTakeQuestion } from '@/component-models/types';
 
 interface MatchTermAnswerProps {
     questionId: number;
@@ -42,7 +27,6 @@ const MatchTermAnswer: React.FC<MatchTermAnswerProps> = ({ questionId, quizTakeC
                 for (const childQuestion of childQuestions) {                    
                     const answersResponse = await get(`Quizzes/PublicAnswer/GetList?questionId=${childQuestion.id}&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=False&PerPage=10`);
                     const answersData = answersResponse.data.list;
-                    console.log(answersData);
                     if (!questionAnswerDict.has(childQuestion)) {
                         questionAnswerDict.set(childQuestion, answersData[0]);
                     }

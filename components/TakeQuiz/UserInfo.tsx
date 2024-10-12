@@ -1,9 +1,8 @@
 'use client';
 
+import { Box, Button, FormControl, InputLabel, MenuItem, NativeSelect, Select, TextField } from '@mui/material';
 import { useState } from 'react';
-import { Button } from "@material-tailwind/react";
-import BigGrayButton from '@/components/Buttons/BigGrayButton';
-import BigRedButton from '../Buttons/BigRedButton';
+
 
 interface UserInfoProps {
     onSubmit: (name, role) => void;
@@ -24,38 +23,29 @@ const UserInfo: React.FC<UserInfoProps> = ({ onSubmit, onBack }) => {
 
     return (
         <>
-            <div className="py-3">
-                <p className="text-lg font-semibold">Tvoje ime</p>
-            </div>
-            <div className="mb-4">
-                <input
-                    id="userName"
-                    type="text"
-                    value={userName}
-                    onChange={(e) => setUserName(e.target.value)}
-                    className="border border-gray-300 p-2 rounded block w-full"
-                    required
-                />
-            </div>
-            <div className="pb-3">
-                <p className="text-lg font-semibold">Ti si</p>
-            </div>
-            <div className="mb-4">
-                <select
-                    id="role"
+            <TextField id="userName" label="Tvoje ime" variant="outlined" value={userName} onChange={(e) => setUserName(e.target.value)} fullWidth />
+            <InputLabel htmlFor="user-role">
+                Ti si
+            </InputLabel>
+            <FormControl fullWidth sx={{ marginBottom: 3 }}>
+                <Select
+                    id="user-role"
                     value={role}
+                    displayEmpty
                     onChange={(e) => setRole(e.target.value)}
-                    className="border border-gray-300 p-2 rounded block w-full"
-                    required
-                >                    
-                    <option value="1">Volonter</option>
-                    <option value="2">Vozač</option>
-                </select>
-            </div>
-            <div className="flex justify-between">
-                <Button onClick={handleBack} variant='outline' size={'lg'}>Prethodno pitanje</Button>
-                <Button onClick={handleSubmit} disabled={!userName && !role} variant='outline' size={'lg'}>Završi</Button>                
-            </div>
+                >
+                    <MenuItem key={1} value={1}>
+                        Volonter
+                    </MenuItem>
+                    <MenuItem key={2} value={2}>
+                        Vozač
+                    </MenuItem>
+                </Select>
+            </FormControl>            
+            <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                <Button onClick={handleBack} variant='outlined'>Prethodno pitanje</Button>
+                <Button onClick={handleSubmit} disabled={!userName && !role} variant='outlined'>Završi</Button>
+            </Box>
         </>
     );
 };

@@ -4,17 +4,14 @@ import React, { useState, useEffect } from 'react';
 import { get } from '../../services/HttpService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { Box, FormControl, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { Answer } from '@/component-models/types';
 
-
-interface Answer {
-    id: number;
-    questionId: number;
-    text: string;
-    isCorrect: boolean;
-}
 
 interface SingleSelectAnswerProps {
-    givenAnswer?: any;
+    givenAnswer?: Answer;
     questionId: number;
 }
 
@@ -22,49 +19,55 @@ const SingleSelectAnswer: React.FC<SingleSelectAnswerProps> = ({ givenAnswer, qu
     const [answers, setAnswers] = useState<Answer[]>([]);
 
     useEffect(() => {
-        const fetchAnswers = async () => {            
-            const response = await get(`Quizzes/publicAnswer/GetList?QuestionId=${questionId}&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);            
+        const fetchAnswers = async () => {
+            const response = await get(`Quizzes/publicAnswer/GetList?QuestionId=${questionId}&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);
             setAnswers(response.data.list);
         };
         fetchAnswers();
-    },[]);
+        console.log(givenAnswer, questionId);
+    }, []);
 
     return (
-        <div className="row">
-            <div className="col-md-12">
-                {!givenAnswer ? (
-                    <p className="font-semibold">
-                        Na ovo pitanje nije odgovoreno! <FontAwesomeIcon icon={faTimesCircle} className="text-red-600" />
-                    </p>
-                ) : null}
-                {answers.map((answer) => {
-                    const isChecked = givenAnswer && answer.id === givenAnswer.answerId;
-                    return (
-                        <div key={answer.id} className="form-check">
-                            <input
-                                className="form-check-input"
-                                type="radio"
-                                name={String(answer.questionId)}
-                                id={`radio${answer.id}`}
+        <>
+            {!givenAnswer ? (
+                <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                    Na ovo pitanje nije odgovoreno! <FontAwesomeIcon icon={faTimesCircle} className="text-red-600" />
+                </Typography>
+            ) : null}
+            <Box>                
+                <FormControl>                    
+                <RadioGroup
+                        aria-labelledby="radio-buttons-group-label"
+                        name="radio-buttons-group"
+                    >
+                        {answers.map((answer) => {
+                            const icon = answer.isCorrect ? (
+                                <CheckCircleIcon color='success' />
+                            ) : (
+                                givenAnswer && !answer.isCorrect && answer.id === givenAnswer.id && (
+                                    <CancelIcon color='error'/>
+                                )
+                            );
+                            return(
+                                
+                            <FormControlLabel
+                                key={answer.id}
                                 value={answer.id}
-                                checked={isChecked}
+                                control={<Radio checked={givenAnswer && answer.id === givenAnswer.id} />}
                                 disabled
+                                label={
+                                    <Box display="flex" alignItems="center">
+                                        <span>{answer.text} &nbsp;</span>
+                                        {icon}
+                                    </Box>
+                                }
                             />
-                            <label className="form-check-label" htmlFor={`radio${answer.id}`}>
-                                {answer.text} &nbsp;
-                                {answer.isCorrect ? (
-                                    <FontAwesomeIcon icon={faCheckCircle} className="text-green-600" />
-                                ) : (
-                                    givenAnswer && !answer.isCorrect && answer.id === givenAnswer.id && (
-                                        <FontAwesomeIcon icon={faTimesCircle} className="text-red-600" />
-                                    )
-                                )}
-                            </label>
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
+                            );
+                        })}
+                    </RadioGroup>
+                </FormControl>
+            </Box>            
+        </>
     );
 };
 

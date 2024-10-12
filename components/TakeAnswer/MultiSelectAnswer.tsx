@@ -2,67 +2,64 @@
 
 import React, { useEffect, useState } from 'react';
 import { get } from '../../services/HttpService';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-
-interface Answer {
-    id: number;
-    questionId: number;
-    text: string;
-    isCorrect: boolean;
-}
+import { Box, Checkbox, FormControlLabel, FormGroup, Typography } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { Answer } from '@/component-models/types';
 
 interface MultiSelectAnswerProps {
-    givenAnswers?: any[];
+    givenAnswers?: Answer[];
     questionId: number;
 }
 
 const MultiSelectAnswer: React.FC<MultiSelectAnswerProps> = ({ givenAnswers, questionId }) => {
-    
+
     const [answers, setAnswers] = useState<Answer[]>([]);
 
     useEffect(() => {
-        const fetchAnswers = async () => {            
-            const response = await get(`Quizzes/publicAnswer/GetList?QuestionId=${questionId}&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);            
+        const fetchAnswers = async () => {
+            const response = await get(`Quizzes/publicAnswer/GetList?QuestionId=${questionId}&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);
             setAnswers(response.data.list);
-        };        
+        };
         fetchAnswers();
-    },[]);
+    }, []);
 
     return (
-        <div>
+        <>
             {!givenAnswers ? (
-                <p className="font-semibold">
-                    Na ovo pitanje nije odgovoreno! <FontAwesomeIcon icon={faTimesCircle} className="text-red-600" />
-                </p>
+                <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                    Na ovo pitanje nije odgovoreno! <CancelIcon color='error'/>
+                </Typography>
             ) : null}
-            {answers.map((answer) => {
-                const isChecked = givenAnswers && givenAnswers.some(x => x.answerId
-                     === answer.id);
-                return (
-                    <div key={answer.id}>
-                        <input
-                            type="checkbox"
-                            name={String(answer.questionId)}
-                            id={`checkbox${answer.id}`}
-                            value={answer.id}
-                            checked={isChecked}
-                            disabled
-                        />
-                        <label htmlFor={`checkbox${answer.id}`}>
-                            {answer.text}  &nbsp;
-                            {answer.isCorrect ? (
-                                <FontAwesomeIcon icon={faCheckCircle} className="text-green-600" />
+            <Box>
+                <FormGroup>
+                    {answers.map((answer) => {
+                        const isChecked = givenAnswers && givenAnswers.some(x => x.id === answer.id);
+                            const icon = answer.isCorrect ? (
+                                <CheckCircleIcon color='success' />
                             ) : (
                                 givenAnswers && !answer.isCorrect && givenAnswers.some(x => x.id === answer.id) && (
-                                    <FontAwesomeIcon icon={faTimesCircle} className="text-red-600" />
+                                    <CancelIcon color='error'/>
                                 )
-                            )}
-                        </label>
-                    </div>
-                );
-            })}
-        </div>
+                            );
+                            
+                        return (
+                            <FormControlLabel
+                                key={answer.id}
+                                control={<Checkbox checked={isChecked} />}
+                                label={
+                                    <Box display="flex" alignItems="center">
+                                        <span>{answer.text} &nbsp;</span>
+                                        {icon}
+                                    </Box>
+                                }
+                                disabled
+                            />
+                        );
+                    })}
+                </FormGroup>
+            </Box>            
+        </>
     );
 };
 
