@@ -1,13 +1,12 @@
 {
   "name": "react-starter",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.0",  
   "scripts": {
     "dev": "next dev",
     "dev-open": "start http://localhost:3000 && pnpm dev",
     "build": "next build",
     "build-analyze": "cross-env ANALYZE=true pnpm build",
-    // "export": "rimraf ./out && rimraf ./.next && cross-env NODE_ENV=production next build && next export",
+    "oldExport": "rimraf ./out && rimraf ./.next && cross-env NODE_ENV=production next build && next export",
     "export": "next export",
     "deploy": "next build && next export && touch out/.nojekyll && gh-pages -d out",
     "start": "next start",
