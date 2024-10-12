@@ -18,11 +18,14 @@ jobs:
         with:
           node-version: '22.9.0'
 
+      - name: Install pnpm
+        run: npm install -g pnpm
+
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Build and export the static site
-        run: npm run deploy
+        run: pnpm run deploy
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
