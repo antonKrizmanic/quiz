@@ -131,7 +131,7 @@ function QuizPage() {
         setEnableNext(true);
         const updatedAnswers = {
             ...answers,
-            [questionId]: answer
+            [questionId]: [answer]
         };
         setAnswers(updatedAnswers);
     };
@@ -154,7 +154,7 @@ function QuizPage() {
         };
         const updatedAnswers = {
             ...answers,
-            [questionId]: answer
+            [questionId]: [answer]
         };
         setAnswers(updatedAnswers);
     };
@@ -178,20 +178,19 @@ function QuizPage() {
             takeUserType: parseInt(role),
             questions: Object.keys(quiz.questions).map((key, index) => {
                 const question = quiz.questions[key];
-                const answer = answers[question.id];
+                const questionAnswers = answers[question.id];
                 const quizTakeQuestionDto: QuizTakeQuestionDto = {
                     id: 0,
                     questionId: question.id,
                     index: index,
                     parentId: question.parentId,
-                    answers: Array.isArray(answer) ? answer.map(a => ({ ...a, answerId: a.id })) : [{ ...answer, answerId: answer.id }]
+                    answers: questionAnswers
                 };
                 return quizTakeQuestionDto;
             }),
             cityAssociationId: 1
         };
-        const response = await post('quizzes/PublicQuizTake', quizTakeDto);
-        console.log(response.data);
+        const response = await post('quizzes/PublicQuizTake', quizTakeDto);        
         router.push(`/take-result?take-id=${response.data}`);
     };
 
