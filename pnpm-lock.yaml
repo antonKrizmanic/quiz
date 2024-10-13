@@ -48,11 +48,11 @@ importers:
         specifier: 2.0.20
         version: 2.0.20
       mobx:
-        specifier: 6.12.0
-        version: 6.12.0
+        specifier: 6.13.3
+        version: 6.13.3
       mobx-react-lite:
         specifier: 3.4.3
-        version: 3.4.3(mobx@6.12.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 3.4.3(mobx@6.13.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       next:
         specifier: 14.2.10
         version: 14.2.10(@babel/core@7.23.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(sass@1.69.7)
@@ -3034,8 +3034,8 @@ packages:
       react-native:
         optional: true
 
-  mobx@6.12.0:
-    resolution: {integrity: sha512-Mn6CN6meXEnMa0a5u6a5+RKrqRedHBhZGd15AWLk9O6uFY4KYHzImdt8JI8WODo1bjTSRnwXhJox+FCUZhCKCQ==}
+  mobx@6.13.3:
+    resolution: {integrity: sha512-YtAS+ZMbdpbHYUU4ESht3na8KiX11KuMT1yOiKtbKlQ0GZkHDYPKyEw/Tdp7h7aHyLrTWj2TBaSNJ6bCr638iQ==}
 
   mrmime@1.0.0:
     resolution: {integrity: sha512-a70zx7zFfVO7XpnQ2IX1Myh9yY4UYvfld/dikWRnsXxbyvMcfz+u6UfgNAtH+k2QqtJuzVpv6eLTx1G2+WKZbQ==}
@@ -7583,14 +7583,14 @@ snapshots:
 
   mkdirp-classic@0.5.3: {}
 
-  mobx-react-lite@3.4.3(mobx@6.12.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  mobx-react-lite@3.4.3(mobx@6.13.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
-      mobx: 6.12.0
+      mobx: 6.13.3
       react: 18.2.0
     optionalDependencies:
       react-dom: 18.2.0(react@18.2.0)
 
-  mobx@6.12.0: {}
+  mobx@6.13.3: {}
 
   mrmime@1.0.0: {}
 
