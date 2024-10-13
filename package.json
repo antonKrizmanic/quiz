@@ -30,7 +30,7 @@
     "clsx": "1.2.1",
     "colorette": "2.0.20",
     "mobx": "6.13.3",
-    "mobx-react-lite": "3.4.3",
+    "mobx-react-lite": "4.0.7",
     "next": "14.2.10",
     "next-react-svg": "1.2.0",
     "noty": "3.2.0-beta-deprecated",
