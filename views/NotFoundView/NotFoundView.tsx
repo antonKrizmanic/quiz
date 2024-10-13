@@ -7,14 +7,14 @@ import styles from './NotFoundView.module.scss';
  * @returns NotFoundView component
  */
 export default function NotFoundView() {
-  return (
-    <div className={styles.container}>
-      <h1 className={styles.title} data-testid="heading">
+    return (
+        <div className={styles.container}>
+            <h1 className={styles.title} data-testid="heading">
         404
-      </h1>
-      <h2 className={styles.subtitle}>
+            </h1>
+            <h2 className={styles.subtitle}>
         Just like Pokemons, this page doesn&apos;t exist
-      </h2>
-    </div>
-  );
+            </h2>
+        </div>
+    );
 }

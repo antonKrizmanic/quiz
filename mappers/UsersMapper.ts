@@ -8,13 +8,13 @@ import User from '@/models/User';
  * @returns User model
  */
 export function mapDtoToUser(dto: any): User {
-  if (dto === null) {
-    return null;
-  }
+    if (dto === null) {
+        return null;
+    }
 
-  const user = new User();
+    const user = new User();
 
-  user.name = dto.name;
+    user.name = dto.name;
 
-  return user;
+    return user;
 }

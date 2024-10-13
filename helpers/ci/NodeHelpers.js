@@ -12,21 +12,21 @@ const { red, green } = require('colorette');
  * @returns Array of file paths in the selected directory
  */
 module.exports.getFilesRecursively = (directory) => {
-  const files = [];
+    const files = [];
 
-  const filesInDirectory = readdirSync(directory);
+    const filesInDirectory = readdirSync(directory);
 
-  filesInDirectory.forEach((file) => {
-    const absolute = join(directory, file);
+    filesInDirectory.forEach((file) => {
+        const absolute = join(directory, file);
 
-    if (lstatSync(absolute).isDirectory()) {
-      files.push(...this.getFilesRecursively(absolute));
-    } else {
-      files.push(absolute);
-    }
-  });
+        if (lstatSync(absolute).isDirectory()) {
+            files.push(...this.getFilesRecursively(absolute));
+        } else {
+            files.push(absolute);
+        }
+    });
 
-  return files;
+    return files;
 };
 
 /**
@@ -37,16 +37,16 @@ module.exports.getFilesRecursively = (directory) => {
  * @returns Value that the function returns
  */
 module.exports.logProcess = (message, taskToRun) => {
-  try {
-    stdout.write(message);
+    try {
+        stdout.write(message);
 
-    const valueToReturn = taskToRun();
-    stdout.write(green(' DONE ✔\n'));
+        const valueToReturn = taskToRun();
+        stdout.write(green(' DONE ✔\n'));
 
-    return valueToReturn;
-  } catch (error) {
-    stdout.write(red(' ERROR ✘\n'));
+        return valueToReturn;
+    } catch (error) {
+        stdout.write(red(' ERROR ✘\n'));
 
-    throw error;
-  }
+        throw error;
+    }
 };

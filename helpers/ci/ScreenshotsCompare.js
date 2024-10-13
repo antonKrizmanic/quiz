@@ -16,67 +16,67 @@ const { getFilesRecursively, logProcess } = require('./NodeHelpers');
  * @param {string} pendingPath Path to the pending screenshots directory
  */
 const compare = (approvedPath, pendingPath) => {
-  try {
-    const approvedDirName = basename(approvedPath);
-    const pendingDirName = basename(pendingPath);
+    try {
+        const approvedDirName = basename(approvedPath);
+        const pendingDirName = basename(pendingPath);
 
-    let numberOfChanges = 0;
+        let numberOfChanges = 0;
 
-    // Ensure the approved directory exists.
-    ensureDirSync(approvedPath);
+        // Ensure the approved directory exists.
+        ensureDirSync(approvedPath);
 
-    // Get all the approved files.
-    const approvedFiles = logProcess('Fetching approved files...', () => getFilesRecursively(approvedPath));
+        // Get all the approved files.
+        const approvedFiles = logProcess('Fetching approved files...', () => getFilesRecursively(approvedPath));
 
-    // Get all the pending files.
-    const pendingFiles = logProcess('Fetching pending files...', () => getFilesRecursively(pendingPath));
+        // Get all the pending files.
+        const pendingFiles = logProcess('Fetching pending files...', () => getFilesRecursively(pendingPath));
 
-    // Iterate all the approved files.
-    approvedFiles.forEach((approvedFile) => {
-      const approvedFileShort = approvedFile.substring(approvedFile.indexOf(approvedDirName) + approvedDirName.length + 1);
-      const possiblePending = approvedFile.replace(approvedDirName, pendingDirName);
+        // Iterate all the approved files.
+        approvedFiles.forEach((approvedFile) => {
+            const approvedFileShort = approvedFile.substring(approvedFile.indexOf(approvedDirName) + approvedDirName.length + 1);
+            const possiblePending = approvedFile.replace(approvedDirName, pendingDirName);
 
-      // If the approved file is an old one (does not exist in the pending folder)
-      // delete it from the approved folder.
-      if (!pendingFiles.includes(possiblePending)) {
-        logProcess(`\t${red(`[-] ${approvedFileShort}`)}`, () => removeSync(approvedFile));
-        numberOfChanges++;
-      }
-    });
+            // If the approved file is an old one (does not exist in the pending folder)
+            // delete it from the approved folder.
+            if (!pendingFiles.includes(possiblePending)) {
+                logProcess(`\t${red(`[-] ${approvedFileShort}`)}`, () => removeSync(approvedFile));
+                numberOfChanges++;
+            }
+        });
 
-    // Iterate all the files that are pending for approval.
-    pendingFiles.forEach((pendingFile) => {
-      const possibleNew = pendingFile.replace(pendingDirName, approvedDirName);
-      const possibleNewShort = possibleNew.substring(possibleNew.indexOf(approvedDirName) + approvedDirName.length + 1);
+        // Iterate all the files that are pending for approval.
+        pendingFiles.forEach((pendingFile) => {
+            const possibleNew = pendingFile.replace(pendingDirName, approvedDirName);
+            const possibleNewShort = possibleNew.substring(possibleNew.indexOf(approvedDirName) + approvedDirName.length + 1);
 
-      // If the pending file is a new one (does not exist in the approved folder)
-      // move it to the approved folder.
-      if (!approvedFiles.includes(possibleNew)) {
-        logProcess(`\t${green(`[+] ${possibleNewShort}`)}`, () => moveSync(pendingFile, possibleNew, { overwrite: true }));
-        numberOfChanges++;
-      } else {
-        const pendingImg = PNG.sync.read(readFileSync(pendingFile));
-        const approvedImg = PNG.sync.read(readFileSync(possibleNew));
-        const { width, height } = pendingImg;
+            // If the pending file is a new one (does not exist in the approved folder)
+            // move it to the approved folder.
+            if (!approvedFiles.includes(possibleNew)) {
+                logProcess(`\t${green(`[+] ${possibleNewShort}`)}`, () => moveSync(pendingFile, possibleNew, { overwrite: true }));
+                numberOfChanges++;
+            } else {
+                const pendingImg = PNG.sync.read(readFileSync(pendingFile));
+                const approvedImg = PNG.sync.read(readFileSync(possibleNew));
+                const { width, height } = pendingImg;
 
-        const numDiffPixels = pixelmatch(pendingImg.data, approvedImg.data, null, width, height);
+                const numDiffPixels = pixelmatch(pendingImg.data, approvedImg.data, null, width, height);
 
-        // If the images are not the same, overwrite it.
-        if (numDiffPixels > 0) {
-          logProcess(`\t${yellow(`[≠] ${possibleNewShort}`)}`, () => moveSync(pendingFile, possibleNew, { overwrite: true }));
-          numberOfChanges++;
-        } else {
-          console.log(`\t${white(`[=] ${possibleNewShort}`)}`);
-        }
-      }
-    });
+                // If the images are not the same, overwrite it.
+                if (numDiffPixels > 0) {
+                    logProcess(`\t${yellow(`[≠] ${possibleNewShort}`)}`, () => moveSync(pendingFile, possibleNew, { overwrite: true }));
+                    numberOfChanges++;
+                } else {
+                    console.log(`\t${white(`[=] ${possibleNewShort}`)}`);
+                }
+            }
+        });
 
-    console.log(`Detected changes: ${numberOfChanges}`);
-  } catch (error) {
-    console.error(red('Error occurred while running the script:'));
-    console.error(red(error));
-    process.exit(1);
-  }
+        console.log(`Detected changes: ${numberOfChanges}`);
+    } catch (error) {
+        console.error(red('Error occurred while running the script:'));
+        console.error(red(error));
+        process.exit(1);
+    }
 };
 
 /**

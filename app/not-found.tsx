@@ -6,5 +6,5 @@ import NotFoundView from '@/views/NotFoundView/NotFoundView';
  * @returns NotFoundPage component
  */
 export default function NotFoundPage() {
-  return <NotFoundView />;
+    return <NotFoundView />;
 }

@@ -8,19 +8,19 @@ import { getIsDarkMode, setIsDarkMode as persistIsDarkMode } from '@/services/Th
  * @returns Tuple containing the state value and state setter.
  */
 export default function useDarkMode(): [boolean, () => void] {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
-  useEffect(() => {
-    setIsDarkMode(getIsDarkMode());
-  }, []);
+    useEffect(() => {
+        setIsDarkMode(getIsDarkMode());
+    }, []);
 
-  useEffect(() => {
-    persistIsDarkMode(isDarkMode);
-  }, [isDarkMode]);
+    useEffect(() => {
+        persistIsDarkMode(isDarkMode);
+    }, [isDarkMode]);
 
-  const toggleThemeChange = useCallback(() => {
-    setIsDarkMode((prev: boolean) => !prev);
-  }, []);
+    const toggleThemeChange = useCallback(() => {
+        setIsDarkMode((prev: boolean) => !prev);
+    }, []);
 
-  return [isDarkMode, toggleThemeChange];
+    return [isDarkMode, toggleThemeChange];
 }

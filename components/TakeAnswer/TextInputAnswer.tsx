@@ -1,29 +1,32 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { get } from '../../services/HttpService';
 import { List, ListItem, Typography } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+
 import { Answer } from '@/component-models/types';
+
+import { get } from '../../services/HttpService';
 
 interface TextInputAnswerProps {
     givenAnswer?: Answer;
     questionId: number;
 }
 
-const TextInputAnswer: React.FC<TextInputAnswerProps> = ({ givenAnswer, questionId }) => {
+function TextInputAnswer({ givenAnswer, questionId }:TextInputAnswerProps) {
 
     const [answers, setAnswers] = useState<Answer[]>([]);
 
     useEffect(() => {
-        const fetchAnswers = async () => {            
-            const response = await get(`Quizzes/publicAnswer/GetList?QuestionId=${questionId}&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);            
+        const fetchAnswers = async () => {
+            // eslint-disable-next-line max-len
+            const response = await get(`Quizzes/publicAnswer/GetList?QuestionId=${questionId}&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);
             setAnswers(response.data.list);
         };
 
         fetchAnswers();
-    },[]);
+    },[questionId]);
 
     return (
         <>
@@ -35,9 +38,9 @@ const TextInputAnswer: React.FC<TextInputAnswerProps> = ({ givenAnswer, question
                     <Typography>
                         {givenAnswer.text}  &nbsp;
                         {givenAnswer.isCorrect ? (
-                            <CheckCircleIcon color='success' />
+                            <CheckCircleIcon color="success" />
                         ) : (
-                            <CancelIcon color='error'/>
+                            <CancelIcon color="error"/>
                         )}
                     </Typography>
                 </>
@@ -51,6 +54,6 @@ const TextInputAnswer: React.FC<TextInputAnswerProps> = ({ givenAnswer, question
             </List>
         </>
     );
-};
+}
 
 export default TextInputAnswer;

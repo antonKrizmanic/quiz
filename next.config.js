@@ -1,30 +1,30 @@
 const path = require('path');
 
 const withReactSvg = require('next-react-svg')({
-  include: path.resolve(__dirname, './public/icons')
+    include: path.resolve(__dirname, './public/icons')
 });
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true'
+    enabled: process.env.ANALYZE === 'true'
 });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  productionBrowserSourceMaps: true,  
-  eslint: {
-    dirs: [
-      'app',
-      'app-models',
-      'component-models', 'components', 'config',
-      'helpers', 'hooks',
-      'mappers', 'models',
-      'playwright',
-      'repositories',
-      'services',
-      'tests',
-      'view-models', 'views'
-    ]
-  }
+    reactStrictMode: true,
+    productionBrowserSourceMaps: true,
+    eslint: {
+        dirs: [
+            'app',
+            'app-models',
+            'component-models', 'components', 'config',
+            'helpers', 'hooks',
+            'mappers', 'models',
+            'playwright',
+            'repositories',
+            'services',
+            'tests',
+            'view-models', 'views'
+        ]
+    }
 };
 
 module.exports = withBundleAnalyzer(withReactSvg(nextConfig));

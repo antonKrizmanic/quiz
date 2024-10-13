@@ -9,12 +9,12 @@ import { mapDtosToPokemons, mapDtoToSinglePokemon } from '@/mappers/PokemonsMapp
  * @returns Pokemons data
  */
 export async function getPokemons(payload: any) {
-  const { data } = await get('pokemon', payload);
+    const { data } = await get('pokemon', payload);
 
-  return {
-    ...data,
-    results: mapDtosToPokemons(data.results)
-  };
+    return {
+        ...data,
+        results: mapDtosToPokemons(data.results)
+    };
 }
 
 /**
@@ -25,7 +25,7 @@ export async function getPokemons(payload: any) {
 * @returns Pokemon data
 */
 export async function getSinglePokemon(payload: number) {
-  const { data } = await get(`pokemon/${payload}`);
+    const { data } = await get(`pokemon/${payload}`);
 
-  return mapDtoToSinglePokemon(data);
+    return mapDtoToSinglePokemon(data);
 }

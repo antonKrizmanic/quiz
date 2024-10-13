@@ -2,9 +2,9 @@ import Noty from 'noty';
 
 // Overrides the default values
 Noty.overrideDefaults({
-  layout: 'bottomRight',
-  theme: 'metroui',
-  timeout: 0
+    layout: 'bottomRight',
+    theme: 'metroui',
+    timeout: 0
 });
 
 export const SUCCESS_TYPE = 'success';
@@ -21,15 +21,15 @@ export const INFO_TYPE = 'info';
  * @returns notification
  */
 function _createNotification(message: string, type: Noty.Type, timeout: number) {
-  // Creats the notification
-  const notification = new Noty({
-    text: message,
-    type,
-    timeout
-  });
+    // Creats the notification
+    const notification = new Noty({
+        text: message,
+        type,
+        timeout
+    });
 
-  // Returns the notification
-  return notification;
+    // Returns the notification
+    return notification;
 }
 
 /**
@@ -41,11 +41,11 @@ function _createNotification(message: string, type: Noty.Type, timeout: number) 
  * @returns notification
  */
 export function showNotification(message: string, type: Noty.Type, timeout: number = 0) {
-  // Creates and shows the notification
-  const notification = _createNotification(message, type, timeout);
-  notification.show();
+    // Creates and shows the notification
+    const notification = _createNotification(message, type, timeout);
+    notification.show();
 
-  return notification;
+    return notification;
 }
 
 /**
@@ -56,7 +56,7 @@ export function showNotification(message: string, type: Noty.Type, timeout: numb
  * @returns notification
  */
 export function showSuccessNotification(message: string) {
-  return showNotification(message, SUCCESS_TYPE, 3000);
+    return showNotification(message, SUCCESS_TYPE, 3000);
 }
 
 /**
@@ -67,7 +67,7 @@ export function showSuccessNotification(message: string) {
  * @returns notification
  */
 export function showErrorNotification(message: string) {
-  return showNotification(message, ERROR_TYPE);
+    return showNotification(message, ERROR_TYPE);
 }
 
 /**
@@ -78,7 +78,7 @@ export function showErrorNotification(message: string) {
  * @returns notification
  */
 export function showWarningNotification(message: string) {
-  return showNotification(message, WARNING_TYPE);
+    return showNotification(message, WARNING_TYPE);
 }
 
 /**
@@ -89,7 +89,7 @@ export function showWarningNotification(message: string) {
  * @returns notification
  */
 export function showInfoNotification(message: string) {
-  return showNotification(message, INFO_TYPE);
+    return showNotification(message, INFO_TYPE);
 }
 
 /**
@@ -99,5 +99,5 @@ export function showInfoNotification(message: string) {
  * @returns notification
  */
 export function showDefaultErrorNotification() {
-  return showErrorNotification('Trenutno nije moguće dohvatiti podatke. Osvježite stranicu da biste pokušali ponovno.');
+    return showErrorNotification('Trenutno nije moguće dohvatiti podatke. Osvježite stranicu da biste pokušali ponovno.');
 }

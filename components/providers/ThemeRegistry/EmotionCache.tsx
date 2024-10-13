@@ -16,60 +16,60 @@ export type NextAppDirEmotionCacheProviderProps = {
 // This implementation is from emotion-js
 // https://github.com/emotion-js/emotion/issues/2928#issuecomment-1319747902
 export default function NextAppDirEmotionCacheProviderProps(props: NextAppDirEmotionCacheProviderProps) {
-  const { options, children } = props;
+    const { options, children } = props;
 
-  const [{ cache, flush }] = useState(() => {
-    const cache = createCache(options);
-    cache.compat = true;
+    const [{ cache, flush }] = useState(() => {
+        const cache = createCache(options);
+        cache.compat = true;
 
-    const prevInsert = cache.insert;
-    let inserted: string[] = [];
+        const prevInsert = cache.insert;
+        let inserted: string[] = [];
 
-    cache.insert = (...args) => {
-      const serialized = args[1];
+        cache.insert = (...args) => {
+            const serialized = args[1];
 
-      if (cache.inserted[serialized.name] === undefined) {
-        inserted.push(serialized.name);
-      }
+            if (cache.inserted[serialized.name] === undefined) {
+                inserted.push(serialized.name);
+            }
 
-      return prevInsert(...args);
-    };
+            return prevInsert(...args);
+        };
 
-    const flush = () => {
-      const prevInserted = inserted;
-      inserted = [];
+        const flush = () => {
+            const prevInserted = inserted;
+            inserted = [];
 
-      return prevInserted;
-    };
+            return prevInserted;
+        };
 
-    return { cache, flush };
-  });
+        return { cache, flush };
+    });
 
-  useServerInsertedHTML(() => {
-    const names = flush();
-    if (names.length === 0) {
-      return null;
-    }
+    useServerInsertedHTML(() => {
+        const names = flush();
+        if (names.length === 0) {
+            return null;
+        }
 
-    let styles = '';
-    for (const name of names) {
-      styles += cache.inserted[name];
-    }
+        let styles = '';
+        for (const name of names) {
+            styles += cache.inserted[name];
+        }
+
+        return (
+            <style
+                key={cache.key}
+                data-emotion={`${cache.key} ${names.join(' ')}`}
+                dangerouslySetInnerHTML={{
+                    __html: options.prepend ? `@layer emotion {${styles}}` : styles
+                }}
+            />
+        );
+    });
 
     return (
-      <style
-        key={cache.key}
-        data-emotion={`${cache.key} ${names.join(' ')}`}
-        dangerouslySetInnerHTML={{
-          __html: options.prepend ? `@layer emotion {${styles}}` : styles
-        }}
-      />
+        <CacheProvider value={cache}>
+            {children}
+        </CacheProvider>
     );
-  });
-
-  return (
-    <CacheProvider value={cache}>
-      {children}
-    </CacheProvider>
-  );
 }

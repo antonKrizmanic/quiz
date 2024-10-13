@@ -4,72 +4,72 @@
  * @class PokemonDetails
  */
 export default class PokemonDetails {
-  /**
+    /**
    * Identifier.
    *
    * @memberof PokemonDetails
    */
-  id: number;
+    id: number;
 
-  /**
+    /**
    * Name.
    *
    * @memberof PokemonDetails
    */
-  name: string;
+    name: string;
 
-  /**
+    /**
    * Height.
    *
    * @memberof PokemonDetails
    */
-  height: number;
+    height: number;
 
-  /**
+    /**
    * Weight.
    *
    * @memberof PokemonDetails
    */
-  weight: number;
+    weight: number;
 
-  /**
+    /**
    * Abilities.
    *
    * @memberof PokemonDetails
    */
-  abilities: string[];
+    abilities: string[];
 
-  /**
+    /**
    * Base experience.
    *
    * @memberof PokemonDetails
    */
-  baseExperience: number;
+    baseExperience: number;
 
-  /**
+    /**
    * Image.
    *
    * @memberof PokemonDetails
    */
-  image: string;
+    image: string;
 
-  /**
+    /**
    * Clones the object.
    *
    * @returns PokemonDetails object with same values as current one
    * @memberof PokemonDetails
    */
-  clone(): PokemonDetails {
-    const copy = new PokemonDetails();
+    clone(): PokemonDetails {
+        const copy = new PokemonDetails();
 
-    copy.id = this.id;
-    copy.name = this.name;
-    copy.height = this.height;
-    copy.weight = this.weight;
-    copy.abilities = [...this.abilities];
-    copy.baseExperience = this.baseExperience;
-    copy.image = this.image;
+        copy.id = this.id;
+        copy.name = this.name;
+        copy.height = this.height;
+        copy.weight = this.weight;
+        copy.abilities = [...this.abilities];
+        copy.baseExperience = this.baseExperience;
+        copy.image = this.image;
 
-    return copy;
-  }
+        return copy;
+    }
 }

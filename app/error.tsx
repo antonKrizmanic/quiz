@@ -8,5 +8,5 @@ import InternalServerError from '@/views/InternalServerErrorView/InternalServerE
  * @returns ErrorPage component
  */
 export default function ErrorPage() {
-  return <InternalServerError />;
+    return <InternalServerError />;
 }

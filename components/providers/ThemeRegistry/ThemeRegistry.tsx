@@ -19,22 +19,22 @@ type ThemeRegistryProps = {
  * @returns ThemeRegistry component
  */
 export default function ThemeRegistry({ children }: ThemeRegistryProps) {
-  const [isDarkMode, toggleThemeChange] = useDarkMode();
+    const [isDarkMode, toggleThemeChange] = useDarkMode();
 
-  const finalTheme = theme(isDarkMode);
+    const finalTheme = theme(isDarkMode);
 
-  return (
-    <NextAppDirEmotionCacheProvider options={{ key: 'mui', prepend: true }}>
-      <ThemeProvider theme={finalTheme}>
-        <CssBaseline />
+    return (
+        <NextAppDirEmotionCacheProvider options={{ key: 'mui', prepend: true }}>
+            <ThemeProvider theme={finalTheme}>
+                <CssBaseline />
 
-        <ThemeSwitcher
-          isDarkMode={isDarkMode ?? false}
-          onModeChange={toggleThemeChange}
-        />
+                <ThemeSwitcher
+                    isDarkMode={isDarkMode ?? false}
+                    onModeChange={toggleThemeChange}
+                />
 
-        {children}
-      </ThemeProvider>
-    </NextAppDirEmotionCacheProvider>
-  );
+                {children}
+            </ThemeProvider>
+        </NextAppDirEmotionCacheProvider>
+    );
 }
