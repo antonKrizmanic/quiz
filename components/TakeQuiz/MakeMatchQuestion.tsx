@@ -44,7 +44,6 @@ function MakeMatchQuestion({ question, questionIndex, onAnswer, initialAnswer }:
     }, [question, initialAnswer]);
 
     const handleSelectChange = (childId: number, answerId: string) => {
-        console.log('something');
         const answer: QuizTakeAnswerDto = {
             questionId: childId,
             answerId: parseInt(answerId),
@@ -77,11 +76,12 @@ function MakeMatchQuestion({ question, questionIndex, onAnswer, initialAnswer }:
             </Box>
             {question.children?.map((child) => (
                 <>
-                    <InputLabel>
+                    <InputLabel key={`${child.id}-label`}>
                         {child.text}
                     </InputLabel>
                     <FormControl fullWidth sx={{ marginBottom: 3 }}>
                         <Select
+                            key={`${child.id}-select`}
                             id="demo-simple-select"
                             value={selectedAnswers.find((a) => a.questionId === child.id)?.answerId || ''}
                             displayEmpty

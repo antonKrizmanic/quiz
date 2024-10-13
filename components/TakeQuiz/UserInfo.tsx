@@ -23,12 +23,15 @@ function UserInfo({ onSubmit, onBack }:UserInfoProps) {
 
     return (
         <>
+            <InputLabel htmlFor="userName">
+                Tvoje ime
+            </InputLabel>
             <TextField id="userName"
-                label="Tvoje ime"
                 variant="outlined"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
-                fullWidth />
+                fullWidth
+                sx={{ marginBottom: 3 }}/>
             <InputLabel htmlFor="user-role">
                 Ti si
             </InputLabel>
