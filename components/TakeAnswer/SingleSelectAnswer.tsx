@@ -27,7 +27,6 @@ function SingleSelectAnswer({ givenAnswer, questionId }: SingleSelectAnswerProps
             setAnswers(response.data.list);
         };
         fetchAnswers();
-        console.log(givenAnswer, questionId);
     }, [givenAnswer, questionId]);
 
     return (

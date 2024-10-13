@@ -73,6 +73,7 @@ function QuizPage() {
     const [answers, setAnswers] = useState<any>({});
     const [enablePrevious, setEnablePrevious] = useState<boolean>(false);
     const [enableNext, setEnableNext] = useState<boolean>(false);
+    const [startedAt, setStartedAt] = useState<Date>();
 
     useEffect(() => {
         const fetchQuizDetails = async () => {
@@ -88,6 +89,7 @@ function QuizPage() {
 
         if (quizId) {
             fetchQuizDetails();
+            setStartedAt(new Date());
         }
     }, [quizId]);
 
@@ -159,7 +161,6 @@ function QuizPage() {
     };
 
     const handleAnswer = (questionId: number, answer: QuizTakeAnswerDto[]) => {
-        console.log('handle anser', answer);
         setEnableNext(true);
         const updatedAnswers = {
             ...answers,
@@ -171,8 +172,8 @@ function QuizPage() {
     const submitQuiz = async (name: string, role: string) => {
         const quizTakeDto = {
             quizId: parseInt(quizId!),
-            startedAt: '2024-10-09T18:21:56.337+02:00',
-            endedAt: '2024-10-09T18:21:56.337+02:00',
+            startedAt: startedAt,
+            endedAt: new Date(),
             takeUserName: name,
             takeUserType: parseInt(role),
             questions: Object.keys(quiz.questions).map((key, index) => {

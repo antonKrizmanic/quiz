@@ -29,7 +29,6 @@ function ChooseOneQuestion({ question, questionIndex, onAnswer, initialAnswers }
     }, [initialAnswers]);
 
     const onAnswerSelect = (answerId: number) => {
-        console.log(answerId);
         const selectedAnswer = question.answers.find((answer) => answer.id === answerId);
         if (selectedAnswer) {
             setSelectedAnswerId(answerId);
