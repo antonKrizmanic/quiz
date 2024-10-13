@@ -44,7 +44,7 @@ function TakeResultPage() {
         return <div>Loading...</div>;
     }
 
-    if (results.length === 0) {
+    if (!results) {
         return (
             <div className="lg:max-w-screen-md w-screen mx-auto md:px-6">
                 <div className="flex justify-center px-3">
