@@ -85,7 +85,7 @@ function MakeMatchQuestion({ question, questionIndex, onAnswer, initialAnswer }:
                             id="demo-simple-select"
                             value={selectedAnswers.find((a) => a.questionId === child.id)?.answerId || ''}
                             displayEmpty
-                            onChange={(e) => handleSelectChange(child.id, e.target.value)}
+                            onChange={(e) => handleSelectChange(child.id, e.target.value.toString())}
                         >
                             {possibleAnswers.map((answer) => (
                                 <MenuItem key={answer.id} value={answer.id}>
