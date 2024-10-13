@@ -16,9 +16,9 @@
     "feature:remove": "node ./helpers/featureSelect.ts"
   },
   "dependencies": {
-    "@emotion/cache": "11.11.0",
-    "@emotion/react": "11.11.3",
-    "@emotion/styled": "11.11.0",
+    "@emotion/cache": "11.13.1",
+    "@emotion/react": "11.13.3",
+    "@emotion/styled": "11.13.0",
     "@fontsource/roboto": "^5.1.0",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
