@@ -17,8 +17,7 @@ interface Answer {
 interface Question {
   id: number;
   text: string;
-  questionType: string;
-  options: string[];
+  questionType: number;
   parentId: number | null;
   children: Question[] | null;
   answers: Answer[];
