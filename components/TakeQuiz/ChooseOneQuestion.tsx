@@ -16,17 +16,17 @@ interface ChooseOneQuestionProps {
   };
   questionIndex: number;
   onAnswer: (questionId: number, answer: Answer) => void;
-  initialAnswer?: Answer;
+  initialAnswers?: Answer[];
 }
 
-function ChooseOneQuestion({ question, questionIndex, onAnswer, initialAnswer }:ChooseOneQuestionProps) {
+function ChooseOneQuestion({ question, questionIndex, onAnswer, initialAnswers }:ChooseOneQuestionProps) {
     const [selectedAnswerId, setSelectedAnswerId] = useState<number | null>(null);
 
     useEffect(() => {
-        if (initialAnswer) {
-            setSelectedAnswerId(initialAnswer.id);
+        if (initialAnswers) {
+            setSelectedAnswerId(initialAnswers[0].id);
         }
-    }, [initialAnswer]);
+    }, [initialAnswers]);
 
     const onAnswerSelect = (answerId: number) => {
         const selectedAnswer = question.answers.find((answer) => answer.id === answerId);
@@ -45,7 +45,7 @@ function ChooseOneQuestion({ question, questionIndex, onAnswer, initialAnswer }:
                     {questionIndex + 1}. {question.text}</Typography>
                 <Typography
                     variant="caption">
-          (Odaberi samo jedan odgovor)
+                    (Odaberi samo jedan odgovor)
                 </Typography>
             </Box>
             <Box>

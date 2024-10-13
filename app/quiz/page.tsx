@@ -73,6 +73,7 @@ function QuizPage() {
     const [answers, setAnswers] = useState<any>({});
     const [enablePrevious, setEnablePrevious] = useState<boolean>(false);
     const [enableNext, setEnableNext] = useState<boolean>(false);
+    const [startedAt, setStartedAt] = useState<Date>();
 
     useEffect(() => {
         const fetchQuizDetails = async () => {
@@ -88,6 +89,7 @@ function QuizPage() {
 
         if (quizId) {
             fetchQuizDetails();
+            setStartedAt(new Date());
         }
     }, [quizId]);
 
@@ -153,13 +155,12 @@ function QuizPage() {
         };
         const updatedAnswers = {
             ...answers,
-            [questionId]: [answer]
+            [questionId]: answer
         };
         setAnswers(updatedAnswers);
     };
 
     const handleAnswer = (questionId: number, answer: QuizTakeAnswerDto[]) => {
-        console.log('handle anser', answer);
         setEnableNext(true);
         const updatedAnswers = {
             ...answers,
@@ -171,13 +172,36 @@ function QuizPage() {
     const submitQuiz = async (name: string, role: string) => {
         const quizTakeDto = {
             quizId: parseInt(quizId!),
-            startedAt: '2024-10-09T18:21:56.337+02:00',
-            endedAt: '2024-10-09T18:21:56.337+02:00',
+            startedAt: startedAt,
+            endedAt: new Date(),
             takeUserName: name,
             takeUserType: parseInt(role),
             questions: Object.keys(quiz.questions).map((key, index) => {
                 const question = quiz.questions[key];
-                const questionAnswers = answers[question.id];
+                let questionAnswers = [];
+                if(question.questionType === 4) {
+                    questionAnswers = answers[question.id];
+                }
+                else{
+                    if(Array.isArray(answers[question.id])){
+                        questionAnswers = answers[question.id].map((answer: Answer) => {
+                            return {
+                                questionId: question.id,
+                                answerId: answer.id,
+                                text: answer.text,
+                                parentQuestionId: question.parentId
+                            };
+                        });
+                    }
+                    else{
+                        questionAnswers = [{
+                            questionId: question.id,
+                            answerId: answers[question.id].id,
+                            text: answers[question.id].text,
+                            parentQuestionId: question.parentId
+                        }];
+                    }
+                }
                 const quizTakeQuestionDto: QuizTakeQuestionDto = {
                     id: 0,
                     questionId: question.id,
@@ -223,7 +247,7 @@ function QuizPage() {
                     <ChooseOneQuestion question={currentQuestion}
                         questionIndex={currentQuestionIndex}
                         onAnswer={handleSingleAnswer}
-                        initialAnswer={answers[currentQuestion.id]} />
+                        initialAnswers={answers[currentQuestion.id]} />
                 )}
                 {!showUserInfo && currentQuestion.questionType === 2 && (
                     <ChooseManyQuestion question={currentQuestion}

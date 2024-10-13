@@ -90,7 +90,7 @@ function TakeResultPage() {
                                 severity={question.isCorrect ? 'success' : 'error'}
                                 sx={{marginBottom: 3}}>
                                 <div>
-                                    <Typography variant="subtitle1" sx={{fontWeight:500}}>{question.index}. {question.text}</Typography>
+                                    <Typography variant="subtitle1" sx={{fontWeight:500}}>{question.index+1}. {question.text}</Typography>
                                     {questionContent}
                                 </div>
                             </Alert>

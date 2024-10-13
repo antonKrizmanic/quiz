@@ -30,7 +30,6 @@ function InitQuizPage() {
                 };
 
                 const response = await post('quizzes/PublicQuiz', data);
-                console.log(response.data);
                 setQuizId(response.data);
             } catch (error) {
                 console.error('Error initializing quiz:', error);
