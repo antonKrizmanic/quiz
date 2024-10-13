@@ -64,6 +64,6 @@
     "rimraf": "4.4.1",
     "sass-loader": "13.3.3",
     "webpack-dev-server": "4.13.1",
-    "gh-pages": "^3.2.3"
+    "gh-pages": "^5.0.0"
   }
 }
