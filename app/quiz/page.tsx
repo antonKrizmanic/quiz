@@ -190,7 +190,7 @@ function QuizPage() {
             }),
             cityAssociationId: 1
         };
-        const response = await post('quizzes/PublicQuizTake', quizTakeDto);        
+        const response = await post('quizzes/PublicQuizTake', quizTakeDto);
         router.push(`/take-result?take-id=${response.data}`);
     };
 
