@@ -10,29 +10,20 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  productionBrowserSourceMaps: true,
-  images: {
-    remotePatterns: [
-      {
-        hostname: 'assets.pokemon.com',
-        protocol: 'https'
-      }
-    ],
-    unoptimized: true // NOTE: Remove this line when you don't export app as static
-  },
+  productionBrowserSourceMaps: true,  
   eslint: {
-    dirs: [
-      'app',
-      'app-models',
-      'component-models', 'components', 'config',
-      'helpers', 'hooks',
-      'mappers', 'models',
-      'playwright',
-      'repositories',
-      'services',
-      'tests',
-      'view-models', 'views'
-    ]
+    // dirs: [
+    //   'app',
+    //   'app-models',
+    //   'component-models', 'components', 'config',
+    //   'helpers', 'hooks',
+    //   'mappers', 'models',
+    //   'playwright',
+    //   'repositories',
+    //   'services',
+    //   'tests',
+    //   'view-models', 'views'
+    // ]
   }
 };
 
