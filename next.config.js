@@ -18,7 +18,6 @@ const nextConfig = {
             'component-models', 'components', 'config',
             'helpers', 'hooks',
             'mappers', 'models',
-            'playwright',
             'repositories',
             'services',
             'tests',
