@@ -1,17 +1,22 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { get, post } from '../../services/HttpService';
-import ChooseOneQuestion from '@/components/TakeQuiz/ChooseOneQuestion';
-import ChooseManyQuestion from '@/components/TakeQuiz/ChooseManyQuestion';
-import TypeAnswerQuestion from '@/components/TakeQuiz/TypeAnswerQuestion';
-import MakeMatchQuestion from '@/components/TakeQuiz/MakeMatchQuestion';
-import UserInfo from '@/components/TakeQuiz/UserInfo';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 
+import UserInfo from '@/components/TakeQuiz/UserInfo';
+import TypeAnswerQuestion from '@/components/TakeQuiz/TypeAnswerQuestion';
+import MakeMatchQuestion from '@/components/TakeQuiz/MakeMatchQuestion';
+import ChooseOneQuestion from '@/components/TakeQuiz/ChooseOneQuestion';
+import ChooseManyQuestion from '@/components/TakeQuiz/ChooseManyQuestion';
+
+import { get, post } from '../../services/HttpService';
+
+
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface QuizTakeDto {
     quizId: number;
     startedAt: string;
@@ -47,8 +52,7 @@ interface Answer {
 interface Question {
     id: number;
     text: string;
-    questionType: string;
-    options: string[];
+    questionType: number;
     parentId: number | null;
     children: Question[] | null;
     answers: Answer[];
@@ -58,7 +62,7 @@ interface QuizDetail {
     questions: Question[];
 }
 
-const QuizPage = () => {
+function QuizPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const quizId = searchParams.get('quizId');
@@ -126,40 +130,40 @@ const QuizPage = () => {
         setEnableNext(true);
         const updatedAnswers = {
             ...answers,
-            [questionId]: answer,
+            [questionId]: [answer]
         };
         setAnswers(updatedAnswers);
-    }
+    };
 
     const handleMultipleAnswer = (questionId: number, givenAnswers: Answer[]) => {
         setEnableNext(true);
         const updatedAnswers = {
             ...answers,
-            [questionId]: givenAnswers,
+            [questionId]: givenAnswers
         };
         setAnswers(updatedAnswers);
-    }
+    };
 
     const handleTextAnswer = (questionId: number, answerText: string) => {
         setEnableNext(true);
         const answer = {
             id: 0,
             text: answerText,
-            questionId: questionId,
+            questionId: questionId
         };
         const updatedAnswers = {
             ...answers,
-            [questionId]: answer,
+            [questionId]: [answer]
         };
         setAnswers(updatedAnswers);
-    }
+    };
 
     const handleAnswer = (questionId: number, answer: QuizTakeAnswerDto[]) => {
         console.log('handle anser', answer);
         setEnableNext(true);
         const updatedAnswers = {
             ...answers,
-            [questionId]: answer,
+            [questionId]: answer
         };
         setAnswers(updatedAnswers);
     };
@@ -167,26 +171,25 @@ const QuizPage = () => {
     const submitQuiz = async (name: string, role: string) => {
         const quizTakeDto = {
             quizId: parseInt(quizId!),
-            startedAt: "2024-10-09T18:21:56.337+02:00",
-            endedAt: "2024-10-09T18:21:56.337+02:00",
+            startedAt: '2024-10-09T18:21:56.337+02:00',
+            endedAt: '2024-10-09T18:21:56.337+02:00',
             takeUserName: name,
             takeUserType: parseInt(role),
             questions: Object.keys(quiz.questions).map((key, index) => {
                 const question = quiz.questions[key];
-                const answer = answers[question.id];
+                const questionAnswers = answers[question.id];
                 const quizTakeQuestionDto: QuizTakeQuestionDto = {
                     id: 0,
                     questionId: question.id,
                     index: index,
                     parentId: question.parentId,
-                    answers: Array.isArray(answer) ? answer.map(a => ({ ...a, answerId: a.id })) : [{ ...answer, answerId: answer.id }],
+                    answers: questionAnswers
                 };
                 return quizTakeQuestionDto;
             }),
             cityAssociationId: 1
         };
-        const response = await post(`quizzes/PublicQuizTake`, quizTakeDto);
-        console.log(response.data);
+        const response = await post('quizzes/PublicQuizTake', quizTakeDto);
         router.push(`/take-result?take-id=${response.data}`);
     };
 
@@ -217,26 +220,42 @@ const QuizPage = () => {
                     <UserInfo onBack={handlePreviousQuestion} onSubmit={submitQuiz} />
                 )}
                 {!showUserInfo && currentQuestion.questionType === 1 && (
-                    <ChooseOneQuestion question={currentQuestion} questionIndex={currentQuestionIndex} onAnswer={handleSingleAnswer} initialAnswer={answers[currentQuestion.id]} />
+                    <ChooseOneQuestion question={currentQuestion}
+                        questionIndex={currentQuestionIndex}
+                        onAnswer={handleSingleAnswer}
+                        initialAnswer={answers[currentQuestion.id]} />
                 )}
                 {!showUserInfo && currentQuestion.questionType === 2 && (
-                    <ChooseManyQuestion question={currentQuestion} questionIndex={currentQuestionIndex} onAnswer={handleMultipleAnswer} initialAnswers={answers[currentQuestion.id]} />
+                    <ChooseManyQuestion question={currentQuestion}
+                        questionIndex={currentQuestionIndex}
+                        onAnswer={handleMultipleAnswer}
+                        initialAnswers={answers[currentQuestion.id]} />
                 )}
                 {!showUserInfo && currentQuestion.questionType === 3 && (
-                    <TypeAnswerQuestion question={currentQuestion} questionIndex={currentQuestionIndex} onAnswer={handleTextAnswer} initialAnswer={answers[currentQuestion.id]?.text} />
+                    <TypeAnswerQuestion question={currentQuestion}
+                        questionIndex={currentQuestionIndex}
+                        onAnswer={handleTextAnswer}
+                        initialAnswer={answers[currentQuestion.id]?.text} />
                 )}
                 {!showUserInfo && currentQuestion.questionType === 4 && (
-                    <MakeMatchQuestion question={currentQuestion} questionIndex={currentQuestionIndex} onAnswer={handleAnswer} initialAnswer={answers[currentQuestion.id]} />
+                    <MakeMatchQuestion question={currentQuestion}
+                        questionIndex={currentQuestionIndex}
+                        onAnswer={handleAnswer}
+                        initialAnswer={answers[currentQuestion.id]} />
                 )}
             </CardContent>
             {!showUserInfo && (
                 <CardActions sx={{justifyContent: 'space-between'}}>
-                        <Button onClick={handlePreviousQuestion} disabled={!enablePrevious} variant="outlined"><FontAwesomeIcon icon={faArrowLeft} />&nbsp;Prethodno pitanje</Button>
-                        <Button onClick={handleNextQuestion} disabled={!enableNext} variant="outlined">Sljedeće pitanje&nbsp;<FontAwesomeIcon icon={faArrowRight} /></Button>                    
+                    <Button onClick={handlePreviousQuestion}
+                        disabled={!enablePrevious}
+                        variant="outlined"><FontAwesomeIcon icon={faArrowLeft} />&nbsp;Prethodno pitanje</Button>
+                    <Button onClick={handleNextQuestion}
+                        disabled={!enableNext}
+                        variant="outlined">Sljedeće pitanje&nbsp;<FontAwesomeIcon icon={faArrowRight} /></Button>
                 </CardActions>
             )}
         </Card>
     );
-};
+}
 
 export default QuizPage;

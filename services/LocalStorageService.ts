@@ -8,16 +8,16 @@ export type LocalStorageValue<T> = T | null;
  * @returns value associated with item name or null if local storage is not defined
  */
 export function getLocalStorageItem<T>(itemName: string): LocalStorageValue<T> {
-  if (typeof localStorage !== 'undefined') {
-    const value = localStorage.getItem(itemName);
+    if (typeof localStorage !== 'undefined') {
+        const value = localStorage.getItem(itemName);
 
-    if (value == null || value === 'undefined' || value === 'null') {
-      return null;
+        if (value == null || value === 'undefined' || value === 'null') {
+            return null;
+        }
+
+        return JSON.parse(value) as T;
     }
-
-    return JSON.parse(value) as T;
-  }
-  return null;
+    return null;
 }
 
 /**
@@ -28,14 +28,14 @@ export function getLocalStorageItem<T>(itemName: string): LocalStorageValue<T> {
  * @param itemValue Item's value
  */
 export function setLocalStorageItem<T>(itemName: string, itemValue: LocalStorageValue<T>) {
-  if (typeof localStorage !== 'undefined') {
+    if (typeof localStorage !== 'undefined') {
 
-    if (itemValue == null) {
-      localStorage.removeItem(itemName);
-    } else {
-      localStorage.setItem(itemName, JSON.stringify(itemValue));
+        if (itemValue == null) {
+            localStorage.removeItem(itemName);
+        } else {
+            localStorage.setItem(itemName, JSON.stringify(itemValue));
+        }
     }
-  }
 }
 
 /**
@@ -45,7 +45,7 @@ export function setLocalStorageItem<T>(itemName: string, itemValue: LocalStorage
  * @param itemName Item's name
  */
 export function removeLocalStorageItem(itemName: string) {
-  if (typeof localStorage !== 'undefined') {
-    localStorage.removeItem(itemName);
-  }
+    if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem(itemName);
+    }
 }

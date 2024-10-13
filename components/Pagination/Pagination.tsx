@@ -10,18 +10,18 @@ import styles from './Pagination.module.scss';
  * @returns Pagination component
  */
 export default function Pagination(props: PaginationProps) {
-  const {
-    classes = {},
-    ...rest
-  } = props;
+    const {
+        classes = {},
+        ...rest
+    } = props;
 
-  return (
-    <MuiPagination
-      classes={{
-        root: classes.root,
-        ul: clsx(classes.ul, styles.pagesList)
-      }}
-      {...rest}
-    />
-  );
+    return (
+        <MuiPagination
+            classes={{
+                root: classes.root,
+                ul: clsx(classes.ul, styles.pagesList)
+            }}
+            {...rest}
+        />
+    );
 }

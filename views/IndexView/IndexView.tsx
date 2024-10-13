@@ -10,18 +10,18 @@ import styles from './IndexView.module.scss';
  * @returns IndexView component
  */
 export default function IndexView() {
-  return (
-    <div className='text-3xl font-bold underline'>
-      <span>
+    return (
+        <div className="text-3xl font-bold underline">
+            <span>
         Not much to see here. If you are intereseted in Pokemons, visit
-      </span>
-      <Link
-        href="/pokemons"
-        className={styles.link}
-        data-testid="pokemons-link"
-      >
+            </span>
+            <Link
+                href="/pokemons"
+                className={styles.link}
+                data-testid="pokemons-link"
+            >
         Pokemons page
-      </Link>
-    </div>
-  );
+            </Link>
+        </div>
+    );
 }

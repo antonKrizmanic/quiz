@@ -33,7 +33,7 @@ interface QuizTakeViewModel {
     takeUserType: string;
 }
 
-interface QuizTakeQuestionViewModel {    
+interface QuizTakeQuestionViewModel {
     id: number;
     questionId: number;
     text: string;

@@ -17,18 +17,18 @@ type ThemeSwitcherProps = {
  * @returns ThemeSwitcher component
  */
 export default function ThemeSwitcher(props: ThemeSwitcherProps) {
-  const {
-    isDarkMode,
-    onModeChange
-  } = props;
+    const {
+        isDarkMode,
+        onModeChange
+    } = props;
 
-  return (
-    <IconButton
-      aria-label="Dark mode toggle button"
-      className={styles.themeSwitcher}
-      onClick={onModeChange}
-    >
-      {isDarkMode ? <DarkModeIcon /> : <LightModeIcon />}
-    </IconButton>
-  );
+    return (
+        <IconButton
+            aria-label="Dark mode toggle button"
+            className={styles.themeSwitcher}
+            onClick={onModeChange}
+        >
+            {isDarkMode ? <DarkModeIcon /> : <LightModeIcon />}
+        </IconButton>
+    );
 }

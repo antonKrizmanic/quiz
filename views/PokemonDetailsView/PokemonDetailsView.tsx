@@ -23,86 +23,86 @@ type PokemonDetailsViewProps = {
  * @returns PokemonDetailsView component
  */
 function PokemonDetailsView({ viewModel }: PokemonDetailsViewProps) {
-  const {
-    userAppModel,
-    isLoading,
-    pokemon,
-    loadPokemon,
-    onUnmount
-  } = viewModel;
-  const {
-    user
-  } = userAppModel;
+    const {
+        userAppModel,
+        isLoading,
+        pokemon,
+        loadPokemon,
+        onUnmount
+    } = viewModel;
+    const {
+        user
+    } = userAppModel;
 
-  const params = useParams();
+    const params = useParams();
 
-  useEffect(() => {
-    if (params.pokemonId) {
-      loadPokemon(Number(params.pokemonId));
-    }
+    useEffect(() => {
+        if (params.pokemonId) {
+            loadPokemon(Number(params.pokemonId));
+        }
 
-    return onUnmount;
-  }, [loadPokemon, onUnmount, params]);
+        return onUnmount;
+    }, [loadPokemon, onUnmount, params]);
 
-  return (
-    <LoadingContainer isLoading={isLoading}>
-      {pokemon && (
-        <div className={styles.container}>
-          <div className={styles.imageWrapper}>
-            <Image
-              src={pokemon.image}
-              alt={pokemon.name}
-              width={250}
-              height={250}
-            />
-          </div>
-          <span className={styles.name} data-testid="pokemon-name">
-            {pokemon.name}
-          </span>
-          <div className={styles.data}>
-            <div>
-              <span className={styles.label}>
+    return (
+        <LoadingContainer isLoading={isLoading}>
+            {pokemon && (
+                <div className={styles.container}>
+                    <div className={styles.imageWrapper}>
+                        <Image
+                            src={pokemon.image}
+                            alt={pokemon.name}
+                            width={250}
+                            height={250}
+                        />
+                    </div>
+                    <span className={styles.name} data-testid="pokemon-name">
+                        {pokemon.name}
+                    </span>
+                    <div className={styles.data}>
+                        <div>
+                            <span className={styles.label}>
                 Weight:
-              </span>
-              <span>
-                {pokemon.weight}
-              </span>
-            </div>
-            <div>
-              <span className={styles.label}>
+                            </span>
+                            <span>
+                                {pokemon.weight}
+                            </span>
+                        </div>
+                        <div>
+                            <span className={styles.label}>
                 Height:
-              </span>
-              <span>
-                {pokemon.height}
-              </span>
-            </div>
-            <div>
-              <span className={styles.label}>
+                            </span>
+                            <span>
+                                {pokemon.height}
+                            </span>
+                        </div>
+                        <div>
+                            <span className={styles.label}>
                 Base experience:
-              </span>
-              <span>
-                {pokemon.baseExperience}
-              </span>
-            </div>
-          </div>
-          <div className={styles.feedback}>
-            {`What do you think about ${pokemon.name} `}
-            <span className={styles.user} data-testid="pokemon-user-name">
-              {`${user ? user.name : 'John Doe'}`}
-            </span>
+                            </span>
+                            <span>
+                                {pokemon.baseExperience}
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.feedback}>
+                        {`What do you think about ${pokemon.name} `}
+                        <span className={styles.user} data-testid="pokemon-user-name">
+                            {`${user ? user.name : 'John Doe'}`}
+                        </span>
             ?
-          </div>
-          <Link
-            href="/pokemons"
-            className={styles.link}
-            data-testid="pokemon-link"
-          >
+                    </div>
+                    <Link
+                        href="/pokemons"
+                        className={styles.link}
+                        data-testid="pokemon-link"
+                    >
             Go back
-          </Link>
-        </div>
-      )}
-    </LoadingContainer>
-  );
+                    </Link>
+                </div>
+            )}
+        </LoadingContainer>
+    );
 }
 
 // @ts-ignore

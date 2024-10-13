@@ -15,14 +15,14 @@ type LoadingContainerProps = {
  * @returns LoadingContainer component
  */
 export default function LoadingContainer(props: LoadingContainerProps) {
-  const {
-    isLoading = false,
-    children
-  } = props;
+    const {
+        isLoading = false,
+        children
+    } = props;
 
-  return (
-    <div className={styles.container}>
-      {isLoading ? <CircularProgress /> : children}
-    </div>
-  );
+    return (
+        <div className={styles.container}>
+            {isLoading ? <CircularProgress /> : children}
+        </div>
+    );
 }

@@ -11,101 +11,101 @@ import UserAppModel from '@/app-models/UserAppModel';
  * @class PokemonDetailsViewModel
  */
 export default class PokemonDetailsViewModel {
-  /**
+    /**
    * Instance of the view model.
    *
    * @static
    * @memberof PokemonDetailsViewModel
    */
-  static _viewModel: PokemonDetailsViewModel = null;
+    static _viewModel: PokemonDetailsViewModel = null;
 
-  /**
+    /**
    * Returns the view model's instance.
    *
    * @static
    * @returns view model's instance
    * @memberof PokemonDetailsViewModel
    */
-  static get instance() {
+    static get instance() {
     // Creates instance if it isn't set yet
-    if (PokemonDetailsViewModel._viewModel == null) {
-      PokemonDetailsViewModel._viewModel = new PokemonDetailsViewModel();
+        if (PokemonDetailsViewModel._viewModel == null) {
+            PokemonDetailsViewModel._viewModel = new PokemonDetailsViewModel();
+        }
+
+        return PokemonDetailsViewModel._viewModel;
     }
 
-    return PokemonDetailsViewModel._viewModel;
-  }
-
-  /**
+    /**
    * User app model.
    *
    * @memberof PokemonDetailsViewModel
    */
-  userAppModel: UserAppModel;
+    userAppModel: UserAppModel;
 
-  /**
+    /**
    * Is loading flag.
    *
    * @memberof PokemonDetailsViewModel
    */
-  isLoading: boolean;
+    isLoading: boolean;
 
-  /**
+    /**
    * Pokemon details data.
    *
    * @memberof PokemonDetailsViewModel
    */
-  pokemon: PokemonDetails;
+    pokemon: PokemonDetails;
 
-  /**
+    /**
    * Creates an instance of PokemonDetailsViewModel.
    *
    * @memberof PokemonDetailsViewModel
    */
-  constructor() {
-    this.userAppModel = UserAppModel.instance;
-    this.isLoading = true;
-    this.pokemon = null;
+    constructor() {
+        this.userAppModel = UserAppModel.instance;
+        this.isLoading = true;
+        this.pokemon = null;
 
-    makeObservable(this, {
-      isLoading: observable,
-      pokemon: observable,
-      loadPokemon: action.bound,
-      onUnmount: action.bound
-    });
-  }
+        makeObservable(this, {
+            isLoading: observable,
+            pokemon: observable,
+            loadPokemon: action.bound,
+            onUnmount: action.bound
+        });
+    }
 
-  /**
+    /**
    * Loads the Pokemon.
    *
    * @param id Pokemon's ID
    * @memberof PokemonDetailsViewModel
    */
-  async loadPokemon(id: number) {
-    this.isLoading = true;
+    async loadPokemon(id: number) {
+        this.isLoading = true;
 
-    try {
-      const pokemon = await getSinglePokemon(id);
+        try {
+            const pokemon = await getSinglePokemon(id);
 
-      runInAction(() => {
-        this.pokemon = pokemon;
-      });
-    } catch (e) {
-      console.error(e);
-      showDefaultErrorNotification();
+            runInAction(() => {
+                this.pokemon = pokemon;
+            });
+        } catch (e) {
+            console.error(e);
+            showDefaultErrorNotification();
+        }
+
+        runInAction(() => {
+            this.isLoading = false;
+        });
     }
 
-    runInAction(() => {
-      this.isLoading = false;
-    });
-  }
-
-  /**
+    /**
    * Method that resets the view model's variables on component unmount.
    *
    * @memberof PokemonDetailsViewModel
    */
-  onUnmount() {
-    this.isLoading = true;
-    this.pokemon = null;
-  }
+    onUnmount() {
+        this.isLoading = true;
+        this.pokemon = null;
+    }
 }

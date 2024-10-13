@@ -9,9 +9,9 @@ import { mapDtoToUser } from '@/mappers/UsersMapper';
  * @returns User data
  */
 export function getUser(): User {
-  const user = getLocalStorageItem('user');
+    const user = getLocalStorageItem('user');
 
-  return mapDtoToUser(user);
+    return mapDtoToUser(user);
 }
 
 /**
@@ -22,7 +22,7 @@ export function getUser(): User {
  * @returns User data
  */
 export function editUser(payload: User): User {
-  setLocalStorageItem('user', payload);
+    setLocalStorageItem('user', payload);
 
-  return payload;
+    return payload;
 }

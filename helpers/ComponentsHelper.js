@@ -10,11 +10,11 @@ import { createElement } from 'react';
  * @returns component with view model injected
  */
 export const withViewModel = (Component, ViewModelProvider) => function WithViewModel(props) {
-  return createElement(Component, {
-    ...props,
-    displayName: Component.displayName,
-    viewModel: ViewModelProvider.instance
-  }, null);
+    return createElement(Component, {
+        ...props,
+        displayName: Component.displayName,
+        viewModel: ViewModelProvider.instance
+    }, null);
 };
 
 /**
@@ -26,22 +26,22 @@ export const withViewModel = (Component, ViewModelProvider) => function WithView
  * @returns component with app models injected
  */
 export const withAppModels = (Component, AppModelProviders) => function WithAppModels(props) {
-  return createElement(Component, {
-    ...props,
-    displayName: Component.displayName,
-    ...typeof AppModelProviders === 'function' ? {
-      appModel: AppModelProviders.instance
-    } : {
-      appModels: Object.entries(AppModelProviders).reduce((a, [k, v]) => ({
-        ...a,
-        [k]: v.instance
-      }), {})
-    }
-  }, null);
+    return createElement(Component, {
+        ...props,
+        displayName: Component.displayName,
+        ...typeof AppModelProviders === 'function' ? {
+            appModel: AppModelProviders.instance
+        } : {
+            appModels: Object.entries(AppModelProviders).reduce((a, [k, v]) => ({
+                ...a,
+                [k]: v.instance
+            }), {})
+        }
+    }, null);
 };
 
 const exports = {
-  withViewModel,
-  withAppModels
+    withViewModel,
+    withAppModels
 };
 export default exports;
