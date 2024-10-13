@@ -12,18 +12,18 @@ const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,  
   eslint: {
-    // dirs: [
-    //   'app',
-    //   'app-models',
-    //   'component-models', 'components', 'config',
-    //   'helpers', 'hooks',
-    //   'mappers', 'models',
-    //   'playwright',
-    //   'repositories',
-    //   'services',
-    //   'tests',
-    //   'view-models', 'views'
-    // ]
+    dirs: [
+      'app',
+      'app-models',
+      'component-models', 'components', 'config',
+      'helpers', 'hooks',
+      'mappers', 'models',
+      'playwright',
+      'repositories',
+      'services',
+      'tests',
+      'view-models', 'views'
+    ]
   }
 };
 
