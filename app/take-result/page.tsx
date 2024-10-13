@@ -20,7 +20,7 @@ function TakeResultPage() {
     const searchParams = useSearchParams();
     const takeId = searchParams.get('take-id');
     const [loading, setLoading] = useState<boolean>(true);
-    const [results, setResults] = useState<QuizTakeDetailViewModel[]>([]);
+    const [results, setResults] = useState<QuizTakeDetailViewModel>();
 
     useEffect(() => {
         const fetchResults = async () => {
