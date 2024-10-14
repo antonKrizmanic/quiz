@@ -44,10 +44,7 @@
     </a>
     <a href="https://jestjs.io/" target="_blank">
       <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg" alt="jest" width="30" />
-    </a>
-    <a href="https://playwright.dev/" target="_blank">
-      <img src="https://playwright.dev/img/playwright-logo.svg" alt="playwright" width="30" />
-    </a>
+    </a>    
   </div>
 </div>
 
@@ -120,15 +117,6 @@ pnpm dev
 
 For documentation on running the application in other modes, see ['Launching the application' section](#launching-the-application).
 
-### Customizing features
-
-You can remove features you don't plan to use by calling `pnpm feature:remove <FEATURE>`. Feature that can be removed are as following:
-
-* `storycap`
-* `storybook` (also removed `storycap`)
-* `playwright`
-* `jest`
-
 ## Why React and why Next.js?
 
 [React](https://reactjs.org/) is one of many JavaScript libraries and frameworks that aim to make building user interfaces easier. React is Facebook's project, which ensures a certain certainty that this is not just another buzzword technology that will be forgotten in a month. Why was React chosen for application development, and not, say, Vue or Angular, I do not know, but since it turned out to be quite easy and fast to develop applications with it, there was no need to change.
@@ -145,9 +133,6 @@ The React starter's root contains all the configuration files of the tools used 
 * `.eslintignore` - used for defining files that will be ignored by [ESLint](https://eslint.org/)
 * `.gitignore` - used for defining files which changes [Git](https://git-scm.com/) will not track
 * `package.json` - used for defining packages used in the application (so-called `dependencies` and `devDependencies`)
-* `playwright.config.js` - used for configuring [Playwright](https://playwright.dev/)
-* `playwright-ct.config.js` - used for configuring [Playwright's](https://playwright.dev/) component tests
-* `jest.config.js` - used for configuring [Jest](https://jestjs.io/)
 * `pnpm-lock.yaml` - used by [pnpm](https://pnpm.io/) to know exactly which versions of the packages need to be installed
 * `next.config.js` - used for defining non-default [Next.js](https://nextjs.org/) configuration
 * `README.md` - used for project description - how to get it started, some basic things about the packages used or some other tips for people who will work on the project in the future
@@ -157,13 +142,11 @@ The React starter's root contains all the configuration files of the tools used 
 
 * `.storybook` - a folder used for [Storybook](https://storybook.js.org/) configuration which contains various configuration files
 * `.stories-approved` - a place where images of all of the defined `Storybook` stories are stored
-* `.playwright-approved` - a place where all Playwright screenshots are stored
 * `app` - a folder which Next.js uses for its [file-system based app router](https://nextjs.org/docs/app/building-your-application/routing#roles-of-folders-and-files)
 * `app-models` - a place where all the app-models that exist within the application are stored
 * `component-models` - a place where all the component-models that exist within the application are stored
 * `components` - a place where all components that are not related to only one `view` are stored (so-called *shared components*)
 * `config` - a place where the various configuration files, used by the application itself, are stored (e.g. internationalization configuration, MUI themes, Next.js fonts or something else)
-* `playwright` - a place where Playwright related files are stored
 * `helpers` - a place where all the helpers that exist within the application are stored
 * `hooks` - a place where all custom hooks that exist within the application are stored
 * `mappers` - a place where all the mappers that exist within the application are stored
@@ -172,7 +155,6 @@ The React starter's root contains all the configuration files of the tools used 
 * `repositories` - a place where all the repositories that exist within the application are stored
 * `services` - a place where all the services that exist within the application are stored
 * `styles` - a place where all the global styles that exist within the application are stored
-* `tests` - a place where all of the tests that exist within the application are stored
 * `view-models` - a place where all the view-models that exist within the application are stored
 * `views` - a place where all the views and only related components are stored
 
@@ -382,108 +364,6 @@ Naming is something that always provokes controversy because most of us have som
 * Files of "local" styles are written with `PascalCase` with extension `.module.scss`
 * Files from the `public` folder are not subject to any rules
 
-## Testing
-
-By writing tests we achieve automated checks that everything in the application is working properly. Automated tests are useful because you don't have to manually test all the functionalities every time something changes in the application. All of our tests are written inside the `tests` folder in the project root.
-
-We have selected both [Jest](https://jestjs.io/) and [Playwright](https://playwright.dev/) as the most suitable libraries for testing the application. When we talk about application testing, we can divide all tests into three different logical levels.
-
-If you don't plan to use testing that is configured as a part of this starter - use `pnpm feature:remove playwright jest` to remove everything related to these tests.
-
-### Unit testing
-
-Unit testing is different from other testing methods because it consists of testing isolated parts of the source code, testing the code and logic. We use them in the application to test `services` and `helpers` or any other JavaScript code when there is some advanced logic. We will never use unit tests, or any other testing method, for testing third-party code directly, because if we depend on a certain package, we must be able to assume that it will work properly.
-
-Unit tests are written inside the `tests/unit` folder. There is only 1 unit test currently written in the application. It can be recognized by the `spec.js` extension. `LocalStorageService.spec.js` is testing the corresponding `LocalStorageService.js` service.
-
-Unit tests can be run directly from the command line using the command
-
-```bash
-pnpm test:unit
-```
-
-### Component testing
-
-Component testing is conceptually the same as unit testing, except that instead of functions, we test components. We want to write these tests because the number of components can very easily reach a large number. Now, after each change in the source code, it becomes almost impossible to check all of their states to see if they still behave as expected.
-
-Component tests are written inside the `tests/component` folder. There are already tests written for each component in the application from the `components` folder. They can be recognized by the `spec.jsx` extension.
-
-Component tests can be run directly from the command line using the command
-
-```bash
-pnpm test:component
-```
-
-or a UI can be opened through which they can be manually run. The UI is opened by using the command
-
-```bash
-pnpm test:component-open
-```
-
-### E2E (end-to-end) testing
-
-E2E or end-to-end tests are used to verify that the application is working as a whole. They confirm big features and even entire pages. Most often, they "survive" refactoring because, despite refactoring, application still needs to work as expected. They represent how users use the application and give us the most confidence that the application is working properly.
-
-End-to-end tests are written inside the `tests/integration` folder. There are already tests written for each page of the application from the `views` folder. They can be recognized by the `spec.js` extension.
-
-End-to-end tests can be run directly from the command line using the command
-
-```bash
-pnpm test:e2e
-```
-
-or a UI can be opened through which they can be manually run. The UI is opened by using the command
-
-```bash
-pnpm test:e2e-open
-```
-
-Various different commands were shown that can run each testing method separately from each other. This can be useful if we want to focus on one type of tests without running others. But we can also run all of the tests at once by using the command
-
-```bash
-pnpm test
-```
-
-In end-to-end tests, we can use `Playwright`'s handy [screenshot](https://playwright.dev/docs/screenshots) command. Using this command we can generate a screenshot of the application under test at any desired moment. This can make it easier for us to review PRs and all future changes.
-
-The command accepts many parameters for image format, clip area, quality, etc.
-
-We have defined our own `screenshot` function that wrapps the `Playwright's` in the `playwright/helpers/PlaywrightHelpers.js` module. The reasoning behind the wrapper was to normalize the directory that will contain the screenshots so we can use it later in our CI (*continuous integration*) pipeline. Our wrapper stores the screenshots in the root `.playwright-pending` directory following the hierarchy:
-
-```
-.playwright-pending
-├── <test_file_name>
-│   ├── <screenshot_name>-<browser_name>.png
-│   └── ...
-...
-```
-
-An example of calling the screenshot command:
-
-```bash
-...
-test('shows the Pokemons data', async ({ page, browserName }) => {
-    await screenshot(page, browserName, __filename, 'pokemonList');
-});
-...
-```
-
-We have also defined the following script within `project.json`
-
-```bash
-pnpm e2e-check
-```
-
-which runs our custom logic contained in the `ScreenshotsCompare` helper.
-
-This script is run automatically on all PRs to the `main` and `feature/**` branches, as well as on pushes to the `main` branch by the `.github/workflows/BuildAndTest.yml` GitHub Workflow. The workflow creates a commit with the screenshots to the PR branch.
-
-This gives us an easy way to get a visual comparison of the tests that have changed when reviewing the PRs.
-
-#### Interactive testing using the Playwright's test generator
-
-By using `Playwright` as our end-to-end testing tool we have been given an option to extend existing or create new tests entirely by [clicking and recording interactions against the running application](https://playwright.dev/docs/codegen).
-
 ## Packages
 
 By looking at `package.json` you can get an idea of some of the packages used. The React starter includes only the basic packages that we think will always be used in the application, but there is also a whole set of other packages that are used as needed.
@@ -496,7 +376,6 @@ The following are packages that have been added to the project by default and wi
 
 * [`react`](https://reactjs.org/) / [`react-dom`](https://reactjs.org/docs/react-dom.html) - library which role has already been described and which name is in the name of the starter, which implies that it is impossible not to use
 * [`mobx`](https://mobx.js.org/README.html) / [`mobx-react-lite`](https://mobx-react.js.org/) - state management library that allows you to separate application logic from rendering components (allows data changes to cause components to render - it has a similar effect as state components but it is not necessarily related to it)
-* [`playwright`](https://playwright.dev/) - library that allows you to write tests for the application
 * [`@mui/material`](https://mui.com/) / [`@mui/icons-material`](https://mui.com/components/material-icons/) - a collection of React components and icons that allows us not to reinvent the wheel by writing our own buttons, inputs and other components
 * [`axios`](https://github.com/axios/axios) - HTTP client that allows easy communication between the application and the server or an API
 * [`clsx`](https://github.com/lukeed/clsx) - package that simplifies conditional class assignment to HTML elements / React components
