@@ -1,18 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { red } from '@mui/material/colors';
 import { Button, Card, CardActions, CardContent, List, ListItem, Typography } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import LoadingContainer from '@/components/LoadingContainer/LoadingContainer';
 
 import { post } from '../../services/HttpService';
 
 
 
-function InitQuizPage() {
+function InitQuiz() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const theme = searchParams.get('theme');
@@ -69,7 +70,7 @@ function InitQuizPage() {
             {quizId ? (
                 <>
                     <Typography variant="h1" gutterBottom>Malo o pravilima</Typography>
-                    <Card sx={{width:'100%'}}>
+                    <Card sx={{ width: '100%' }}>
                         <CardContent>
                             <List>
                                 {infoItems.map((item, index) => (
@@ -80,11 +81,11 @@ function InitQuizPage() {
                                 ))}
                             </List>
                         </CardContent>
-                        <CardActions sx={{justifyContent: 'space-between'}}>
+                        <CardActions sx={{ justifyContent: 'space-between' }}>
                             <Button onClick={handleBack} variant="outlined"><FontAwesomeIcon icon={faArrowLeft} /> &nbsp; Natrag</Button>
                             <Button onClick={handleStartQuiz}
                                 variant="outlined"
-                                sx={{marginLeft:'auto'}}>Start</Button>
+                                sx={{ marginLeft: 'auto' }}>Start</Button>
                         </CardActions>
                     </Card>
 
@@ -94,6 +95,13 @@ function InitQuizPage() {
             )}
         </>
     );
+}
+
+function InitQuizPage() {
+    return (
+        <Suspense fallback={<LoadingContainer isLoading={true} />}>
+            <InitQuiz />
+        </Suspense>);
 }
 
 export default InitQuizPage;
