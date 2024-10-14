@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import '@/styles/global.css';
 import { Box, Container } from '@mui/material';
 
@@ -41,24 +40,22 @@ export default function RootLayout({ children }: RootLayoutProps) {
     return (
         <html lang="en" suppressHydrationWarning>
             <body>
-                <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-                    <ThemeRegistry>
-                        <Container maxWidth="md">
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: { xs: 'flex-start', lg: 'center' },
-                                    alignItems: 'center',
-                                    minHeight: { xs: 'auto', lg: '100vh' },
-                                    paddingTop: { xs: 2, md: 4 }
-                                }}
-                            >
-                                {children}
-                            </Box>
-                        </Container>
-                    </ThemeRegistry>
-                </AppRouterCacheProvider>
+                <ThemeRegistry>
+                    <Container maxWidth="md">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: { xs: 'flex-start', lg: 'center' },
+                                alignItems: 'center',
+                                minHeight: { xs: 'auto', lg: '100vh' },
+                                paddingTop: { xs: 2, md: 4 }
+                            }}
+                        >
+                            {children}
+                        </Box>
+                    </Container>
+                </ThemeRegistry>
             </body>
         </html>
     );

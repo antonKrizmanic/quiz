@@ -6,7 +6,9 @@ import { Button, Stack, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
+import LoadingContainer from '@/components/LoadingContainer/LoadingContainer';
 import { get } from '../../services/HttpService';
+
 
 interface Category {
   id: number;
@@ -50,7 +52,7 @@ function CategoriesPage() {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <LoadingContainer isLoading={true}/>;
     }
 
     return (
@@ -70,7 +72,7 @@ function CategoriesPage() {
                 )}
                 <Button onClick={handleBack} variant="outlined">
                     <FontAwesomeIcon icon={faArrowLeft} /> &nbsp;
-          Natrag
+                    Natrag
                 </Button>
             </Stack>
         </>

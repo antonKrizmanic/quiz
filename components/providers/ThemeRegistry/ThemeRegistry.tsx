@@ -1,5 +1,6 @@
 'use client';
 
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 
@@ -7,7 +8,7 @@ import useDarkMode from '@/hooks/useDarkMode';
 import theme from '@/config/theme';
 import ThemeSwitcher from '@/components/ThemeSwitcher/ThemeSwitcher';
 
-import NextAppDirEmotionCacheProvider from './EmotionCache';
+
 
 type ThemeRegistryProps = {
   children: React.ReactNode;
@@ -24,17 +25,15 @@ export default function ThemeRegistry({ children }: ThemeRegistryProps) {
     const finalTheme = theme(isDarkMode);
 
     return (
-        <NextAppDirEmotionCacheProvider options={{ key: 'mui', prepend: true }}>
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeProvider theme={finalTheme}>
                 <CssBaseline />
-
                 <ThemeSwitcher
                     isDarkMode={isDarkMode ?? false}
                     onModeChange={toggleThemeChange}
                 />
-
                 {children}
             </ThemeProvider>
-        </NextAppDirEmotionCacheProvider>
+        </AppRouterCacheProvider>
     );
 }
