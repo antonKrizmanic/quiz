@@ -15,7 +15,7 @@ function HomePage() {
             <Typography variant="h1" gutterBottom>Odaberite temu kviza</Typography>
             <Stack spacing={1}>
                 {/* <Button
-                    onClick={() => handleThemeSelection('100')} 
+                    onClick={() => handleThemeSelection('100')}
                     variant="outlined">
                         Prva pomoć
                 </Button> */}

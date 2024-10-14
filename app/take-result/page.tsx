@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Alert, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,11 +11,12 @@ import SingleSelectAnswer from '@/components/TakeAnswer/SingleSelectAnswer';
 import MultiSelectAnswer from '@/components/TakeAnswer/MultiSelectAnswer';
 import MatchTermAnswer from '@/components/TakeAnswer/MatchTermAnswer';
 import { QuizTakeDetailViewModel } from '@/component-models/types';
+import LoadingContainer from '@/components/LoadingContainer/LoadingContainer';
 
 import { get } from '../../services/HttpService';
 
 
-function TakeResultPage() {
+function TakeResult() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const takeId = searchParams.get('take-id');
@@ -105,6 +106,14 @@ function TakeResultPage() {
                 </CardActions>
             </Card>
         </>
+    );
+}
+
+function TakeResultPage() {
+    return (
+        <Suspense fallback={<LoadingContainer isLoading={true} />}>
+            <TakeResult />
+        </Suspense>
     );
 }
 

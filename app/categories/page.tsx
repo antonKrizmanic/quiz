@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button, Stack, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 import LoadingContainer from '@/components/LoadingContainer/LoadingContainer';
+
 import { get } from '../../services/HttpService';
 
 
@@ -18,7 +19,7 @@ interface Category {
   description: string | null;
 }
 
-function CategoriesPage() {
+function Categories() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const theme = searchParams.get('theme');
@@ -76,6 +77,14 @@ function CategoriesPage() {
                 </Button>
             </Stack>
         </>
+    );
+}
+
+function CategoriesPage() {
+    return (
+        <Suspense fallback={<LoadingContainer isLoading={true}/>}>
+            <Categories />
+        </Suspense>
     );
 }
 

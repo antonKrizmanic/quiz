@@ -24,7 +24,7 @@ export default function getTheme(isDarkMode: boolean) {
             },
             secondary: {
                 main: '#03a9f4',
-                light: '#F5EBFF',                
+                light: '#F5EBFF',
                 contrastText: '#47008F'
             }
         },

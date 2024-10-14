@@ -1,8 +1,9 @@
 {
 	"extends": [
-		"next/core-web-vitals",		
-    "plugin:import/recommended",
-    "plugin:import/typescript"
+    "eslint:recommended",
+    "next",    
+		"next/core-web-vitals",		    
+    "plugin:@typescript-eslint/recommended"
 	],
   "plugins": ["@typescript-eslint"],
   "overrides": [
@@ -66,8 +67,9 @@
 			}
 		],
     "no-var": "error",
-    "prefer-const": "error",
-    "@typescript-eslint/no-extra-semi": "error",
+    "prefer-const": "error",    
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/ban-ts-comment": "warn",
     "@typescript-eslint/no-unused-vars": "error",
 		"react/jsx-curly-spacing": [
 			2,

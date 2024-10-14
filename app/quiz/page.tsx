@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +11,7 @@ import TypeAnswerQuestion from '@/components/TakeQuiz/TypeAnswerQuestion';
 import MakeMatchQuestion from '@/components/TakeQuiz/MakeMatchQuestion';
 import ChooseOneQuestion from '@/components/TakeQuiz/ChooseOneQuestion';
 import ChooseManyQuestion from '@/components/TakeQuiz/ChooseManyQuestion';
+import LoadingContainer from '@/components/LoadingContainer/LoadingContainer';
 
 import { get, post } from '../../services/HttpService';
 
@@ -62,7 +63,7 @@ interface QuizDetail {
     questions: Question[];
 }
 
-function QuizPage() {
+function Quiz() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const quizId = searchParams.get('quizId');
@@ -279,6 +280,14 @@ function QuizPage() {
                 </CardActions>
             )}
         </Card>
+    );
+}
+
+function QuizPage() {
+    return (
+        <Suspense fallback={<LoadingContainer isLoading={true} />}>
+            <Quiz />
+        </Suspense>
     );
 }
 
