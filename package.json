@@ -1,19 +1,14 @@
 {
-  "name": "react-starter",
+  "name": "ck-quiz",
   "version": "0.1.0",  
   "scripts": {
     "dev": "next dev",
     "dev-open": "start http://localhost:3000 && pnpm dev",
     "build": "next build",
     "build-analyze": "cross-env ANALYZE=true pnpm build",
-    "export": "rimraf ./out && rimraf ./.next && cross-env NODE_ENV=production next build && next export",        
+    "export": "rimraf ./out && rimraf ./.next && cross-env NODE_ENV=production next build && next export",
     "start": "next start",
-    "lint": "next lint",
-    "test": "pnpm test:unit && pnpm test:component && pnpm test:e2e",
-    "test:unit": "jest",
-    "test:e2e-open": "pnpm test:e2e --ui",
-    "test:component-open": "pnpm test:component --ui",
-    "feature:remove": "node ./helpers/featureSelect.ts"
+    "lint": "next lint"    
   },
   "dependencies": {
     "@emotion/cache": "11.13.1",
@@ -33,7 +28,6 @@
     "mobx-react-lite": "4.0.7",
     "next": "14.2.15",
     "next-react-svg": "1.2.0",
-    "noty": "3.2.0-beta-deprecated",
     "pixelmatch": "6.0.0",
     "pngjs": "7.0.0",
     "react": "18.3.1",
