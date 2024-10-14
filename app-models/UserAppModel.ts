@@ -1,6 +1,5 @@
 import { makeObservable, observable, action } from 'mobx';
 
-import { showDefaultErrorNotification } from '@/services/NotificationsService';
 import { getUser, editUser } from '@/repositories/UsersRepository';
 import User from '@/models/User';
 
@@ -66,7 +65,6 @@ export default class UserAppModel {
             this.user = getUser();
         } catch (e) {
             console.error(e);
-            showDefaultErrorNotification();
         }
     }
 
@@ -84,7 +82,6 @@ export default class UserAppModel {
             this.user = editUser(payload);
         } catch (e) {
             console.error(e);
-            showDefaultErrorNotification();
         }
     }
 }

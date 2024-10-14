@@ -1,6 +1,5 @@
 import { makeObservable, observable, action, runInAction } from 'mobx';
 
-import { showDefaultErrorNotification } from '@/services/NotificationsService';
 import { getPokemons } from '@/repositories/PokemonsRepository';
 import PokemonSimplified from '@/models/PokemonSimplified';
 
@@ -135,7 +134,6 @@ export default class PokemonsViewModel {
             });
         } catch (e) {
             console.error(e);
-            showDefaultErrorNotification();
         }
 
         runInAction(() => {

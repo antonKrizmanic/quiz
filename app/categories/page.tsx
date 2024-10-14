@@ -6,7 +6,9 @@ import { Button, Stack, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
+import LoadingContainer from '@/components/LoadingContainer/LoadingContainer';
 import { get } from '../../services/HttpService';
+
 
 interface Category {
   id: number;
@@ -27,8 +29,8 @@ function CategoriesPage() {
         const fetchCategories = async () => {
             try {
                 // eslint-disable-next-line max-len
-                const response = await get(`Quizzes/PublicQuizCategory/GetList/1?QuizTheme=${theme}&ActiveStatusId=1&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);
-                setCategories(response.data.list);
+                const response = await get(`Quizzes/PublicQuizCategory/GetAllWithAnyQuestion/1/${theme}`);
+                setCategories(response.data);
             } catch (error) {
                 console.error('Error fetching categories:', error);
             } finally {
@@ -50,7 +52,7 @@ function CategoriesPage() {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <LoadingContainer isLoading={true}/>;
     }
 
     return (
@@ -70,7 +72,7 @@ function CategoriesPage() {
                 )}
                 <Button onClick={handleBack} variant="outlined">
                     <FontAwesomeIcon icon={faArrowLeft} /> &nbsp;
-          Natrag
+                    Natrag
                 </Button>
             </Stack>
         </>

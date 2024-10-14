@@ -1,13 +1,8 @@
 import { Metadata } from 'next';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
-import { ThemeProvider } from '@mui/material/styles';
-// eslint-disable-next-line import/order
-import CssBaseline  from '@mui/material/CssBaseline';
-
 import '@/styles/global.css';
 import { Box, Container } from '@mui/material';
 
-import theme from '@/theme';
+import ThemeRegistry from '@/components/providers/ThemeRegistry/ThemeRegistry';
 
 
 // Checks whether the app is running in a production or development mode
@@ -33,7 +28,7 @@ export const metadata: Metadata = {
 };
 
 type RootLayoutProps = {
-  children: React.ReactNode;
+    children: React.ReactNode;
 };
 
 /**
@@ -45,25 +40,22 @@ export default function RootLayout({ children }: RootLayoutProps) {
     return (
         <html lang="en" suppressHydrationWarning>
             <body>
-                <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-                    <ThemeProvider theme={theme}>
-                        <CssBaseline />
-                        <Container maxWidth="md">
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: { xs: 'flex-start', lg: 'center' },
-                                    alignItems: 'center',
-                                    minHeight: { xs: 'auto', lg: '100vh' },
-                                    paddingTop: { xs: 2, md: 4 }
-                                }}
-                            >
-                                {children}
-                            </Box>
-                        </Container>
-                    </ThemeProvider>
-                </AppRouterCacheProvider>
+                <ThemeRegistry>
+                    <Container maxWidth="md">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: { xs: 'flex-start', lg: 'center' },
+                                alignItems: 'center',
+                                minHeight: { xs: 'auto', lg: '100vh' },
+                                paddingTop: { xs: 2, md: 4 }
+                            }}
+                        >
+                            {children}
+                        </Box>
+                    </Container>
+                </ThemeRegistry>
             </body>
         </html>
     );
