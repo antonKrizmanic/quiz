@@ -499,7 +499,6 @@ The following are packages that have been added to the project by default and wi
 * [`playwright`](https://playwright.dev/) - library that allows you to write tests for the application
 * [`@mui/material`](https://mui.com/) / [`@mui/icons-material`](https://mui.com/components/material-icons/) - a collection of React components and icons that allows us not to reinvent the wheel by writing our own buttons, inputs and other components
 * [`axios`](https://github.com/axios/axios) - HTTP client that allows easy communication between the application and the server or an API
-* [`noty`](https://ned.im/noty/#/) - library used to display notifications within the application
 * [`clsx`](https://github.com/lukeed/clsx) - package that simplifies conditional class assignment to HTML elements / React components
 
 ### Additional packages
