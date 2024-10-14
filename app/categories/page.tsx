@@ -29,8 +29,8 @@ function CategoriesPage() {
         const fetchCategories = async () => {
             try {
                 // eslint-disable-next-line max-len
-                const response = await get(`Quizzes/PublicQuizCategory/GetList/1?QuizTheme=${theme}&ActiveStatusId=1&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);
-                setCategories(response.data.list);
+                const response = await get(`Quizzes/PublicQuizCategory/GetAllWithAnyQuestion/1/${theme}`);
+                setCategories(response.data);
             } catch (error) {
                 console.error('Error fetching categories:', error);
             } finally {
