@@ -1,4 +1,6 @@
 // Styles import
+import { Button } from '@mui/material';
+
 import styles from './NotFoundView.module.scss';
 
 /**
@@ -13,8 +15,9 @@ export default function NotFoundView() {
         404
             </h1>
             <h2 className={styles.subtitle}>
-        Just like Pokemons, this page doesn&apos;t exist
+        Ops, ova stranica ne postoji!
             </h2>
+            <Button variant="outlined" href="/">Natrag na početnu</Button>
         </div>
     );
 }
