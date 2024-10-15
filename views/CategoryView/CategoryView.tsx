@@ -1,6 +1,4 @@
-'use client';
-
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button, Stack, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,7 +17,7 @@ interface Category {
   description: string | null;
 }
 
-function Categories() {
+export default function CategoryView() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const theme = searchParams.get('theme');
@@ -79,13 +77,3 @@ function Categories() {
         </>
     );
 }
-
-function CategoriesPage() {
-    return (
-        <Suspense fallback={<LoadingContainer isLoading={true}/>}>
-            <Categories />
-        </Suspense>
-    );
-}
-
-export default CategoriesPage;

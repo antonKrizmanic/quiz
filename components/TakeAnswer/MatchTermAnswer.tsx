@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 import { Answer, Question, QuizTakeQuestion } from '@/component-models/types';
 
@@ -64,7 +64,7 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
                                     answer.isCorrect ? (
                                         <div>
                                             <p className="font-semibold">Točan odgovor!</p>
-                                            <p>{correctAnswer.text} <FontAwesomeIcon icon={faCheckCircle} className="text-green-600" /></p>
+                                            <p>{correctAnswer.text} &nbsp;<CheckCircleIcon color="success" /></p>
                                         </div>
                                     ) : (
                                         <>
@@ -73,7 +73,7 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
                                                     <p className="font-semibold">Tvoj odgovor:</p>
                                                     <p>
                                                         {answers.find(x => x.id === answer.id)?.text}&nbsp;
-                                                        <FontAwesomeIcon icon={faTimesCircle} className="text-red-600" />
+                                                        <CancelIcon color="error" />
                                                     </p>
                                                     <p className="font-semibold">Točan odgovor:</p>
                                                     <p>{correctAnswer.text}</p>
