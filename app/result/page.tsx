@@ -1,15 +1,15 @@
 'use client';
 import { Suspense } from 'react';
 
-import InitQuizView from '@/views/InitQuizView/InitQuizView';
+import ResultView from '@/views/ResultView/ResultView';
 import LoadingContainer from '@/components/LoadingContainer/LoadingContainer';
 
-
-function InitQuizPage() {
+function TakeResultPage() {
     return (
         <Suspense fallback={<LoadingContainer isLoading={true} />}>
-            <InitQuizView />
-        </Suspense>);
+            <ResultView />
+        </Suspense>
+    );
 }
 
-export default InitQuizPage;
+export default TakeResultPage;

@@ -1,4 +1,5 @@
-// Styles import
+import { Button } from '@mui/material';
+
 import styles from './InternalServerErrorView.module.scss';
 
 /**
@@ -10,11 +11,12 @@ export default function InternalServerError() {
     return (
         <div className={styles.container}>
             <h1 className={styles.title} data-testid="heading">
-        500
+                500
             </h1>
             <h2 className={styles.subtitle}>
-        Ooops, something went wrong
+                Ooops, nešto je pošlo po krivu.
             </h2>
+            <Button variant="outlined" href="/">Natrag na početnu</Button>
         </div>
     );
 }
