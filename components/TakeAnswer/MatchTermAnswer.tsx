@@ -24,7 +24,7 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
                 const childQuestionsResponse = await get(`Quizzes/PublicQuestion/getList/1?parentId=${questionId}&ActiveStatusId=0&QuizCategoryId=0&QuizId=0&QuizTheme=None&QuestionType=None&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);
                 const childQuestions = childQuestionsResponse.data.list;
 
-                const questionAnswerDict = new Map();
+                const questionAnswerDict = new Map<Question, Answer>();
                 const allAnswers: Answer[] = [];
 
                 for (const childQuestion of childQuestions) {
