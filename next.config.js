@@ -11,6 +11,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = {
     reactStrictMode: true,
     productionBrowserSourceMaps: true,
+    sassOptions: {
+        api: 'modern'
+    },
     eslint: {
         dirs: [
             'app',

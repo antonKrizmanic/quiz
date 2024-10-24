@@ -3,9 +3,6 @@ import IconButton from '@mui/material/IconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 
-// Styles import
-import styles from './ThemeSwitcher.module.scss';
-
 type ThemeSwitcherProps = {
   isDarkMode?: boolean;
   onModeChange?: () => void;
@@ -25,7 +22,11 @@ export default function ThemeSwitcher(props: ThemeSwitcherProps) {
     return (
         <IconButton
             aria-label="Dark mode toggle button"
-            className={styles.themeSwitcher}
+            sx={{
+                position: 'fixed',
+                top: 16,
+                right: 16
+            }}
             onClick={onModeChange}
         >
             {isDarkMode ? <DarkModeIcon /> : <LightModeIcon />}
