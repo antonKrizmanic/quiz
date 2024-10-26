@@ -12,8 +12,8 @@ const nextConfig = {
     reactStrictMode: true,
     productionBrowserSourceMaps: true,
     sassOptions: {
-        api: 'modern'
-    },
+		silenceDeprecations: ['legacy-js-api'],
+	},
     eslint: {
         dirs: [
             'app',
