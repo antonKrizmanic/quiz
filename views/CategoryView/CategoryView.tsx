@@ -1,18 +1,29 @@
 'use client';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Stack, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { QuizCategory } from '@/component-models/types';
+import { getQuizCategoriesWithQuestions } from '@/repositories/QuizCategoryRepository';
 
-interface CategoryViewProps {
-    categories: QuizCategory[];
+interface CategoryViewProps {    
     theme: number;
 }
 
-export default function CategoryView({categories, theme}: CategoryViewProps) {
+export default function CategoryView({theme}: CategoryViewProps) {
     const router = useRouter();
+    const [categories, setCategories] = useState<QuizCategory[]>([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const data = await getQuizCategoriesWithQuestions(1, theme);
+            setCategories(data);
+        };
+
+        fetchCategories();
+    }, [theme]);
 
     const handleCategorySelection = (category: string) => {
         router.push(`/init-quiz?theme=${theme}&category=${category}`);
