@@ -1,18 +1,10 @@
 import { mapDtosToQuizCategories } from '@/mappers/QuizCategoryMapper';
 
-import prisma from './db';
+import { get, } from '../services/HttpService';
+
 
 export const getQuizCategoriesWithQuestions = async (cityAssociationId: number, quizTheme: number) => {
-    const data = await prisma.quizCategories.findMany({
-        where: {
-            CityAssociationId: cityAssociationId,
-            QuizTheme: quizTheme,
-            IsActive: true,
-            Questions: {
-                some: {}
-            }
-        }
-    });
-
-    return mapDtosToQuizCategories(data);
+    const response = await get(`Quizzes/PublicQuizCategory/GetAllWithAnyQuestion/${cityAssociationId}/${quizTheme}`);
+    console.log(response);
+    return mapDtosToQuizCategories(response.data);
 };
