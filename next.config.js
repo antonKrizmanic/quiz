@@ -26,7 +26,8 @@ const nextConfig = {
             'tests',
             'view-models', 'views'
         ]
-    }
+    },
+    transpilePackages: ['@prisma/client']
 };
 
 module.exports = withBundleAnalyzer(withReactSvg(nextConfig));
