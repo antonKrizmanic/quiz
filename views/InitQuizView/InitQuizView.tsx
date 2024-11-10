@@ -8,8 +8,6 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { post } from '../../services/HttpService';
 
-
-
 export default function InitQuizView() {
     const router = useRouter();
     const searchParams = useSearchParams();

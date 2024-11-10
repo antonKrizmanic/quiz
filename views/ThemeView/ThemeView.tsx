@@ -5,7 +5,7 @@ export default function ThemeView() {
     const router = useRouter();
 
     const handleThemeSelection = (theme: string) => {
-        router.push(`/category?theme=${theme}`);
+        router.push(`/category/${theme}`);
     };
 
     return (
