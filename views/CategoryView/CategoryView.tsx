@@ -1,9 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
-
 import { Button, Stack, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+
 import { QuizCategory } from '@/component-models/types';
 
 interface CategoryViewProps {
@@ -15,12 +15,12 @@ export default function CategoryView({categories, theme}: CategoryViewProps) {
     const router = useRouter();
 
     const handleCategorySelection = (category: string) => {
-        router.push(`/init-quiz?theme=${theme}&category=${category}`);        
+        router.push(`/init-quiz?theme=${theme}&category=${category}`);
     };
 
     const handleBack = () => {
-        router.back();        
-    };    
+        router.back();
+    };
 
     return (
         <>
