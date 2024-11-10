@@ -1,6 +1,6 @@
 import { mapDtosToQuizCategories } from '@/mappers/QuizCategoryMapper';
 
-import { get, } from '../services/HttpService';
+import { get } from '../services/HttpService';
 
 
 export const getQuizCategoriesWithQuestions = async (cityAssociationId: number, quizTheme: number) => {
