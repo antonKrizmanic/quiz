@@ -1,4 +1,5 @@
 const path = require('path');
+const { PrismaPlugin } = require('@prisma/nextjs-monorepo-workaround-plugin');
 
 const withReactSvg = require('next-react-svg')({
     include: path.resolve(__dirname, './public/icons')
@@ -27,7 +28,13 @@ const nextConfig = {
             'view-models', 'views'
         ]
     },
-    transpilePackages: ['@prisma/client']
+    transpilePackages: ['@prisma/client'],
+    webpack: (config, { isServer }) => {
+        if (isServer) {
+            config.plugins = [...config.plugins, new PrismaPlugin()];
+        }
+        return config;
+    }
 };
 
 module.exports = withBundleAnalyzer(withReactSvg(nextConfig));
