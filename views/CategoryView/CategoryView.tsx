@@ -4,23 +4,15 @@ import { useRouter } from 'next/navigation';
 import { Button, Stack, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-
-interface Category {
-  Id: number;
-  Name: string;
-  IsActiveDescription: string;
-  QuizTheme: number;
-  Description: string | null;
-}
+import { QuizCategory } from '@/component-models/types';
 
 interface CategoryViewProps {
-    categories: Category[];
+    categories: QuizCategory[];
     theme: number;
 }
 
 export default function CategoryView({categories, theme}: CategoryViewProps) {
-    const router = useRouter();    
-    console.log(categories);    
+    const router = useRouter();
 
     const handleCategorySelection = (category: string) => {
         router.push(`/init-quiz?theme=${theme}&category=${category}`);        
@@ -38,10 +30,10 @@ export default function CategoryView({categories, theme}: CategoryViewProps) {
                     <Typography>Nije dohvaćena ni jedna kategorija</Typography>
                 ) : (
                     categories.map((category) => (
-                        <Button onClick={() => handleCategorySelection(category.Id.toString())}
+                        <Button onClick={() => handleCategorySelection(category.id.toString())}
                             variant="outlined"
-                            key={category.Id}>
-                            {category.Name}
+                            key={category.id}>
+                            {category.name}
                         </Button>
                     ))
                 )}

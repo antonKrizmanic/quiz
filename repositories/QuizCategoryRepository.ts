@@ -1,7 +1,8 @@
+import { mapDtosToQuizCategories } from "@/mappers/QuizCategoryMapper";
 import prisma from "./db";
 
 export const getQuizCategoriesWithQuestions = async (cityAssociationId: number, quizTheme: number) => {
-    return await prisma.QuizCategories.findMany({
+    const data = await prisma.QuizCategories.findMany({
         where: {
           CityAssociationId: cityAssociationId,
           QuizTheme: quizTheme,
@@ -11,4 +12,6 @@ export const getQuizCategoriesWithQuestions = async (cityAssociationId: number, 
           }
         }
       });
+
+    return mapDtosToQuizCategories(data);
 }
