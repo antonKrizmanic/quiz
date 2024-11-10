@@ -8,7 +8,8 @@
     "build-analyze": "cross-env ANALYZE=true pnpm build",
     "export": "rimraf ./out && rimraf ./.next && cross-env NODE_ENV=production next build && next export",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@emotion/cache": "11.13.1",
