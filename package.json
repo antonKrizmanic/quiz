@@ -1,6 +1,6 @@
 {
   "name": "ck-quiz",
-  "version": "0.1.0",  
+  "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
     "dev-open": "start http://localhost:3000 && pnpm dev",
@@ -8,7 +8,7 @@
     "build-analyze": "cross-env ANALYZE=true pnpm build",
     "export": "rimraf ./out && rimraf ./.next && cross-env NODE_ENV=production next build && next export",
     "start": "next start",
-    "lint": "next lint"    
+    "lint": "next lint"
   },
   "dependencies": {
     "@emotion/cache": "11.13.1",
@@ -26,35 +26,38 @@
     "colorette": "2.0.20",
     "mobx": "6.13.5",
     "mobx-react-lite": "4.0.7",
-    "next": "15.0.1",
+    "next": "15.0.3",
     "next-react-svg": "1.2.0",
     "pixelmatch": "6.0.0",
     "pngjs": "7.0.0",
+    "@prisma/client": "5.21.1",
+    "@prisma/extension-accelerate": "1.2.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "sass": "1.80.4",
+    "sass": "1.80.6",
     "typescript": "5.6.3",
-    "webpack": "5.95.0"
+    "webpack": "5.96.1"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "15.0.1",
+    "@next/bundle-analyzer": "15.0.3",
     "@svgr/webpack": "8.1.0",
     "@total-typescript/ts-reset": "0.6.1",
-    "@typescript-eslint/eslint-plugin": "8.11.0",
-    "@typescript-eslint/parser": "8.11.0",
+    "@typescript-eslint/eslint-plugin": "8.13.0",
+    "@typescript-eslint/parser": "8.13.0",
     "autoprefixer": "^10.4.20",
     "cross-env": "7.0.3",
     "eslint": "^9.0.0",
-    "eslint-config-next": "15.0.1",
+    "eslint-config-next": "15.0.3",
     "eslint-import-resolver-typescript": "3.6.3",
     "eslint-plugin-import": "2.31.0",
-    "eslint-plugin-jsx-a11y": "6.10.1",
+    "eslint-plugin-jsx-a11y": "6.10.2",
     "fs-extra": "11.2.0",
     "kill-port": "2.0.1",
     "postcss": "8.4.47",
-    "puppeteer": "23.6.0",
+    "prisma": "^5.21.1",
+    "puppeteer": "23.7.1",
     "rimraf": "6.0.1",
-    "sass-loader": "16.0.2",
+    "sass-loader": "16.0.3",
     "webpack-dev-server": "5.1.0"
   }
 }

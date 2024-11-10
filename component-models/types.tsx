@@ -44,3 +44,11 @@ interface QuizTakeQuestionViewModel {
     questionType: number;
     answers: Answer[];
 }
+
+export type QuizCategory = {
+    id: number;
+    name: string;
+    isActiveDescription: string;
+    quizTheme: number;
+    description: string | null;
+  }
