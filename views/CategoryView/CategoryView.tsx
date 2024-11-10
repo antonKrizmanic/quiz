@@ -5,10 +5,10 @@ import { Button, Stack, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
-import { QuizCategory } from '@/component-models/types';
 import { getQuizCategoriesWithQuestions } from '@/repositories/QuizCategoryRepository';
+import { QuizCategory } from '@/component-models/types';
 
-interface CategoryViewProps {    
+interface CategoryViewProps {
     theme: number;
 }
 
