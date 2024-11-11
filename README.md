@@ -101,23 +101,3 @@ pnpm start
 Whether running in `development` or `production` mode, application is available at [http://localhost:3000](http://localhost:3000).
 
 </br>
-
-Exporting your application to static HTML, which can then be run standalone without the need of a `Node.js` server is done using the command
-
-```bash
-pnpm export
-```
-
-This command generates an `out` directory in the project root. Only use this command if you don't need any of the [features](https://nextjs.org/docs/advanced-features/static-html-export#unsupported-features) requiring a `Node.js` server.
-
-## Predeployment TODOs
-
-Before deploying the application, make sure that all the tasks from the list below have been completed.
-
-* Check image optimization in `next.config.js`
-* Change application's name in the `package.json`
-* Change application's metadata in the `app/layout.jsx` and several pages where the specific page titles are given
-* Remove all unused and starter's specific files (e.g. `PokemonsMapper.js`, `PokemonsRepository.js`...)
-* Remove all `TODO_delete_this_later` files and empty folders
-* Customize error pages
-* Make sure that the correct API URL is available to the application through the `NEXT_PUBLIC_API_URL` environmental variable (`https://localhost:5001/v1/` is the default)
