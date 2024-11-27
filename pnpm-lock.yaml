@@ -37,7 +37,7 @@ importers:
         version: 6.1.8(@emotion/react@11.13.5(@types/react@18.3.12)(react@18.3.1))(@emotion/styled@11.13.5(@emotion/react@11.13.5(@types/react@18.3.12)(react@18.3.1))(@types/react@18.3.12)(react@18.3.1))(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/material-nextjs':
         specifier: ^6.1.3
-        version: 6.1.8(@emotion/cache@11.13.5)(@emotion/react@11.13.5(@types/react@18.3.12)(react@18.3.1))(@types/react@18.3.12)(next@15.0.3(@babel/core@7.23.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react@18.3.1)
+        version: 6.1.9(@emotion/cache@11.13.5)(@emotion/react@11.13.5(@types/react@18.3.12)(react@18.3.1))(@types/react@18.3.12)(next@15.0.3(@babel/core@7.23.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react@18.3.1)
       axios:
         specifier: 1.7.8
         version: 1.7.8
@@ -1087,8 +1087,8 @@ packages:
       '@types/react':
         optional: true
 
-  '@mui/material-nextjs@6.1.8':
-    resolution: {integrity: sha512-gSNZ+wCq38eX0rcIpsDCwUbWR2+z8/5mVv6+piwJc+ZByLFF8Xuq59vKx3m4IF8+AR8VIYzmfEzKOYxzS7p1aw==}
+  '@mui/material-nextjs@6.1.9':
+    resolution: {integrity: sha512-QIJANZt6tkRLoeRsIa0KoC4+MMywTIPQbthL2U2VXHLyrRan00+Yc2M+NFP85/EnPxNEUCRf19l4WKNaPtyetQ==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       '@emotion/cache': ^11.11.0
@@ -5280,7 +5280,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.3.12
 
-  '@mui/material-nextjs@6.1.8(@emotion/cache@11.13.5)(@emotion/react@11.13.5(@types/react@18.3.12)(react@18.3.1))(@types/react@18.3.12)(next@15.0.3(@babel/core@7.23.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react@18.3.1)':
+  '@mui/material-nextjs@6.1.9(@emotion/cache@11.13.5)(@emotion/react@11.13.5(@types/react@18.3.12)(react@18.3.1))(@types/react@18.3.12)(next@15.0.3(@babel/core@7.23.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.26.0
       '@emotion/react': 11.13.5(@types/react@18.3.12)(react@18.3.1)
