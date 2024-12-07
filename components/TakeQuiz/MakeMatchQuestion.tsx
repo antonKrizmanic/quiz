@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import QuestionHeader from '../reusable/QuestionHeader';
 
 interface QuizTakeAnswerDto {
   questionId: number;
@@ -26,11 +27,12 @@ interface Question {
 interface MakeMatchQuestionProps {
   question: Question;
   questionIndex: number;
+  questionCount: number;
   onAnswer: (questionId: number, answer: QuizTakeAnswerDto[]) => void;
   initialAnswer?: QuizTakeAnswerDto[];
 }
 
-function MakeMatchQuestion({ question, questionIndex, onAnswer, initialAnswer }:MakeMatchQuestionProps) {
+function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, initialAnswer }:MakeMatchQuestionProps) {
     const [possibleAnswers, setPossibleAnswers] = useState<Answer[]>([]);
     const [selectedAnswers, setSelectedAnswers] = useState<QuizTakeAnswerDto[]>([]);
 
@@ -63,17 +65,8 @@ function MakeMatchQuestion({ question, questionIndex, onAnswer, initialAnswer }:
     };
 
     return (
-        <>
-            <Box sx={{ marginBottom: '16px' }}>
-                <Typography
-                    variant="subtitle1"
-                    sx={{ lineHeight: 1, fontWeight: 600 }}>
-                    {questionIndex + 1}. {question.text}</Typography>
-                <Typography
-                    variant="caption">
-          (Spoji odgovarajuće pojmove)
-                </Typography>
-            </Box>
+        <>            
+            <QuestionHeader questionIndex={questionIndex} questionCount={questionCount} questionText={question.text} helperText="(Spoji odgovarajuće pojmove)" />                        
             {question.children?.map((child) => (
                 <>
                     <InputLabel key={`${child.id}-label`}>
