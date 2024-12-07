@@ -1,24 +1,26 @@
 import React, { useEffect } from 'react';
-import { Box, Checkbox, FormControlLabel, FormGroup, Typography } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import QuestionHeader from '../reusable/QuestionHeader';
 
 interface Answer {
-  id: number;
-  text: string;
-  questionId: number;
+    id: number;
+    text: string;
+    questionId: number;
 }
 
 interface ChooseManyQuestionProps {
-  question: {
-    id: number;
-    text: string;
-    answers: Answer[];
-  };
-  questionIndex: number;
-  onAnswer: (questionId: number, answers: Answer[]) => void;
-  initialAnswers?: Answer[];
+    question: {
+        id: number;
+        text: string;
+        answers: Answer[];
+    };
+    questionIndex: number;
+    questionCount: number;
+    onAnswer: (questionId: number, answers: Answer[]) => void;
+    initialAnswers?: Answer[];
 }
 
-function ChooseManyQuestion ({ question, questionIndex, onAnswer, initialAnswers }:ChooseManyQuestionProps) {
+function ChooseManyQuestion({ question, questionIndex, questionCount, onAnswer, initialAnswers }: ChooseManyQuestionProps) {
     const [selectedAnswers, setSelectedAnswers] = React.useState<Answer[]>([]);
 
     useEffect(() => {
@@ -47,22 +49,13 @@ function ChooseManyQuestion ({ question, questionIndex, onAnswer, initialAnswers
 
     return (
         <>
-            <Box sx={{ marginBottom: '16px' }}>
-                <Typography
-                    variant="subtitle1"
-                    sx={{ lineHeight: 1, fontWeight: 600 }}>
-                    {questionIndex + 1}. {question.text}</Typography>
-                <Typography
-                    variant="caption">
-          (Odaberi više odgovora)
-                </Typography>
-            </Box>
+            <QuestionHeader questionIndex={questionIndex} questionCount={questionCount} questionText={question.text} helperText="(Odaberi više odgovora)" />                        
             <Box>
                 <FormGroup>
                     {question.answers.map((option) => (
                         <FormControlLabel
                             key={option.id}
-                            control={<Checkbox checked={selectedAnswers.some((answer) => answer.id === option.id)}/>}
+                            control={<Checkbox checked={selectedAnswers.some((answer) => answer.id === option.id)} />}
                             label={option.text}
                             onChange={() => handleChange(option.id)}
                         />
