@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Box, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+
 import QuestionHeader from '../reusable/QuestionHeader';
 
 interface Answer {
@@ -45,11 +46,13 @@ function ChooseManyQuestion({ question, questionIndex, questionCount, onAnswer, 
         onAnswer(question.id, answers);
     };
 
-
-
     return (
         <>
-            <QuestionHeader questionIndex={questionIndex} questionCount={questionCount} questionText={question.text} helperText="(Odaberi više odgovora)" />                        
+            <QuestionHeader
+                questionIndex={questionIndex}
+                questionCount={questionCount}
+                questionText={question.text}
+                helperText="(Odaberi više odgovora)" />
             <Box>
                 <FormGroup>
                     {question.answers.map((option) => (

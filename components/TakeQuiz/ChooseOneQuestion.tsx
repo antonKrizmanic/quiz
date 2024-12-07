@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
-import QuestionHeader from '../reusable/QuestionHeader';
 
+import QuestionHeader from '../reusable/QuestionHeader';
 
 interface Answer {
     id: number;
@@ -40,7 +40,11 @@ function ChooseOneQuestion({ question, questionIndex, questionCount, onAnswer, i
 
     return (
         <>
-            <QuestionHeader questionIndex={questionIndex} questionCount={questionCount} questionText={question.text} helperText="(Odaberi samo jedan odgovor)" />            
+            <QuestionHeader
+                questionIndex={questionIndex}
+                questionCount={questionCount}
+                questionText={question.text}
+                helperText="(Odaberi samo jedan odgovor)" />
             <Box>
                 <FormControl>
                     <RadioGroup

@@ -1,38 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import QuestionHeader from '../reusable/QuestionHeader';
 
 interface QuizTakeAnswerDto {
-  questionId: number;
-  answerId: number;
-  parentId?: number;
-  text: string;
+    questionId: number;
+    answerId: number;
+    parentId?: number;
+    text: string;
 }
 
 interface Answer {
-  id: number;
-  text: string;
-  questionId: number;
+    id: number;
+    text: string;
+    questionId: number;
 }
 
 interface Question {
-  id: number;
-  text: string;
-  questionType: number;
-  parentId: number | null;
-  children: Question[] | null;
-  answers: Answer[];
+    id: number;
+    text: string;
+    questionType: number;
+    parentId: number | null;
+    children: Question[] | null;
+    answers: Answer[];
 }
 
 interface MakeMatchQuestionProps {
-  question: Question;
-  questionIndex: number;
-  questionCount: number;
-  onAnswer: (questionId: number, answer: QuizTakeAnswerDto[]) => void;
-  initialAnswer?: QuizTakeAnswerDto[];
+    question: Question;
+    questionIndex: number;
+    questionCount: number;
+    onAnswer: (questionId: number, answer: QuizTakeAnswerDto[]) => void;
+    initialAnswer?: QuizTakeAnswerDto[];
 }
 
-function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, initialAnswer }:MakeMatchQuestionProps) {
+function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, initialAnswer }: MakeMatchQuestionProps) {
     const [possibleAnswers, setPossibleAnswers] = useState<Answer[]>([]);
     const [selectedAnswers, setSelectedAnswers] = useState<QuizTakeAnswerDto[]>([]);
 
@@ -65,8 +65,12 @@ function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, i
     };
 
     return (
-        <>            
-            <QuestionHeader questionIndex={questionIndex} questionCount={questionCount} questionText={question.text} helperText="(Spoji odgovarajuće pojmove)" />                        
+        <>
+            <QuestionHeader
+                questionIndex={questionIndex}
+                questionCount={questionCount}
+                questionText={question.text}
+                helperText="(Spoji odgovarajuće pojmove)" />
             {question.children?.map((child) => (
                 <>
                     <InputLabel key={`${child.id}-label`}>
