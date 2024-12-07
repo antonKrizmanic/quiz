@@ -49,7 +49,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                                 justifyContent: { xs: 'flex-start', lg: 'center' },
                                 alignItems: 'center',
                                 minHeight: { xs: 'auto', lg: '100vh' },
-                                paddingTop: { xs: 2, md: 4 }
+                                paddingTop: { xs: 8, md: 8 }
                             }}
                         >
                             {children}
