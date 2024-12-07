@@ -29,8 +29,12 @@ function TypeAnswerQuestion({ question, questionIndex, questionCount, onAnswer, 
     };
 
     return (
-        <>   
-            <QuestionHeader questionIndex={questionIndex} questionCount={questionCount} questionText={question.text} helperText="(Upiši točan odgovor)" />                                             
+        <>
+            <QuestionHeader
+                questionIndex={questionIndex}
+                questionCount={questionCount}
+                questionText={question.text}
+                helperText="(Upiši točan odgovor)" />
             <Box>
                 <TextField
                     variant="outlined"
