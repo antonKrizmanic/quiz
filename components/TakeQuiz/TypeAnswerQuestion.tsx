@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, TextField } from '@mui/material';
+import QuestionHeader from '../reusable/QuestionHeader';
 
 interface TypeAnswerQuestionProps {
-  question: {
-    id: number;
-    text: string;
-  };
-  questionIndex: number;
-  onAnswer: (questionId: number, answer: string) => void;
-  initialAnswer?: string;
+    question: {
+        id: number;
+        text: string;
+    };
+    questionIndex: number;
+    questionCount: number;
+    onAnswer: (questionId: number, answer: string) => void;
+    initialAnswer?: string;
 }
 
-function TypeAnswerQuestion({ question, questionIndex, onAnswer, initialAnswer }:TypeAnswerQuestionProps) {
+function TypeAnswerQuestion({ question, questionIndex, questionCount, onAnswer, initialAnswer }: TypeAnswerQuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     useEffect(() => {
@@ -27,17 +29,8 @@ function TypeAnswerQuestion({ question, questionIndex, onAnswer, initialAnswer }
     };
 
     return (
-        <>
-            <Box sx={{ marginBottom: '16px' }}>
-                <Typography
-                    variant="subtitle1"
-                    sx={{ lineHeight: 1, fontWeight: 600 }}>
-                    {questionIndex + 1}. {question.text}</Typography>
-                <Typography
-                    variant="caption">
-          (Upiši točan odgovor)
-                </Typography>
-            </Box>
+        <>   
+            <QuestionHeader questionIndex={questionIndex} questionCount={questionCount} questionText={question.text} helperText="(Upiši točan odgovor)" />                                             
             <Box>
                 <TextField
                     variant="outlined"

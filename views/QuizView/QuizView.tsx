@@ -12,19 +12,6 @@ import ChooseManyQuestion from '@/components/TakeQuiz/ChooseManyQuestion';
 
 import { get, post } from '../../services/HttpService';
 
-
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface QuizTakeDto {
-    quizId: number;
-    startedAt: string;
-    endedAt: string;
-    takeUserName: string;
-    takeUserType: number;
-    questions: QuizTakeQuestionDto[];
-    cityAssociationId: number;
-}
-
 interface QuizTakeQuestionDto {
     id: number;
     questionId: number;
@@ -244,24 +231,28 @@ export default function QuizView() {
                 {!showUserInfo && currentQuestion.questionType === 1 && (
                     <ChooseOneQuestion question={currentQuestion}
                         questionIndex={currentQuestionIndex}
+                        questionCount={quiz.questions.length}
                         onAnswer={handleSingleAnswer}
                         initialAnswers={answers[currentQuestion.id]} />
                 )}
                 {!showUserInfo && currentQuestion.questionType === 2 && (
                     <ChooseManyQuestion question={currentQuestion}
                         questionIndex={currentQuestionIndex}
+                        questionCount={quiz.questions.length}
                         onAnswer={handleMultipleAnswer}
                         initialAnswers={answers[currentQuestion.id]} />
                 )}
                 {!showUserInfo && currentQuestion.questionType === 3 && (
                     <TypeAnswerQuestion question={currentQuestion}
                         questionIndex={currentQuestionIndex}
+                        questionCount={quiz.questions.length}
                         onAnswer={handleTextAnswer}
                         initialAnswer={answers[currentQuestion.id]?.text} />
                 )}
                 {!showUserInfo && currentQuestion.questionType === 4 && (
                     <MakeMatchQuestion question={currentQuestion}
                         questionIndex={currentQuestionIndex}
+                        questionCount={quiz.questions.length}
                         onAnswer={handleAnswer}
                         initialAnswer={answers[currentQuestion.id]} />
                 )}
