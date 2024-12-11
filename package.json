@@ -55,6 +55,6 @@
     "puppeteer": "23.10.3",
     "rimraf": "6.0.1",
     "sass-loader": "16.0.4",
-    "webpack-dev-server": "5.1.0"
+    "webpack-dev-server": "5.2.0"
   }
 }
