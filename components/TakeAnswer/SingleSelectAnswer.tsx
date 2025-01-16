@@ -51,19 +51,19 @@ function SingleSelectAnswer({ givenAnswer, questionId }: SingleSelectAnswerProps
                                 )
                             );
                             return(
-
-                                <FormControlLabel
-                                    key={answer.id}
-                                    value={answer.id}
-                                    control={<Radio checked={givenAnswer && answer.id === givenAnswer.id} />}
-                                    disabled
-                                    label={
-                                        <Box display="flex" alignItems="center">
-                                            <span>{answer.text} &nbsp;</span>
-                                            {icon}
-                                        </Box>
-                                    }
-                                />
+                                <div key={answer.id}>
+                                    <FormControlLabel
+                                        value={answer.id}
+                                        control={<Radio checked={givenAnswer && answer.id === givenAnswer.id} />}
+                                        disabled
+                                        label={
+                                            <Box display="flex" alignItems="center">
+                                                <span>{answer.text} &nbsp;</span>
+                                                {icon}
+                                            </Box>
+                                        }
+                                    />
+                                </div>
                             );
                         })}
                     </RadioGroup>
