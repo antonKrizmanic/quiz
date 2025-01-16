@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+
 import QuestionHeader from '../reusable/QuestionHeader';
 
 interface QuizTakeAnswerDto {
@@ -76,9 +77,11 @@ function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, i
                     <InputLabel key={`${child.id}-label`}>
                         {child.text}
                     </InputLabel>
-                    <FormControl fullWidth sx={{ marginBottom: 3 }}>
+                    <FormControl
+                        key={`${child.id}-select`}
+                        fullWidth
+                        sx={{ marginBottom: 3 }}>
                         <Select
-                            key={`${child.id}-select`}
                             id="demo-simple-select"
                             value={selectedAnswers.find((a) => a.questionId === child.id)?.answerId || ''}
                             displayEmpty

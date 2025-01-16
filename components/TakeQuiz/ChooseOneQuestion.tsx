@@ -52,12 +52,13 @@ function ChooseOneQuestion({ question, questionIndex, questionCount, onAnswer, i
                         name="radio-buttons-group"
                     >
                         {question.answers.map((option) => (
-                            <FormControlLabel
-                                key={option.id}
-                                value={option.id}
-                                control={<Radio checked={selectedAnswerId === option.id} />}
-                                onChange={() => onAnswerSelect(option.id)}
-                                label={option.text} />
+                            <div key={option.id}>
+                                <FormControlLabel
+                                    value={option.id}
+                                    control={<Radio checked={selectedAnswerId === option.id} />}
+                                    onChange={() => onAnswerSelect(option.id)}
+                                    label={option.text} />
+                            </div>
                         ))}
                     </RadioGroup>
                 </FormControl>

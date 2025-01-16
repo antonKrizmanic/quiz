@@ -47,17 +47,18 @@ function MultiSelectAnswer({ givenAnswers, questionId }:MultiSelectAnswerProps) 
                         );
 
                         return (
-                            <FormControlLabel
-                                key={answer.id}
-                                control={<Checkbox checked={isChecked} />}
-                                label={
-                                    <Box display="flex" alignItems="center">
-                                        <span>{answer.text} &nbsp;</span>
-                                        {icon}
-                                    </Box>
-                                }
-                                disabled
-                            />
+                            <div key={answer.id}>
+                                <FormControlLabel
+                                    control={<Checkbox checked={isChecked} />}
+                                    label={
+                                        <Box display="flex" alignItems="center">
+                                            <span>{answer.text} &nbsp;</span>
+                                            {icon}
+                                        </Box>
+                                    }
+                                    disabled
+                                />
+                            </div>
                         );
                     })}
                 </FormGroup>

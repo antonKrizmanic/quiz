@@ -56,12 +56,13 @@ function ChooseManyQuestion({ question, questionIndex, questionCount, onAnswer, 
             <Box>
                 <FormGroup>
                     {question.answers.map((option) => (
-                        <FormControlLabel
-                            key={option.id}
-                            control={<Checkbox checked={selectedAnswers.some((answer) => answer.id === option.id)} />}
-                            label={option.text}
-                            onChange={() => handleChange(option.id)}
-                        />
+                        <div key={option.id}>
+                            <FormControlLabel
+                                control={<Checkbox checked={selectedAnswers.some((answer) => answer.id === option.id)} />}
+                                label={option.text}
+                                onChange={() => handleChange(option.id)}
+                            />
+                        </div>
                     ))}
                 </FormGroup>
             </Box>
