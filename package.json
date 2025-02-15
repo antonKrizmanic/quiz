@@ -54,7 +54,7 @@
     "postcss": "8.5.2",
     "puppeteer": "23.11.1",
     "rimraf": "6.0.1",
-    "sass-loader": "16.0.4",
+    "sass-loader": "16.0.5",
     "webpack-dev-server": "5.2.0"
   }
 }
