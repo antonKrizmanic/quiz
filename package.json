@@ -46,7 +46,7 @@
     "cross-env": "7.0.3",
     "eslint": "^9.0.0",
     "eslint-config-next": "15.2.2",
-    "eslint-import-resolver-typescript": "3.8.6",
+    "eslint-import-resolver-typescript": "3.8.7",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "fs-extra": "11.3.0",
