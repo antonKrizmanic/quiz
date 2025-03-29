@@ -30,8 +30,8 @@
     "next-react-svg": "1.2.0",
     "pixelmatch": "6.0.0",
     "pngjs": "7.0.0",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
     "sass": "1.86.0",
     "typescript": "5.8.2",
     "webpack": "5.98.0"
