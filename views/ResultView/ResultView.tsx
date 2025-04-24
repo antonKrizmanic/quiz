@@ -49,7 +49,10 @@ export default function ResultView() {
                 <Box sx={{ display: 'flex', justifyContent: 'center', px: 3 }}>
                     <Box sx={{ width: '100%' }}>
                         <Box sx={{ backgroundColor: 'white', boxShadow: 3, borderRadius: 2, p: 3 }}>
-                            <Typography variant="body1" align="center" gutterBottom>
+                            <Typography
+                                variant="body1"
+                                align="center"
+                                gutterBottom>
                                 Nije pronađen rezultat za ovaj kviz.
                             </Typography>
                             <Button
@@ -68,26 +71,29 @@ export default function ResultView() {
 
     return (
         <>
-            <Typography variant="h1" gutterBottom>Tvoj rezultat je {results.score}/{results.questionNumber}</Typography>
+            <Typography variant="h1"
+                gutterBottom>
+                Tvoj rezultat je {results.score}/{results.questionNumber}
+            </Typography>
             <Card sx={{ width: '100%', marginBottom: 3 }}>
                 <CardContent>
                     {results.quizTakeQuestions.map((question, index) => {
                         let questionContent;
                         switch (question.questionType) {
-                            case 1:
-                                questionContent = <SingleSelectAnswer givenAnswer={question.answers[0]} questionId={question.questionId} />;
-                                break;
-                            case 2:
-                                questionContent = <MultiSelectAnswer givenAnswers={question.answers} questionId={question.questionId} />;
-                                break;
-                            case 3:
-                                questionContent = <TextInputAnswer givenAnswer={question.answers[0]} questionId={question.questionId} />;
-                                break;
-                            case 4:
-                                questionContent = <MatchTermAnswer quizTakeChildren={question.children} questionId={question.questionId} />;
-                                break;
-                            default:
-                                questionContent = <p>Nepoznata vrsta pitanja</p>;
+                        case 1:
+                            questionContent = <SingleSelectAnswer givenAnswer={question.answers[0]} questionId={question.questionId} />;
+                            break;
+                        case 2:
+                            questionContent = <MultiSelectAnswer givenAnswers={question.answers} questionId={question.questionId} />;
+                            break;
+                        case 3:
+                            questionContent = <TextInputAnswer givenAnswer={question.answers[0]} questionId={question.questionId} />;
+                            break;
+                        case 4:
+                            questionContent = <MatchTermAnswer quizTakeChildren={question.children} questionId={question.questionId} />;
+                            break;
+                        default:
+                            questionContent = <p>Nepoznata vrsta pitanja</p>;
                         }
 
                         return (

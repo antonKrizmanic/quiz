@@ -1,7 +1,5 @@
 import { Button, Typography } from '@mui/material';
 
-import styles from './InternalServerErrorView.module.scss';
-
 /**
  * Function representing the view corresponding to the internal server error page.
  *
@@ -13,6 +11,6 @@ export default function InternalServerError() {
             <Typography variant="h1" gutterBottom>500</Typography>
             <Typography variant="h6" gutterBottom>Ooops, nešto je pošlo po krivu.</Typography>
             <Button variant="outlined" href="/">Natrag na početnu</Button>
-        </>        
+        </>
     );
 }
