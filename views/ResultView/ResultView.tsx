@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Alert, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -45,25 +45,37 @@ export default function ResultView() {
 
     if (!results) {
         return (
-            <div className="lg:max-w-screen-md w-screen mx-auto md:px-6">
-                <div className="flex justify-center px-3">
-                    <div className="w-full">
-                        <div className="bg-white shadow-md rounded-lg px-3">
-                            <p className="mb-3 text-center">Nije pronađen rezultat za ovaj kviz.</p>
-                            <Button onClick={() => router.back()}>
-                                <FontAwesomeIcon icon={faArrowLeft} /> Natrag
+            <Box sx={{ maxWidth: 'md', mx: 'auto', px: { md: 6 }, width: '100%' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', px: 3 }}>
+                    <Box sx={{ width: '100%' }}>
+                        <Box sx={{ backgroundColor: 'white', boxShadow: 3, borderRadius: 2, p: 3 }}>
+                            <Typography
+                                variant="body1"
+                                align="center"
+                                gutterBottom>
+                                Nije pronađen rezultat za ovaj kviz.
+                            </Typography>
+                            <Button
+                                onClick={() => router.back()}
+                                startIcon={<FontAwesomeIcon icon={faArrowLeft} />}
+                                variant="contained"
+                            >
+                                Natrag
                             </Button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </Box>
+                    </Box>
+                </Box>
+            </Box>
         );
     }
 
     return (
         <>
-            <Typography variant="h1" gutterBottom>Tvoj rezultat je {results.score}/{results.questionNumber}</Typography>
-            <Card sx={{width:'100%', marginBottom: 3}}>
+            <Typography variant="h1"
+                gutterBottom>
+                Tvoj rezultat je {results.score}/{results.questionNumber}
+            </Typography>
+            <Card sx={{ width: '100%', marginBottom: 3 }}>
                 <CardContent>
                     {results.quizTakeQuestions.map((question, index) => {
                         let questionContent;
@@ -87,16 +99,16 @@ export default function ResultView() {
                         return (
                             <Alert key={index}
                                 severity={question.isCorrect ? 'success' : 'error'}
-                                sx={{marginBottom: 3}}>
+                                sx={{ marginBottom: 3 }}>
                                 <div>
-                                    <Typography variant="subtitle1" sx={{fontWeight:500}}>{question.index+1}. {question.text}</Typography>
+                                    <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>{question.index + 1}. {question.text}</Typography>
                                     {questionContent}
                                 </div>
                             </Alert>
                         );
                     })}
                 </CardContent>
-                <CardActions sx={{justifyContent: 'center'}}>
+                <CardActions sx={{ justifyContent: 'center' }}>
                     <Button onClick={() => router.push('/')} variant="outlined">
                         <FontAwesomeIcon icon={faArrowLeft} />
                         &nbsp;Natrag na početnu stranicu
