@@ -1,8 +1,6 @@
 // Styles import
 import { Button, Typography } from '@mui/material';
 
-import styles from './NotFoundView.module.scss';
-
 /**
  * Function representing the view corresponding to the 404 page.
  *

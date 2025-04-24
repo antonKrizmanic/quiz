@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Grid from '@mui/material/Grid2';
+import { Box, Typography } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 import { Answer, Question, QuizTakeQuestion } from '@/component-models/types';
 
 import { get } from '../../services/HttpService';
-import { Box, Grid, Typography } from '@mui/material';
 
 interface MatchTermAnswerProps {
     questionId: number;
@@ -53,14 +54,22 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
             {Array.from(questionAnswerDictionary.entries()).map(([question, correctAnswer]: [Question, Answer], index) => {
                 const questionTake = quizTakeChildren.find(x => x.questionId === question.id);
                 const answer = questionTake?.answers[0];
-    
+
                 return (
                     <Box key={index} sx={{ pb: 4 }}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sm={3}>
+                            <Grid
+                                size={{
+                                    xs: 12,
+                                    sm: 3
+                                }}>
                                 <Typography variant="body1">{question.text}</Typography>
                             </Grid>
-                            <Grid item xs={12} sm={9}>
+                            <Grid
+                                size={{
+                                    xs: 12,
+                                    sm: 9
+                                }}>
                                 {answer ? (
                                     answer.isCorrect ? (
                                         <Box>
