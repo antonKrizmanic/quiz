@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 
 import styles from './InternalServerErrorView.module.scss';
 
@@ -9,14 +9,10 @@ import styles from './InternalServerErrorView.module.scss';
  */
 export default function InternalServerError() {
     return (
-        <div className={styles.container}>
-            <h1 className={styles.title} data-testid="heading">
-                500
-            </h1>
-            <h2 className={styles.subtitle}>
-                Ooops, nešto je pošlo po krivu.
-            </h2>
+        <>
+            <Typography variant="h1" gutterBottom>500</Typography>
+            <Typography variant="h6" gutterBottom>Ooops, nešto je pošlo po krivu.</Typography>
             <Button variant="outlined" href="/">Natrag na početnu</Button>
-        </div>
+        </>        
     );
 }

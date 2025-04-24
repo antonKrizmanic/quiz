@@ -7,6 +7,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { Answer, Question, QuizTakeQuestion } from '@/component-models/types';
 
 import { get } from '../../services/HttpService';
+import { Box, Grid, Typography } from '@mui/material';
 
 interface MatchTermAnswerProps {
     questionId: number;
@@ -52,51 +53,68 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
             {Array.from(questionAnswerDictionary.entries()).map(([question, correctAnswer]: [Question, Answer], index) => {
                 const questionTake = quizTakeChildren.find(x => x.questionId === question.id);
                 const answer = questionTake?.answers[0];
-
+    
                 return (
-                    <div key={index} className="pb-4">
-                        <div className="grid grid-cols-4">
-                            <div>
-                                {question.text}
-                            </div>
-                            <div className="col-span-3">
+                    <Box key={index} sx={{ pb: 4 }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={3}>
+                                <Typography variant="body1">{question.text}</Typography>
+                            </Grid>
+                            <Grid item xs={12} sm={9}>
                                 {answer ? (
                                     answer.isCorrect ? (
-                                        <div>
-                                            <p className="font-semibold">Točan odgovor!</p>
-                                            <p>{correctAnswer.text} &nbsp;<CheckCircleIcon color="success" /></p>
-                                        </div>
+                                        <Box>
+                                            <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                                                Točan odgovor!
+                                            </Typography>
+                                            <Typography variant="body1">
+                                                {correctAnswer.text} &nbsp;
+                                                <CheckCircleIcon color="success" />
+                                            </Typography>
+                                        </Box>
                                     ) : (
                                         <>
                                             {answers.find(x => x.id === answer.id)?.text ? (
-                                                <div>
-                                                    <p className="font-semibold">Tvoj odgovor:</p>
-                                                    <p>
+                                                <Box>
+                                                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                                                        Tvoj odgovor:
+                                                    </Typography>
+                                                    <Typography variant="body1">
                                                         {answers.find(x => x.id === answer.id)?.text}&nbsp;
                                                         <CancelIcon color="error" />
-                                                    </p>
-                                                    <p className="font-semibold">Točan odgovor:</p>
-                                                    <p>{correctAnswer.text}</p>
-                                                </div>
+                                                    </Typography>
+                                                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                                                        Točan odgovor:
+                                                    </Typography>
+                                                    <Typography variant="body1">{correctAnswer.text}</Typography>
+                                                </Box>
                                             ) : (
-                                                <div>
-                                                    <p className="font-semibold">Nisi odgovorio!</p>
-                                                    <p className="font-semibold">Točan odgovor:</p>
-                                                    <p>{correctAnswer.text}</p>
-                                                </div>
+                                                <Box>
+                                                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                                                        Nisi odgovorio!
+                                                    </Typography>
+                                                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                                                        Točan odgovor:
+                                                    </Typography>
+                                                    <Typography variant="body1">{correctAnswer.text}</Typography>
+                                                </Box>
                                             )}
                                         </>
                                     )
                                 ) : (
-                                    <div>
-                                        <p className="font-semibold">Nisi odgovorio!</p>
-                                        <p className="font-semibold">Točan odgovor:</p>
-                                        <p>{correctAnswer.text}</p>
-                                    </div>
+                                    <Box>
+                                        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                                            Nisi odgovorio!
+                                        </Typography>
+                                        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                                            Točan odgovor:
+                                        </Typography>
+                                        <Typography variant="body1">{correctAnswer.text}</Typography>
+                                    </Box>
                                 )}
-                            </div>
-                        </div>
-                    </div>
+                            </Grid>
+                        </Grid>
+                    </Box>
                 );
             })}
         </>

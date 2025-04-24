@@ -1,5 +1,5 @@
 // Styles import
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 
 import styles from './NotFoundView.module.scss';
 
@@ -10,14 +10,11 @@ import styles from './NotFoundView.module.scss';
  */
 export default function NotFoundView() {
     return (
-        <div className={styles.container}>
-            <h1 className={styles.title} data-testid="heading">
-        404
-            </h1>
-            <h2 className={styles.subtitle}>
-        Ops, ova stranica ne postoji!
-            </h2>
+        <>
+            <Typography variant="h1" gutterBottom>404</Typography>
+            <Typography variant="h6" gutterBottom>Ops, ova stranica ne postoji!</Typography>
             <Button variant="outlined" href="/">Natrag na početnu</Button>
-        </div>
+
+        </>
     );
 }
