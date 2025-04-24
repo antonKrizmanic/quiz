@@ -8,7 +8,7 @@
     "build-analyze": "cross-env ANALYZE=true pnpm build",
     "export": "rimraf ./out && rimraf ./.next && cross-env NODE_ENV=production next build && next export",
     "start": "next start",
-    "lint": "next lint"    
+    "lint": "next lint"
   },
   "dependencies": {
     "@emotion/cache": "11.14.0",
@@ -28,8 +28,6 @@
     "mobx-react-lite": "4.1.0",
     "next": "15.3.1",
     "next-react-svg": "1.2.0",
-    "pixelmatch": "6.0.0",
-    "pngjs": "7.0.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "sass": "1.87.0",
