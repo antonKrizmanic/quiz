@@ -13,7 +13,7 @@
   "dependencies": {
     "@emotion/cache": "11.14.0",
     "@emotion/react": "11.14.0",
-    "@emotion/styled": "11.14.0",
+    "@emotion/styled": "11.14.1",
     "@fontsource-variable/roboto": "^5.1.0",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
