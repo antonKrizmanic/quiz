@@ -112,8 +112,8 @@ importers:
         specifier: 6.10.2
         version: 6.10.2(eslint@9.32.0)
       fs-extra:
-        specifier: 11.3.0
-        version: 11.3.0
+        specifier: 11.3.1
+        version: 11.3.1
       kill-port:
         specifier: 2.0.1
         version: 2.0.1
@@ -2681,8 +2681,8 @@ packages:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
 
-  fs-extra@11.3.0:
-    resolution: {integrity: sha512-Z4XaCL6dUDHfP/jT25jJKMmtxvuwbkrD1vNSMFlo9lNLY2c5FHYSQgHPRZUjAB26TpDEoW9HCOgplrdbaPV/ew==}
+  fs-extra@11.3.1:
+    resolution: {integrity: sha512-eXvGGwZ5CL17ZSwHWd3bbgk7UUpF6IFHtP57NYYakPvHOs8GDgDe5KJI36jIJzDkJ6eJjuzRA8eBQb6SkKue0g==}
     engines: {node: '>=14.14'}
 
   fsevents@2.3.3:
@@ -7363,7 +7363,7 @@ snapshots:
 
   fresh@0.5.2: {}
 
-  fs-extra@11.3.0:
+  fs-extra@11.3.1:
     dependencies:
       graceful-fs: 4.2.11
       jsonfile: 6.1.0
