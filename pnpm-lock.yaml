@@ -37,7 +37,7 @@ importers:
         version: 7.3.1(@emotion/react@11.14.0(@types/react@19.0.1)(react@19.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.0.1)(react@19.1.1))(@types/react@19.0.1)(react@19.1.1))(@types/react@19.0.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@mui/material-nextjs':
         specifier: ^7.0.0
-        version: 7.3.0(@emotion/cache@11.14.0)(@emotion/react@11.14.0(@types/react@19.0.1)(react@19.1.1))(@types/react@19.0.1)(next@15.5.0(@babel/core@7.23.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.90.0))(react@19.1.1)
+        version: 7.3.0(@emotion/cache@11.14.0)(@emotion/react@11.14.0(@types/react@19.0.1)(react@19.1.1))(@types/react@19.0.1)(next@15.5.0(@babel/core@7.23.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.91.0))(react@19.1.1)
       axios:
         specifier: 1.11.0
         version: 1.11.0
@@ -55,7 +55,7 @@ importers:
         version: 4.1.0(mobx@6.13.7)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       next:
         specifier: 15.5.0
-        version: 15.5.0(@babel/core@7.23.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.90.0)
+        version: 15.5.0(@babel/core@7.23.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.91.0)
       next-react-svg:
         specifier: 1.2.0
         version: 1.2.0
@@ -66,8 +66,8 @@ importers:
         specifier: 19.1.1
         version: 19.1.1(react@19.1.1)
       sass:
-        specifier: 1.90.0
-        version: 1.90.0
+        specifier: 1.91.0
+        version: 1.91.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -125,7 +125,7 @@ importers:
         version: 6.0.1
       sass-loader:
         specifier: 16.0.5
-        version: 16.0.5(sass@1.90.0)(webpack@5.101.3)
+        version: 16.0.5(sass@1.91.0)(webpack@5.101.3)
       webpack-dev-server:
         specifier: 5.2.2
         version: 5.2.2(webpack@5.101.3)
@@ -3746,8 +3746,8 @@ packages:
       webpack:
         optional: true
 
-  sass@1.90.0:
-    resolution: {integrity: sha512-9GUyuksjw70uNpb1MTYWsH9MQHOHY6kwfnkafC24+7aOMZn9+rVMBxRbLvw756mrBFbIsFg6Xw9IkR2Fnn3k+Q==}
+  sass@1.91.0:
+    resolution: {integrity: sha512-aFOZHGf+ur+bp1bCHZ+u8otKGh77ZtmFyXDo4tlYvT7PWql41Kwd8wdkPqhhT+h2879IVblcHFglIMofsFd1EA==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -5465,11 +5465,11 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.0.1
 
-  '@mui/material-nextjs@7.3.0(@emotion/cache@11.14.0)(@emotion/react@11.14.0(@types/react@19.0.1)(react@19.1.1))(@types/react@19.0.1)(next@15.5.0(@babel/core@7.23.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.90.0))(react@19.1.1)':
+  '@mui/material-nextjs@7.3.0(@emotion/cache@11.14.0)(@emotion/react@11.14.0(@types/react@19.0.1)(react@19.1.1))(@types/react@19.0.1)(next@15.5.0(@babel/core@7.23.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.91.0))(react@19.1.1)':
     dependencies:
       '@babel/runtime': 7.28.2
       '@emotion/react': 11.14.0(@types/react@19.0.1)(react@19.1.1)
-      next: 15.5.0(@babel/core@7.23.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.90.0)
+      next: 15.5.0(@babel/core@7.23.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.91.0)
       react: 19.1.1
     optionalDependencies:
       '@emotion/cache': 11.14.0
@@ -7990,7 +7990,7 @@ snapshots:
     dependencies:
       svg-react-loader: 0.4.6
 
-  next@15.5.0(@babel/core@7.23.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.90.0):
+  next@15.5.0(@babel/core@7.23.3)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.91.0):
     dependencies:
       '@next/env': 15.5.0
       '@swc/helpers': 0.5.15
@@ -8008,7 +8008,7 @@ snapshots:
       '@next/swc-linux-x64-musl': 15.5.0
       '@next/swc-win32-arm64-msvc': 15.5.0
       '@next/swc-win32-x64-msvc': 15.5.0
-      sass: 1.90.0
+      sass: 1.91.0
       sharp: 0.34.3
     transitivePeerDependencies:
       - '@babel/core'
@@ -8397,14 +8397,14 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass-loader@16.0.5(sass@1.90.0)(webpack@5.101.3):
+  sass-loader@16.0.5(sass@1.91.0)(webpack@5.101.3):
     dependencies:
       neo-async: 2.6.2
     optionalDependencies:
-      sass: 1.90.0
+      sass: 1.91.0
       webpack: 5.101.3
 
-  sass@1.90.0:
+  sass@1.91.0:
     dependencies:
       chokidar: 4.0.1
       immutable: 5.0.2
