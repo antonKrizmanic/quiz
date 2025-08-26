@@ -1,5 +1,3 @@
-import { Box, Typography } from '@mui/material';
-
 interface QuestionHeaderProps {
     questionIndex: number;
     questionCount: number;
@@ -9,23 +7,19 @@ interface QuestionHeaderProps {
 
 function QuestionHeader({ questionIndex, questionCount, questionText, helperText }: QuestionHeaderProps) {
     return (
-        <Box sx={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Box>
-                <Typography
-                    variant="subtitle1"
-                    sx={{ lineHeight: 1, fontWeight: 600 }}>
+        <div className="mb-4 flex justify-between items-center">
+            <div>
+                <h3 className="text-lg font-semibold leading-tight">
                     {questionIndex + 1}. {questionText}
-                </Typography>
-                <Typography
-                    variant="caption">
+                </h3>
+                <p className="text-sm text-muted-foreground">
                     {helperText}
-                </Typography>
-            </Box>
-            <Typography
-                variant="caption">
+                </p>
+            </div>
+            <span className="text-sm text-muted-foreground">
                 {questionIndex + 1}/{questionCount}
-            </Typography>
-        </Box>
+            </span>
+        </div>
     );
 }
 

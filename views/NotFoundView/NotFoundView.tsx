@@ -1,5 +1,4 @@
-// Styles import
-import { Button, Typography } from '@mui/material';
+import { Button } from "@/components/ui/button";
 
 /**
  * Function representing the view corresponding to the 404 page.
@@ -8,11 +7,12 @@ import { Button, Typography } from '@mui/material';
  */
 export default function NotFoundView() {
     return (
-        <>
-            <Typography variant="h1" gutterBottom>404</Typography>
-            <Typography variant="h6" gutterBottom>Ops, ova stranica ne postoji!</Typography>
-            <Button variant="outlined" href="/">Natrag na početnu</Button>
-
-        </>
+        <div className="space-y-6 text-center">
+            <h1 className="text-6xl font-bold text-destructive">404</h1>
+            <h2 className="text-xl font-medium">Ops, ova stranica ne postoji!</h2>
+            <Button variant="outline" asChild>
+                <a href="/">Natrag na početnu</a>
+            </Button>
+        </div>
     );
 }
