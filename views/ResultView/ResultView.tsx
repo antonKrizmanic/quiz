@@ -90,7 +90,7 @@ export default function ResultView() {
     const isPassing = scorePercentage >= 50;
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 mb-12">
             {/* Header Section */}
             <div className="text-center space-y-4">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full mb-4">
