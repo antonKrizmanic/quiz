@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Box, FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useEffect, useState } from 'react';
 
 import QuestionHeader from '../reusable/QuestionHeader';
 
@@ -39,31 +40,53 @@ function ChooseOneQuestion({ question, questionIndex, questionCount, onAnswer, i
     };
 
     return (
-        <>
+        <div className="space-y-8">
             <QuestionHeader
                 questionIndex={questionIndex}
                 questionCount={questionCount}
                 questionText={question.text}
                 helperText="(Odaberi samo jedan odgovor)" />
-            <Box>
-                <FormControl>
-                    <RadioGroup
-                        aria-labelledby="radio-buttons-group-label"
-                        name="radio-buttons-group"
-                    >
-                        {question.answers.map((option) => (
-                            <div key={option.id}>
-                                <FormControlLabel
-                                    value={option.id}
-                                    control={<Radio checked={selectedAnswerId === option.id} />}
-                                    onChange={() => onAnswerSelect(option.id)}
-                                    label={option.text} />
-                            </div>
-                        ))}
-                    </RadioGroup>
-                </FormControl>
-            </Box>
-        </>
+            <RadioGroup
+                value={selectedAnswerId?.toString() || ""}
+                onValueChange={(value) => onAnswerSelect(parseInt(value))}
+                className="space-y-4"
+            >
+                {question.answers.map((option) => {
+                    const isSelected = selectedAnswerId === option.id;
+                    return (
+                        <div key={option.id} className="group">
+                            <RadioGroupItem
+                                value={option.id.toString()}
+                                id={`option-${option.id}`}
+                                className="peer sr-only"
+                            />
+                            <Label
+                                htmlFor={`option-${option.id}`}
+                                className={`flex items-center space-x-4 p-4 border-2 rounded-lg cursor-pointer transition-all duration-300 hover:border-primary-300 dark:hover:border-primary-400 hover:shadow-md ${isSelected
+                                    ? 'border-primary-500 dark:border-primary-400 bg-primary-50 dark:bg-primary-900/20 shadow-lg'
+                                    : 'border-slate-200 dark:border-slate-700'
+                                    }`}
+                            >
+                                <div className={`flex-shrink-0 w-6 h-6 border-2 rounded-full flex items-center justify-center transition-all duration-300 ${isSelected
+                                    ? 'border-primary-600 dark:border-primary-400 bg-primary-600 dark:bg-primary-400'
+                                    : 'border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800'
+                                    }`}>
+                                    {isSelected && (
+                                        <div className="w-3 h-3 bg-red-600 rounded-full"></div>
+                                    )}
+                                </div>
+                                <span className={`text-base font-medium transition-colors ${isSelected
+                                    ? 'text-primary-700 dark:text-primary-300'
+                                    : 'text-slate-700 dark:text-slate-200'
+                                    }`}>
+                                    {option.text}
+                                </span>
+                            </Label>
+                        </div>
+                    );
+                })}
+            </RadioGroup>
+        </div>
     );
 }
 

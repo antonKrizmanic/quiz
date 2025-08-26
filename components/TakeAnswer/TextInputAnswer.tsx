@@ -1,9 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { List, ListItem, Typography } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
+import { CheckCircle, X, XCircle } from "lucide-react";
+import { useEffect, useState } from 'react';
 
 import { Answer } from '@/component-models/types';
 
@@ -14,45 +12,68 @@ interface TextInputAnswerProps {
     questionId: number;
 }
 
-function TextInputAnswer({ givenAnswer, questionId }:TextInputAnswerProps) {
-
+function TextInputAnswer({ givenAnswer, questionId }: TextInputAnswerProps) {
     const [answers, setAnswers] = useState<Answer[]>([]);
 
     useEffect(() => {
         const fetchAnswers = async () => {
             // eslint-disable-next-line max-len
-            const response = await get(`Quizzes/publicAnswer/GetList?QuestionId=${questionId}&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);
+            const response = await get(`Quizzes/PublicAnswer/GetList?QuestionId=${questionId}&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);
             setAnswers(response.data.list);
         };
 
         fetchAnswers();
-    },[questionId]);
+    }, [questionId]);
 
     return (
-        <>
+        <div className="space-y-6">
             {(!givenAnswer || !givenAnswer.text) ? (
-                <Typography sx={{fontWeight: 500}}>Nisi odgovorio!</Typography>
+                <div className="flex items-center space-x-2 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                    <X className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+                    <p className="font-medium text-yellow-800 dark:text-yellow-200">
+                        Nisi odgovorio!
+                    </p>
+                </div>
             ) : (
-                <>
-                    <Typography sx={{fontWeight:500}}>Tvoj odgovor:</Typography>
-                    <Typography>
-                        {givenAnswer.text}  &nbsp;
+                <div className="space-y-3">
+                    <p className="font-semibold text-lg text-foreground">Tvoj odgovor:</p>
+                    <div className={`flex items-center space-x-3 p-4 border-2 rounded-lg ${givenAnswer.isCorrect
+                        ? 'border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/20'
+                        : 'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20'
+                        }`}>
+                        <span className={`text-base font-medium ${givenAnswer.isCorrect
+                            ? 'text-green-700 dark:text-green-300'
+                            : 'text-red-700 dark:text-red-300'
+                            }`}>
+                            {givenAnswer.text}
+                        </span>
                         {givenAnswer.isCorrect ? (
-                            <CheckCircleIcon color="success" />
+                            <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
                         ) : (
-                            <CancelIcon color="error"/>
+                            <XCircle className="h-5 w-5 text-red-600 dark:text-red-400 flex-shrink-0" />
                         )}
-                    </Typography>
-                </>
+                    </div>
+                </div>
             )}
 
-            <Typography>Odgovori koji se priznaju:</Typography>
-            <List>
-                {answers.map((correctAnswer, index) => (
-                    <ListItem key={index}>{index + 1}. {correctAnswer.text}</ListItem>
-                ))}
-            </List>
-        </>
+            <div className="space-y-3">
+                <p className="font-semibold text-lg text-foreground">Odgovori koji se priznaju:</p>
+                <div className="space-y-2">
+                    {answers.map((correctAnswer, index) => (
+                        <div key={index} className="flex items-center space-x-3 p-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg">
+                            <div className="flex-shrink-0 w-6 h-6 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                                <span className="text-sm font-bold text-green-600 dark:text-green-400">
+                                    {index + 1}
+                                </span>
+                            </div>
+                            <span className="text-base text-slate-700 dark:text-slate-200">
+                                {correctAnswer.text}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
     );
 }
 

@@ -1,11 +1,10 @@
 // Component imports
-import IconButton from '@mui/material/IconButton';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
+import { Button } from "@/components/ui/button";
+import { Moon, Sun } from "lucide-react";
 
 type ThemeSwitcherProps = {
-  isDarkMode?: boolean;
-  onModeChange?: () => void;
+    isDarkMode?: boolean;
+    onModeChange?: () => void;
 }
 
 /**
@@ -20,16 +19,14 @@ export default function ThemeSwitcher(props: ThemeSwitcherProps) {
     } = props;
 
     return (
-        <IconButton
+        <Button
+            variant="ghost"
+            size="icon"
             aria-label="Dark mode toggle button"
-            sx={{
-                position: 'fixed',
-                top: 16,
-                right: 16
-            }}
+            className="fixed top-4 right-4"
             onClick={onModeChange}
         >
-            {isDarkMode ? <DarkModeIcon /> : <LightModeIcon />}
-        </IconButton>
+            {isDarkMode ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+        </Button>
     );
 }

@@ -1,12 +1,11 @@
 // Components import
-import { CircularProgress } from '@mui/material';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 // Styles import
-import styles from './LoadingContainer.module.scss';
 
 type LoadingContainerProps = {
-  isLoading?: boolean;
-  children?: React.ReactNode;
+    isLoading?: boolean;
+    children?: React.ReactNode;
 }
 
 /**
@@ -21,8 +20,8 @@ export default function LoadingContainer(props: LoadingContainerProps) {
     } = props;
 
     return (
-        <div className={styles.container}>
-            {isLoading ? <CircularProgress /> : children}
-        </div>
+        <>
+            {isLoading ? <LoadingSpinner /> : children}
+        </>
     );
 }

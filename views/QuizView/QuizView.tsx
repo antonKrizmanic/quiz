@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { ArrowLeft, ArrowRight, Brain, Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
 
-import UserInfo from '@/components/TakeQuiz/UserInfo';
-import TypeAnswerQuestion from '@/components/TakeQuiz/TypeAnswerQuestion';
-import MakeMatchQuestion from '@/components/TakeQuiz/MakeMatchQuestion';
-import ChooseOneQuestion from '@/components/TakeQuiz/ChooseOneQuestion';
 import ChooseManyQuestion from '@/components/TakeQuiz/ChooseManyQuestion';
+import ChooseOneQuestion from '@/components/TakeQuiz/ChooseOneQuestion';
+import MakeMatchQuestion from '@/components/TakeQuiz/MakeMatchQuestion';
+import TypeAnswerQuestion from '@/components/TakeQuiz/TypeAnswerQuestion';
+import UserInfo from '@/components/TakeQuiz/UserInfo';
 
 import { get, post } from '../../services/HttpService';
 
@@ -164,11 +164,11 @@ export default function QuizView() {
             questions: Object.keys(quiz.questions).map((key, index) => {
                 const question = quiz.questions[key];
                 let questionAnswers = [];
-                if(question.questionType === 4) {
+                if (question.questionType === 4) {
                     questionAnswers = answers[question.id];
                 }
-                else{
-                    if(Array.isArray(answers[question.id])){
+                else {
+                    if (Array.isArray(answers[question.id])) {
                         questionAnswers = answers[question.id].map((answer: Answer) => {
                             return {
                                 questionId: question.id,
@@ -178,7 +178,7 @@ export default function QuizView() {
                             };
                         });
                     }
-                    else{
+                    else {
                         questionAnswers = [{
                             questionId: question.id,
                             answerId: answers[question.id].id,
@@ -204,69 +204,148 @@ export default function QuizView() {
 
 
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="flex items-center justify-center min-h-[400px]">
+                <div className="text-center space-y-4">
+                    <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mx-auto animate-pulse">
+                        <Loader2 className="h-8 w-8 text-primary-600 dark:text-primary-400 animate-spin" />
+                    </div>
+                    <p className="text-lg text-muted-foreground">Učitavanje kviza...</p>
+                </div>
+            </div>
+        );
     }
 
     if (!quiz || quiz.questions.length === 0) {
         return (
-            <Card>
-                <CardContent>
-                    <Typography variant="body1">Nažalost, ovaj kviz nema ni jedno pitanje, odaberite drugi</Typography>
-                </CardContent>
-                <CardActions>
-                    <Button onClick={handleBack} variant="outlined"><FontAwesomeIcon icon={faArrowLeft} /> &nbsp; Natrag</Button>
-                </CardActions>
-            </Card>
+            <div className="space-y-8">
+                <div className="text-center space-y-4">
+                    <div className="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mx-auto">
+                        <Brain className="h-8 w-8 text-destructive" />
+                    </div>
+                    <h2 className="text-2xl font-semibold text-foreground">Kviz nije dostupan</h2>
+                    <p className="text-muted-foreground">Nažalost, ovaj kviz nema ni jedno pitanje, odaberite drugi</p>
+                </div>
+                <Card className="w-full">
+                    <CardFooter className="flex justify-center pt-6">
+                        <Button
+                            onClick={handleBack}
+                            variant="outline"
+                            className="group relative overflow-hidden bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 hover:from-slate-100 hover:to-slate-200 dark:hover:from-slate-700 dark:hover:to-slate-600 border-2 border-slate-200 dark:border-slate-600 hover:border-primary-300 dark:hover:border-primary-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+                        >
+                            <div className="flex items-center space-x-3">
+                                <div className="relative">
+                                    <ArrowLeft className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-all duration-300 group-hover:-translate-x-1" />
+                                    <div className="absolute inset-0 bg-primary-100 dark:bg-primary-900 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></div>
+                                </div>
+                                <span className="font-medium text-slate-700 dark:text-slate-200 group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors duration-300">
+                                    Natrag
+                                </span>
+                            </div>
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                        </Button>
+                    </CardFooter>
+                </Card>
+            </div>
         );
     }
 
     const currentQuestion = quiz.questions[currentQuestionIndex];
 
     return (
-        <Card sx={{width:'100%'}}>
-            <CardContent>
-                {showUserInfo && (
-                    <UserInfo onBack={handlePreviousQuestion} onSubmit={submitQuiz} />
+        <div className="space-y-8">
+            {/* Progress Header */}
+            <div className="text-center space-y-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full mb-4">
+                    <Brain className="h-8 w-8 text-primary-600 dark:text-primary-400" />
+                </div>
+                <div className="space-y-2">
+                    <h1 className="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                        Pitanje {currentQuestionIndex + 1} od {quiz.questions.length}
+                    </h1>
+                    <div className="w-full max-w-md mx-auto bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                        <div
+                            className="bg-primary-600 h-2 rounded-full transition-all duration-500 ease-out"
+                            style={{ width: `${((currentQuestionIndex + 1) / quiz.questions.length) * 100}%` }}
+                        ></div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Question Card */}
+            <Card className="w-full group hover:shadow-lg transition-all duration-300 border-2 border-slate-200 dark:border-slate-700 hover:border-primary-300 dark:hover:border-primary-400">
+                <CardContent className="pt-8 pb-6">
+                    {showUserInfo && (
+                        <UserInfo onBack={handlePreviousQuestion} onSubmit={submitQuiz} />
+                    )}
+                    {!showUserInfo && currentQuestion.questionType === 1 && (
+                        <ChooseOneQuestion question={currentQuestion}
+                            questionIndex={currentQuestionIndex}
+                            questionCount={quiz.questions.length}
+                            onAnswer={handleSingleAnswer}
+                            initialAnswers={answers[currentQuestion.id]} />
+                    )}
+                    {!showUserInfo && currentQuestion.questionType === 2 && (
+                        <ChooseManyQuestion question={currentQuestion}
+                            questionIndex={currentQuestionIndex}
+                            questionCount={quiz.questions.length}
+                            onAnswer={handleMultipleAnswer}
+                            initialAnswers={answers[currentQuestion.id]} />
+                    )}
+                    {!showUserInfo && currentQuestion.questionType === 3 && (
+                        <TypeAnswerQuestion question={currentQuestion}
+                            questionIndex={currentQuestionIndex}
+                            questionCount={quiz.questions.length}
+                            onAnswer={handleTextAnswer}
+                            initialAnswer={answers[currentQuestion.id]?.text} />
+                    )}
+                    {!showUserInfo && currentQuestion.questionType === 4 && (
+                        <MakeMatchQuestion question={currentQuestion}
+                            questionIndex={currentQuestionIndex}
+                            questionCount={quiz.questions.length}
+                            onAnswer={handleAnswer}
+                            initialAnswer={answers[currentQuestion.id]} />
+                    )}
+                </CardContent>
+                {!showUserInfo && (
+                    <CardFooter className="flex justify-between pt-6 border-t border-border">
+                        <Button
+                            onClick={handlePreviousQuestion}
+                            disabled={!enablePrevious}
+                            variant="outline"
+                            className="group relative overflow-hidden bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 hover:from-slate-100 hover:to-slate-200 dark:hover:from-slate-700 dark:hover:to-slate-600 border-2 border-slate-200 dark:border-slate-600 hover:border-primary-300 dark:hover:border-primary-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
+                        >
+                            <div className="flex items-center space-x-3">
+                                <div className="relative">
+                                    <ArrowLeft className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-all duration-300 group-hover:-translate-x-1" />
+                                    <div className="absolute inset-0 bg-primary-100 dark:bg-primary-900 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></div>
+                                </div>
+                                <span className="font-medium text-slate-700 dark:text-slate-200 group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors duration-300">
+                                    Prethodno pitanje
+                                </span>
+                            </div>
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                        </Button>
+                        <Button
+                            onClick={handleNextQuestion}
+                            disabled={!enableNext}
+                            variant="outline"
+                            className="group relative overflow-hidden bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 hover:from-slate-100 hover:to-slate-200 dark:hover:from-slate-700 dark:hover:to-slate-600 border-2 border-slate-200 dark:border-slate-600 hover:border-primary-300 dark:hover:border-primary-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
+                        >
+                            <div className="flex items-center space-x-3">
+                                <span className="font-medium text-slate-700 dark:text-slate-200 group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors duration-300">
+                                    Sljedeće pitanje
+                                </span>
+                                <div className="relative">
+                                    <ArrowRight className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-all duration-300 group-hover:translate-x-1" />
+                                    <div className="absolute inset-0 bg-primary-100 dark:bg-primary-900 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></div>
+                                </div>
+                            </div>
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-full group-hover:-translate-x-full transition-transform duration-700"></div>
+                        </Button>
+                    </CardFooter>
                 )}
-                {!showUserInfo && currentQuestion.questionType === 1 && (
-                    <ChooseOneQuestion question={currentQuestion}
-                        questionIndex={currentQuestionIndex}
-                        questionCount={quiz.questions.length}
-                        onAnswer={handleSingleAnswer}
-                        initialAnswers={answers[currentQuestion.id]} />
-                )}
-                {!showUserInfo && currentQuestion.questionType === 2 && (
-                    <ChooseManyQuestion question={currentQuestion}
-                        questionIndex={currentQuestionIndex}
-                        questionCount={quiz.questions.length}
-                        onAnswer={handleMultipleAnswer}
-                        initialAnswers={answers[currentQuestion.id]} />
-                )}
-                {!showUserInfo && currentQuestion.questionType === 3 && (
-                    <TypeAnswerQuestion question={currentQuestion}
-                        questionIndex={currentQuestionIndex}
-                        questionCount={quiz.questions.length}
-                        onAnswer={handleTextAnswer}
-                        initialAnswer={answers[currentQuestion.id]?.text} />
-                )}
-                {!showUserInfo && currentQuestion.questionType === 4 && (
-                    <MakeMatchQuestion question={currentQuestion}
-                        questionIndex={currentQuestionIndex}
-                        questionCount={quiz.questions.length}
-                        onAnswer={handleAnswer}
-                        initialAnswer={answers[currentQuestion.id]} />
-                )}
-            </CardContent>
-            {!showUserInfo && (
-                <CardActions sx={{justifyContent: 'space-between'}}>
-                    <Button onClick={handlePreviousQuestion}
-                        disabled={!enablePrevious}
-                        variant="outlined"><FontAwesomeIcon icon={faArrowLeft} />&nbsp;Prethodno pitanje</Button>
-                    <Button onClick={handleNextQuestion}
-                        disabled={!enableNext}
-                        variant="outlined">Sljedeće pitanje&nbsp;<FontAwesomeIcon icon={faArrowRight} /></Button>
-                </CardActions>
-            )}
-        </Card>
+            </Card>
+        </div>
     );
 }
