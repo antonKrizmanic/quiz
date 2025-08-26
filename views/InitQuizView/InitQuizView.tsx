@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { AlertTriangle, ArrowLeft, CheckCircle, Clock, Info, Play, Trophy } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CheckCircle, Clock, Info, Loader2, Play, Trophy } from "lucide-react";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -52,9 +52,8 @@ export default function InitQuizView() {
             <div className="flex items-center justify-center min-h-[400px]">
                 <div className="text-center space-y-4">
                     <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mx-auto animate-pulse">
-                        <Info className="h-8 w-8 text-primary-600 dark:text-primary-400" />
+                        <Loader2 className="h-8 w-8 text-primary-600 dark:text-primary-400 animate-spin" />
                     </div>
-                    <p className="text-lg text-muted-foreground">Pripremamo kviz...</p>
                 </div>
             </div>
         );
@@ -68,7 +67,7 @@ export default function InitQuizView() {
     ];
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 mb-12">
             {quizId ? (
                 <>
                     {/* Header Section */}
