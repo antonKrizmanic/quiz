@@ -210,7 +210,6 @@ export default function QuizView() {
                     <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mx-auto animate-pulse">
                         <Loader2 className="h-8 w-8 text-primary-600 dark:text-primary-400 animate-spin" />
                     </div>
-                    <p className="text-lg text-muted-foreground">Učitavanje kviza...</p>
                 </div>
             </div>
         );
@@ -218,7 +217,7 @@ export default function QuizView() {
 
     if (!quiz || quiz.questions.length === 0) {
         return (
-            <div className="space-y-8">
+            <div className="space-y-8 mb-12">
                 <div className="text-center space-y-4">
                     <div className="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mx-auto">
                         <Brain className="h-8 w-8 text-destructive" />
@@ -253,7 +252,7 @@ export default function QuizView() {
     const currentQuestion = quiz.questions[currentQuestionIndex];
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 mb-12">
             {/* Progress Header */}
             <div className="text-center space-y-4">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full mb-4">
@@ -308,12 +307,13 @@ export default function QuizView() {
                     )}
                 </CardContent>
                 {!showUserInfo && (
-                    <CardFooter className="flex justify-between pt-6 border-t border-border">
+                    <CardFooter className="flex flex-col-reverse sm:flex-row justify-between gap-4 pt-6 border-t border-border">
                         <Button
                             onClick={handlePreviousQuestion}
                             disabled={!enablePrevious}
                             variant="outline"
-                            className="group relative overflow-hidden bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 hover:from-slate-100 hover:to-slate-200 dark:hover:from-slate-700 dark:hover:to-slate-600 border-2 border-slate-200 dark:border-slate-600 hover:border-primary-300 dark:hover:border-primary-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
+                            size="sm"
+                            className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 hover:from-slate-100 hover:to-slate-200 dark:hover:from-slate-700 dark:hover:to-slate-600 border-2 border-slate-200 dark:border-slate-600 hover:border-primary-300 dark:hover:border-primary-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
                         >
                             <div className="flex items-center space-x-3">
                                 <div className="relative">
@@ -330,18 +330,34 @@ export default function QuizView() {
                             onClick={handleNextQuestion}
                             disabled={!enableNext}
                             variant="outline"
-                            className="group relative overflow-hidden bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 hover:from-slate-100 hover:to-slate-200 dark:hover:from-slate-700 dark:hover:to-slate-600 border-2 border-slate-200 dark:border-slate-600 hover:border-primary-300 dark:hover:border-primary-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
+                            size="lg"
+                            className={`w-full sm:w-auto text-lg py-6 md:py-3 sm:text-sm group relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none ${enableNext
+                                ? 'bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 hover:from-emerald-100 hover:to-emerald-200 dark:hover:from-emerald-800/30 dark:hover:to-emerald-700/30 border-2 border-emerald-300 dark:border-emerald-600 hover:border-emerald-400 dark:hover:border-emerald-500'
+                                : 'bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 hover:from-slate-100 hover:to-slate-200 dark:hover:from-slate-700 dark:hover:to-slate-600 border-2 border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500'
+                                }`}
                         >
                             <div className="flex items-center space-x-3">
-                                <span className="font-medium text-slate-700 dark:text-slate-200 group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors duration-300">
+                                <span className={`font-medium transition-colors duration-300 ${enableNext
+                                    ? 'text-emerald-700 dark:text-emerald-300 group-hover:text-emerald-800 dark:group-hover:text-emerald-200'
+                                    : 'text-slate-700 dark:text-slate-200 group-hover:text-slate-800 dark:group-hover:text-slate-100'
+                                    }`}>
                                     Sljedeće pitanje
                                 </span>
                                 <div className="relative">
-                                    <ArrowRight className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-all duration-300 group-hover:translate-x-1" />
-                                    <div className="absolute inset-0 bg-primary-100 dark:bg-primary-900 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></div>
+                                    <ArrowRight className={`h-5 w-5 transition-all duration-300 group-hover:translate-x-1 ${enableNext
+                                        ? 'text-emerald-600 dark:text-emerald-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-300'
+                                        : 'text-slate-600 dark:text-slate-300 group-hover:text-slate-700 dark:group-hover:text-slate-200'
+                                        }`} />
+                                    <div className={`absolute inset-0 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 -z-10 ${enableNext
+                                        ? 'bg-emerald-200 dark:bg-emerald-700'
+                                        : 'bg-slate-200 dark:bg-slate-700'
+                                        }`}></div>
                                 </div>
                             </div>
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-full group-hover:-translate-x-full transition-transform duration-700"></div>
+                            <div className={`absolute inset-0 bg-gradient-to-r from-transparent to-transparent translate-x-full group-hover:-translate-x-full transition-transform duration-700 ${enableNext
+                                ? 'via-emerald-100/20 dark:via-emerald-700/20'
+                                : 'via-slate-100/20 dark:via-slate-700/20'
+                                }`}></div>
                         </Button>
                     </CardFooter>
                 )}

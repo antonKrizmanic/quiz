@@ -43,7 +43,6 @@ export default function CategoryView({ theme }: CategoryViewProps) {
                     <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mx-auto animate-pulse">
                         <Loader2 className="h-8 w-8 text-primary-600 dark:text-primary-400 animate-spin" />
                     </div>
-                    <p className="text-lg text-muted-foreground">Učitavanje kategorija...</p>
                 </div>
             </div>
         );
