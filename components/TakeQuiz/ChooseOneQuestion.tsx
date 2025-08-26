@@ -49,7 +49,6 @@ function ChooseOneQuestion({ question, questionIndex, questionCount, onAnswer, i
             <RadioGroup
                 value={selectedAnswerId?.toString() || ""}
                 onValueChange={(value) => onAnswerSelect(parseInt(value))}
-                className="space-y-4"
             >
                 {question.answers.map((option) => {
                     const isSelected = selectedAnswerId === option.id;
@@ -62,7 +61,7 @@ function ChooseOneQuestion({ question, questionIndex, questionCount, onAnswer, i
                             />
                             <Label
                                 htmlFor={`option-${option.id}`}
-                                className={`flex items-center space-x-4 p-4 border-2 rounded-lg cursor-pointer transition-all duration-300 hover:border-primary-300 dark:hover:border-primary-400 hover:shadow-md ${isSelected
+                                className={`flex items-center space-x-2 p-4 border-2 rounded-lg cursor-pointer transition-all duration-300 hover:border-primary-300 dark:hover:border-primary-400 hover:shadow-md ${isSelected
                                     ? 'border-primary-500 dark:border-primary-400 bg-primary-50 dark:bg-primary-900/20 shadow-lg'
                                     : 'border-slate-200 dark:border-slate-700'
                                     }`}

@@ -1,11 +1,12 @@
 'use client';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, BookOpen, ChevronRight, Loader2 } from "lucide-react";
+import { ArrowLeft, BookOpen, ChevronRight } from "lucide-react";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { QuizCategory } from '@/component-models/types';
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { getQuizCategoriesWithQuestions } from '@/repositories/QuizCategoryRepository';
 
 interface CategoryViewProps {
@@ -36,14 +37,9 @@ export default function CategoryView({ theme }: CategoryViewProps) {
     };
 
     if (loading) {
-
         return (
             <div className="flex items-center justify-center min-h-[400px]">
-                <div className="text-center space-y-4">
-                    <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mx-auto animate-pulse">
-                        <Loader2 className="h-8 w-8 text-primary-600 dark:text-primary-400 animate-spin" />
-                    </div>
-                </div>
+                <LoadingSpinner />
             </div>
         );
     }
@@ -53,7 +49,7 @@ export default function CategoryView({ theme }: CategoryViewProps) {
             {/* Header Section */}
             <div className="text-center space-y-4">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full mb-4">
-                    <BookOpen className="h-8 w-8 text-primary-600 dark:text-primary-400" />
+                    <BookOpen className="h-8 w-8 text-red-600 dark:text-red-400" />
                 </div>
                 <h1 className="text-4xl font-bold text-primary-600 dark:text-primary-400">
                     Odaberite kategoriju kviza
@@ -69,7 +65,7 @@ export default function CategoryView({ theme }: CategoryViewProps) {
                     <Card className="p-8 text-center">
                         <div className="space-y-4">
                             <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto">
-                                <BookOpen className="h-8 w-8 text-muted-foreground" />
+                                <BookOpen className="h-8 w-8 text-red-600 dark:text-red-400" />
                             </div>
                             <p className="text-muted-foreground text-lg">Nije dohvaćena ni jedna kategorija</p>
                         </div>
@@ -85,7 +81,7 @@ export default function CategoryView({ theme }: CategoryViewProps) {
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center space-x-4">
                                         <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-800 transition-colors">
-                                            <BookOpen className="h-6 w-6 text-primary-600 dark:text-primary-400" />
+                                            <BookOpen className="h-6 w-6 text-red-600 dark:text-red-400" />
                                         </div>
                                         <div>
                                             <h3 className="text-xl font-semibold text-foreground group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors">

@@ -23,7 +23,7 @@ export default function ThemeSwitcher(props: ThemeSwitcherProps) {
             variant="ghost"
             size="icon"
             aria-label="Dark mode toggle button"
-            className="fixed top-4 right-4"
+            className="fixed top-4 right-4 z-50"
             onClick={onModeChange}
         >
             {isDarkMode ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
