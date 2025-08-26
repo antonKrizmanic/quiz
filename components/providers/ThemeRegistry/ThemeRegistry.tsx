@@ -1,17 +1,10 @@
 'use client';
 
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
-import { ThemeProvider } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
-
-import useDarkMode from '@/hooks/useDarkMode';
-import theme from '@/config/theme';
 import ThemeSwitcher from '@/components/ThemeSwitcher/ThemeSwitcher';
-
-
+import { useTheme } from 'next-themes';
 
 type ThemeRegistryProps = {
-  children: React.ReactNode;
+    children: React.ReactNode;
 };
 
 /**
@@ -20,20 +13,15 @@ type ThemeRegistryProps = {
  * @returns ThemeRegistry component
  */
 export default function ThemeRegistry({ children }: ThemeRegistryProps) {
-    const [isDarkMode, toggleThemeChange] = useDarkMode();
-
-    const finalTheme = theme(isDarkMode);
+    const { setTheme, theme } = useTheme()
 
     return (
-        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-            <ThemeProvider theme={finalTheme}>
-                <CssBaseline />
-                <ThemeSwitcher
-                    isDarkMode={isDarkMode ?? false}
-                    onModeChange={toggleThemeChange}
-                />
-                {children}
-            </ThemeProvider>
-        </AppRouterCacheProvider>
+        <div className={theme === 'dark' ? 'dark' : ''}>
+            <ThemeSwitcher
+                isDarkMode={theme === 'dark'}
+                onModeChange={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            />
+            {children}
+        </div>
     );
 }
