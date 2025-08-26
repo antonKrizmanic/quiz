@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { ArrowLeft, ArrowRight, Brain, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Brain } from "lucide-react";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -10,6 +10,7 @@ import MakeMatchQuestion from '@/components/TakeQuiz/MakeMatchQuestion';
 import TypeAnswerQuestion from '@/components/TakeQuiz/TypeAnswerQuestion';
 import UserInfo from '@/components/TakeQuiz/UserInfo';
 
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { get, post } from '../../services/HttpService';
 
 interface QuizTakeQuestionDto {
@@ -206,11 +207,7 @@ export default function QuizView() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
-                <div className="text-center space-y-4">
-                    <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mx-auto animate-pulse">
-                        <Loader2 className="h-8 w-8 text-primary-600 dark:text-primary-400 animate-spin" />
-                    </div>
-                </div>
+                <LoadingSpinner />
             </div>
         );
     }

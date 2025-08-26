@@ -82,11 +82,11 @@ function UserInfo({ onSubmit, onBack }: UserInfoProps) {
             </div>
 
             {/* Buttons */}
-            <div className="flex justify-between pt-4">
+            <div className="flex flex-col-reverse sm:flex-row justify-between gap-4 pt-4">
                 <Button
                     onClick={handleBack}
                     variant="outline"
-                    className="group relative overflow-hidden bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 hover:from-slate-100 hover:to-slate-200 dark:hover:from-slate-700 dark:hover:to-slate-600 border-2 border-slate-200 dark:border-slate-600 hover:border-primary-300 dark:hover:border-primary-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+                    className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 hover:from-slate-100 hover:to-slate-200 dark:hover:from-slate-700 dark:hover:to-slate-600 border-2 border-slate-200 dark:border-slate-600 hover:border-primary-300 dark:hover:border-primary-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
                 >
                     <div className="flex items-center space-x-3">
                         <div className="relative">
@@ -103,7 +103,7 @@ function UserInfo({ onSubmit, onBack }: UserInfoProps) {
                     onClick={handleSubmit}
                     disabled={!userName || !role}
                     size="lg"
-                    className="bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
+                    className="w-full sm:w-auto text-lg py-6 md:py-3 sm:text-sm group relative overflow-hidden transition-all duration-300 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
                 >
                     <CheckCircle className="h-5 w-5 mr-2" />
                     Završi kviz
