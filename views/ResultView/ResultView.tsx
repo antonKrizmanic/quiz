@@ -90,7 +90,7 @@ export default function ResultView() {
             {/* Header Section */}
             <div className="text-center space-y-4">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full mb-4">
-                    <Trophy className="h-8 w-8 text-primary-600 dark:text-primary-400" />
+                    <Trophy className="h-8 w-8 text-red-600 dark:text-red-400" />
                 </div>
                 <h1 className="text-4xl font-bold text-primary-600 dark:text-primary-400">
                     Tvoj rezultat
