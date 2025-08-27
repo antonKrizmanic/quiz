@@ -86,24 +86,18 @@ function UserInfo({ onSubmit, onBack }: UserInfoProps) {
                 <Button
                     onClick={handleBack}
                     variant="outline"
-                    className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 hover:from-slate-100 hover:to-slate-200 dark:hover:from-slate-700 dark:hover:to-slate-600 border-2 border-slate-200 dark:border-slate-600 hover:border-primary-300 dark:hover:border-primary-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+                    className="w-full sm:w-auto bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 transition-colors"
                 >
-                    <div className="flex items-center space-x-3">
-                        <div className="relative">
-                            <ArrowLeft className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-all duration-300 group-hover:-translate-x-1" />
-                            <div className="absolute inset-0 bg-primary-100 dark:bg-primary-900 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></div>
-                        </div>
-                        <span className="font-medium text-slate-700 dark:text-slate-200 group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors duration-300">
-                            Prethodno pitanje
-                        </span>
+                    <div className="flex items-center space-x-2">
+                        <ArrowLeft className="h-4 w-4" />
+                        <span>Prethodno pitanje</span>
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 </Button>
                 <Button
                     onClick={handleSubmit}
                     disabled={!userName || !role}
                     size="lg"
-                    className="w-full sm:w-auto text-lg py-6 md:py-3 sm:text-sm group relative overflow-hidden transition-all duration-300 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
+                    className="w-full sm:w-auto text-lg py-6 md:py-3 sm:text-sm bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <CheckCircle className="h-5 w-5 mr-2" />
                     Završi kviz

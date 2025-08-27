@@ -70,7 +70,7 @@ export default function InitQuizView() {
                     {/* Header Section */}
                     <div className="text-center space-y-4">
                         <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full mb-4">
-                            <Info className="h-8 w-8 text-primary-600 dark:text-primary-400" />
+                            <Info className="h-8 w-8 text-red-600 dark:text-red-400" />
                         </div>
                         <h1 className="text-4xl font-bold text-primary-600 dark:text-primary-400">
                             Malo o pravilima
@@ -89,7 +89,7 @@ export default function InitQuizView() {
                                     return (
                                         <div key={index} className="flex items-start gap-4 group/item">
                                             <div className="flex-shrink-0 w-10 h-10 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center group-hover/item:bg-primary-200 dark:group-hover/item:bg-primary-800 transition-colors">
-                                                <IconComponent className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+                                                <IconComponent className="h-5 w-5 text-red-600 dark:text-red-400" />
                                             </div>
                                             <div className="flex-1">
                                                 <p className="text-foreground text-lg leading-relaxed group-hover/item:text-primary-700 dark:group-hover/item:text-primary-300 transition-colors">
@@ -105,23 +105,17 @@ export default function InitQuizView() {
                             <Button
                                 onClick={handleBack}
                                 variant="outline"
-                                className="group relative overflow-hidden bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 hover:from-slate-100 hover:to-slate-200 dark:hover:from-slate-700 dark:hover:to-slate-600 border-2 border-slate-200 dark:border-slate-600 hover:border-primary-300 dark:hover:border-primary-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+                                className="bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 transition-colors"
                             >
-                                <div className="flex items-center space-x-3">
-                                    <div className="relative">
-                                        <ArrowLeft className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-all duration-300 group-hover:-translate-x-1" />
-                                        <div className="absolute inset-0 bg-primary-100 dark:bg-primary-900 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></div>
-                                    </div>
-                                    <span className="font-medium text-slate-700 dark:text-slate-200 group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors duration-300">
-                                        Natrag
-                                    </span>
+                                <div className="flex items-center space-x-2">
+                                    <ArrowLeft className="h-4 w-4" />
+                                    <span>Natrag</span>
                                 </div>
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                             </Button>
                             <Button
                                 onClick={handleStartQuiz}
                                 size="lg"
-                                className="bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-bold text-xl px-12 py-6 group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                                className="bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-bold text-xl px-12 py-6 transition-colors"
                             >
                                 <Play className="h-6 w-6 mr-3" />
                                 Započni kviz
