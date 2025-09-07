@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Heart, Users } from "lucide-react";
+import { Ambulance, Heart, Users } from "lucide-react";
 import { useRouter } from 'next/navigation';
 
 export default function ThemeView() {
@@ -55,7 +55,7 @@ export default function ThemeView() {
                     </CardContent>
                 </Card>
                 {/* First Aid Theme */}
-                {/* <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary-300 bg-card">
+                <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary-300 bg-card">
                     <CardContent className="p-8">
                         <div className="flex flex-col md:flex-row items-center space-x-6 space-y-6 md:space-y-0">
                             <div className="flex-shrink-0">
@@ -80,7 +80,7 @@ export default function ThemeView() {
                             </Button>
                         </div>
                     </CardContent>
-                </Card> */}
+                </Card>
 
             </div>
 

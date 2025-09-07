@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { QuizCategory } from '@/component-models/types';
+import { useConfig } from "@/components/providers/ConfigProvider";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { getQuizCategoriesWithQuestions } from '@/repositories/QuizCategoryRepository';
 
@@ -17,10 +18,11 @@ export default function CategoryView({ theme }: CategoryViewProps) {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [categories, setCategories] = useState<QuizCategory[]>([]);
+    const config = useConfig();
 
     useEffect(() => {
         const fetchCategories = async () => {
-            const data = await getQuizCategoriesWithQuestions(1, theme);
+            const data = await getQuizCategoriesWithQuestions(config.cityAssociationId, theme);
             setCategories(data);
             setLoading(false);
         };
