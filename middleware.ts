@@ -15,7 +15,6 @@ export function middleware(request: NextRequest) {
 
     // Allow override via query param for local/tests: ?city=buje|bnm
     const cityParam = url.searchParams.get('city');
-    console.log(cityParam);
     let city = cityParam && VALID_CITIES.has(cityParam) ? cityParam : undefined;
     if (!city) {
         city = HOST_TO_CITY[host] || 'buje';
