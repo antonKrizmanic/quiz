@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const HOST_TO_CITY: Record<string, string> = {
-    'kviz.gdckapp.com': 'buje',
-    'kviz.bnm.gdckapp.com': 'bnm',
+    'www.kviz.gdckapp.com': 'buje',
+    'www.kviz.bnm.gdckapp.com': 'bnm',
     'localhost': 'buje',
     '127.0.0.1': 'bnm'
 };
@@ -15,7 +15,6 @@ export function middleware(request: NextRequest) {
 
     // Allow override via query param for local/tests: ?city=buje|bnm
     const cityParam = url.searchParams.get('city');
-    console.log(cityParam);
     let city = cityParam && VALID_CITIES.has(cityParam) ? cityParam : undefined;
     if (!city) {
         city = HOST_TO_CITY[host] || 'buje';
