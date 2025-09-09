@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const HOST_TO_CITY: Record<string, string> = {
-    'kviz.gdck-buje.hr': 'buje',
-    'gdck-buje.hr': 'buje',
-    'kviz.gdckbnm.hr': 'bnm',
-    'gdckbnm.hr': 'bnm',
-    'localhost': 'bnm',
-    '127.0.0.1': 'buje'
+    'kviz.gdckapp.com': 'buje',
+    'kviz.bnm.gdckapp.com': 'bnm',
+    'localhost': 'buje',
+    '127.0.0.1': 'bnm'
 };
 
 const VALID_CITIES = new Set(['buje', 'bnm']);
