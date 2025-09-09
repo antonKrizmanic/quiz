@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Answer, Question, QuizTakeQuestion } from '@/component-models/types';
 
 import { get } from '../../services/HttpService';
+import { useConfig } from "../providers/ConfigProvider";
 
 interface MatchTermAnswerProps {
     questionId: number;
@@ -16,11 +17,13 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
     const [questionAnswerDictionary, setQuestionAnswerDictionary] = useState<Map<Question, Answer>>(new Map());
     const [answers, setAnswers] = useState<Answer[]>([]);
 
+    const config = useConfig();
+
     useEffect(() => {
         const fetchQuestionAnswers = async () => {
             try {
                 // eslint-disable-next-line max-len
-                const childQuestionsResponse = await get(`Quizzes/PublicQuestion/getList/1?parentId=${questionId}&ActiveStatusId=0&QuizCategoryId=0&QuizId=0&QuizTheme=None&QuestionType=None&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);
+                const childQuestionsResponse = await get(`Quizzes/PublicQuestion/getList/${config.cityAssociationId}?parentId=${questionId}&ActiveStatusId=0&QuizCategoryId=0&QuizId=0&QuizTheme=None&QuestionType=None&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);
                 const childQuestions = childQuestionsResponse.data.list;
 
                 const questionAnswerDict = new Map<Question, Answer>();

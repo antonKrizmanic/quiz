@@ -10,6 +10,7 @@ import MakeMatchQuestion from '@/components/TakeQuiz/MakeMatchQuestion';
 import TypeAnswerQuestion from '@/components/TakeQuiz/TypeAnswerQuestion';
 import UserInfo from '@/components/TakeQuiz/UserInfo';
 
+import { useConfig } from '@/components/providers/ConfigProvider';
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { get, post } from '../../services/HttpService';
 
@@ -51,6 +52,7 @@ interface QuizDetail {
 export default function QuizView() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const config = useConfig();
     const quizId = searchParams.get('quizId');
     const [showUserInfo, setShowUserInfo] = useState<boolean>(false);
     const [quiz, setQuiz] = useState<QuizDetail | null>(null);
@@ -197,7 +199,7 @@ export default function QuizView() {
                 };
                 return quizTakeQuestionDto;
             }),
-            cityAssociationId: 1
+            cityAssociationId: config.cityAssociationId
         };
         const response = await post('quizzes/PublicQuizTake', quizTakeDto);
         router.push(`/result?take-id=${response.data}`);

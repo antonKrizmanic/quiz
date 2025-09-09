@@ -4,12 +4,14 @@ import { AlertTriangle, ArrowLeft, CheckCircle, Clock, Info, Play, Trophy } from
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { useConfig } from '@/components/providers/ConfigProvider';
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { post } from '../../services/HttpService';
 
 export default function InitQuizView() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const config = useConfig();
     const theme = searchParams.get('theme');
     const category = searchParams.get('category');
     const [quizId, setQuizId] = useState<number | null>(null);
@@ -21,7 +23,7 @@ export default function InitQuizView() {
                 const data = {
                     QuizCategoryId: category ? parseInt(category) : null,
                     QuizTheme: theme ? parseInt(theme) : null,
-                    CityAssociationId: 1
+                    CityAssociationId: config.cityAssociationId
                 };
 
                 const response = await post('quizzes/PublicQuiz', data);
