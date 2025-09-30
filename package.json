@@ -33,7 +33,7 @@
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.9.2",
-    "webpack": "5.101.3"
+    "webpack": "5.102.0"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "15.5.4",
