@@ -175,8 +175,8 @@ describe('QuizRepository', () => {
             if (callIndex === 1) {
                 callIndex++;
                 return { data: { list: [
-                    { id: 100, text: 'Answer A', questionId: 10, isCorrect: true },
-                    { id: 101, text: 'Answer B', questionId: 10, isCorrect: false }
+                    { id: 100, text: 'Answer A', questionId: 10, isCorrect: false },
+                    { id: 101, text: 'Answer B', questionId: 10, isCorrect: true }
                 ] } } as any;
             }
             if (callIndex === 2) {
@@ -191,7 +191,7 @@ describe('QuizRepository', () => {
         const result = await getMatchTermQuestionAnswers(5, 99);
 
         assert.equal(result.items.length, 2);
-        assert.equal(result.items[0].correctAnswer?.id, 100);
+        assert.equal(result.items[0].correctAnswer?.id, 101);
         assert.equal(result.items[1].answers[0].isCorrect, true);
         assert.equal(getMock.mock.callCount(), 3);
     });

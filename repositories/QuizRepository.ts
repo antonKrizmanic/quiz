@@ -168,7 +168,7 @@ export async function getMatchTermQuestionAnswers(cityAssociationId: number, par
         const answersList = (answersResponse.data.list ?? []).map((answerDto: any) => mapMatchAnswer(answerDto));
 
         const question = mapMatchQuestion(childQuestionDto);
-        const correctAnswer = answersList.length > 0 ? answersList[0] : null;
+        const correctAnswer = answersList.find((answer) => answer.isCorrect) ?? (answersList.length > 0 ? answersList[0] : null);
 
         items.push({
             question,
