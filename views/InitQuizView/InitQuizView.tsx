@@ -18,7 +18,7 @@ export default function InitQuizView() {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        const initializeQuiz = async () => {
+        const runInitializeQuiz = async () => {
             try {
                 const quizCategoryId = category ? parseInt(category) : null;
                 const quizTheme = theme ? parseInt(theme) : null;
@@ -37,7 +37,7 @@ export default function InitQuizView() {
         };
 
         if (theme && category) {
-            initializeQuiz();
+            runInitializeQuiz();
         }
     }, [theme, category, config.cityAssociationId]);
 
