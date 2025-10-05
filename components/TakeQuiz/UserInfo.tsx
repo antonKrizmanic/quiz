@@ -82,26 +82,28 @@ function UserInfo({ onSubmit, onBack }: UserInfoProps) {
             </div>
 
             {/* Buttons */}
-            <div className="flex flex-col-reverse sm:flex-row justify-between gap-4 pt-4">
-                <Button
-                    onClick={handleBack}
-                    variant="outline"
-                    className="w-full sm:w-auto bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 transition-colors"
-                >
-                    <div className="flex items-center space-x-2">
-                        <ArrowLeft className="h-4 w-4" />
-                        <span>Prethodno pitanje</span>
-                    </div>
-                </Button>
-                <Button
-                    onClick={handleSubmit}
-                    disabled={!userName || !role}
-                    size="lg"
-                    className="w-full sm:w-auto text-lg py-6 md:py-3 sm:text-sm bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    <CheckCircle className="h-5 w-5 mr-2" />
-                    Završi kviz
-                </Button>
+            <div className="border-t border-border pt-6">
+                <div className="flex flex-col-reverse sm:flex-row justify-between gap-4">
+                    <Button
+                        onClick={handleBack}
+                        variant="outline"
+                        className="w-full sm:w-auto bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 transition-colors"
+                    >
+                        <div className="flex items-center space-x-2">
+                            <ArrowLeft className="h-4 w-4" />
+                            <span>Prethodno pitanje</span>
+                        </div>
+                    </Button>
+                    <Button
+                        onClick={handleSubmit}
+                        disabled={!userName || !role}
+                        size="lg"
+                        className="w-full sm:w-auto text-lg py-6 md:py-3 sm:text-sm bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <CheckCircle className="h-5 w-5 mr-2" />
+                        Završi kviz
+                    </Button>
+                </div>
             </div>
         </div>
     );
