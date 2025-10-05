@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { useConfig } from '@/components/providers/ConfigProvider';
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { post } from '../../services/HttpService';
+import { initializeQuiz } from '@/repositories/QuizRepository';
 
 export default function InitQuizView() {
     const router = useRouter();
@@ -20,14 +20,15 @@ export default function InitQuizView() {
     useEffect(() => {
         const initializeQuiz = async () => {
             try {
-                const data = {
-                    QuizCategoryId: category ? parseInt(category) : null,
-                    QuizTheme: theme ? parseInt(theme) : null,
-                    CityAssociationId: config.cityAssociationId
-                };
+                const quizCategoryId = category ? parseInt(category) : null;
+                const quizTheme = theme ? parseInt(theme) : null;
 
-                const response = await post('quizzes/PublicQuiz', data);
-                setQuizId(response.data);
+                const quizIdentifier = await initializeQuiz({
+                    quizCategoryId,
+                    quizTheme,
+                    cityAssociationId: config.cityAssociationId
+                });
+                setQuizId(quizIdentifier);
             } catch (error) {
                 console.error('Error initializing quiz:', error);
             } finally {
@@ -38,7 +39,7 @@ export default function InitQuizView() {
         if (theme && category) {
             initializeQuiz();
         }
-    }, [theme, category]);
+    }, [theme, category, config.cityAssociationId]);
 
     const handleStartQuiz = () => {
         if (quizId) {

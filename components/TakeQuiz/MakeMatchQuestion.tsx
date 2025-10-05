@@ -3,14 +3,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Link } from "lucide-react";
 import { useEffect, useState } from 'react';
 
-import QuestionHeader from '../reusable/QuestionHeader';
+import { MatchAnswerSubmission } from '@/repositories/QuizRepository';
 
-interface QuizTakeAnswerDto {
-    questionId: number;
-    answerId: number;
-    parentId?: number;
-    text: string;
-}
+import QuestionHeader from '../reusable/QuestionHeader';
 
 interface Answer {
     id: number;
@@ -31,13 +26,13 @@ interface MakeMatchQuestionProps {
     question: Question;
     questionIndex: number;
     questionCount: number;
-    onAnswer: (questionId: number, answer: QuizTakeAnswerDto[]) => void;
-    initialAnswer?: QuizTakeAnswerDto[];
+    onAnswer: (questionId: number, answer: MatchAnswerSubmission[]) => void;
+    initialAnswer?: MatchAnswerSubmission[];
 }
 
 function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, initialAnswer }: MakeMatchQuestionProps) {
     const [possibleAnswers, setPossibleAnswers] = useState<Answer[]>([]);
-    const [selectedAnswers, setSelectedAnswers] = useState<QuizTakeAnswerDto[]>([]);
+    const [selectedAnswers, setSelectedAnswers] = useState<MatchAnswerSubmission[]>([]);
 
     useEffect(() => {
         const answers = question.children?.map((child) => child.answers).flat() || [];
@@ -49,7 +44,7 @@ function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, i
     }, [question, initialAnswer]);
 
     const handleSelectChange = (childId: number, answerId: string) => {
-        const answer: QuizTakeAnswerDto = {
+        const answer: MatchAnswerSubmission = {
             questionId: childId,
             answerId: parseInt(answerId),
             parentId: question.id,
