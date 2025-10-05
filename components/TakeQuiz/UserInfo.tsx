@@ -97,7 +97,7 @@ function UserInfo({ onSubmit, onBack }: UserInfoProps) {
                     onClick={handleSubmit}
                     disabled={!userName || !role}
                     size="lg"
-                    className="w-full sm:w-auto text-lg py-6 md:py-3 sm:text-sm bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full sm:w-auto bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <CheckCircle className="h-5 w-5 mr-2" />
                     Završi kviz
