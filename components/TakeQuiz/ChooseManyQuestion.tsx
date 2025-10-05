@@ -3,28 +3,20 @@ import { Label } from "@/components/ui/label";
 import { Check } from "lucide-react";
 import React, { useEffect } from 'react';
 
+import { QuizAnswerOption, QuizQuestionDetail } from '@/component-models/types';
+
 import QuestionHeader from '../reusable/QuestionHeader';
 
-interface Answer {
-    id: number;
-    text: string;
-    questionId: number;
-}
-
 interface ChooseManyQuestionProps {
-    question: {
-        id: number;
-        text: string;
-        answers: Answer[];
-    };
+    question: Pick<QuizQuestionDetail, 'id' | 'text' | 'answers'>;
     questionIndex: number;
     questionCount: number;
-    onAnswer: (questionId: number, answers: Answer[]) => void;
-    initialAnswers?: Answer[];
+    onAnswer: (questionId: number, answers: QuizAnswerOption[]) => void;
+    initialAnswers?: QuizAnswerOption[];
 }
 
 function ChooseManyQuestion({ question, questionIndex, questionCount, onAnswer, initialAnswers }: ChooseManyQuestionProps) {
-    const [selectedAnswers, setSelectedAnswers] = React.useState<Answer[]>([]);
+    const [selectedAnswers, setSelectedAnswers] = React.useState<QuizAnswerOption[]>([]);
 
     useEffect(() => {
         if (initialAnswers) {

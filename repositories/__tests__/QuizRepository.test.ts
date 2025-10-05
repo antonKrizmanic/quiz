@@ -6,12 +6,14 @@ import {
     getMatchTermQuestionAnswers,
     getQuizDetail,
     initializeQuiz,
-    MatchAnswerSubmission,
+    submitQuizTake
+} from '../QuizRepository';
+import {
     QuizAnswerOption,
     QuizAnswersState,
     QuizQuestionDetail,
-    submitQuizTake
-} from '../QuizRepository';
+    QuizTakeAnswerDto
+} from '../../component-models/types';
 
 afterEach(() => {
     mock.restoreAll();
@@ -93,7 +95,7 @@ describe('QuizRepository', () => {
                 { id: 202, text: 'Multi B', questionId: 2 }
             ],
             3: [
-                { questionId: 31, answerId: 301, parentId: 3, text: 'Match A' } as MatchAnswerSubmission
+                { questionId: 31, answerId: 301, parentId: 3, text: 'Match A' } as QuizTakeAnswerDto
             ]
         };
 

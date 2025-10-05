@@ -3,39 +3,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Link } from "lucide-react";
 import { useEffect, useState } from 'react';
 
-import { MatchAnswerSubmission } from '@/repositories/QuizRepository';
+import { QuizAnswerOption, QuizQuestionDetail, QuizTakeAnswerDto } from '@/component-models/types';
 
 import QuestionHeader from '../reusable/QuestionHeader';
 
-interface Answer {
-    id: number;
-    text: string;
-    questionId: number;
-}
-
-interface Question {
-    id: number;
-    text: string;
-    questionType: number;
-    parentId: number | null;
-    children: Question[] | null;
-    answers: Answer[];
-}
-
 interface MakeMatchQuestionProps {
-    question: Question;
+    question: QuizQuestionDetail;
     questionIndex: number;
     questionCount: number;
-    onAnswer: (questionId: number, answer: MatchAnswerSubmission[]) => void;
-    initialAnswer?: MatchAnswerSubmission[];
+    onAnswer: (questionId: number, answer: QuizTakeAnswerDto[]) => void;
+    initialAnswer?: QuizTakeAnswerDto[];
 }
 
 function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, initialAnswer }: MakeMatchQuestionProps) {
-    const [possibleAnswers, setPossibleAnswers] = useState<Answer[]>([]);
-    const [selectedAnswers, setSelectedAnswers] = useState<MatchAnswerSubmission[]>([]);
+    const [possibleAnswers, setPossibleAnswers] = useState<QuizAnswerOption[]>([]);
+    const [selectedAnswers, setSelectedAnswers] = useState<QuizTakeAnswerDto[]>([]);
 
     useEffect(() => {
-        const answers = question.children?.map((child) => child.answers).flat() || [];
+        const answers = (question.children ?? []).flatMap((child) => child.answers);
         setPossibleAnswers(answers);
 
         if (initialAnswer) {
@@ -44,11 +29,13 @@ function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, i
     }, [question, initialAnswer]);
 
     const handleSelectChange = (childId: number, answerId: string) => {
-        const answer: MatchAnswerSubmission = {
+        const numericAnswerId = parseInt(answerId);
+        const selectedOption = possibleAnswers.find((option) => option.id === numericAnswerId);
+        const answer: QuizTakeAnswerDto = {
             questionId: childId,
-            answerId: parseInt(answerId),
+            answerId: numericAnswerId,
             parentId: question.id,
-            text: ''
+            text: selectedOption?.text ?? ''
         };
 
         const answersArray = [...selectedAnswers];
