@@ -1,57 +1,18 @@
-import { Answer as MatchAnswer, Question as MatchQuestion } from '@/component-models/types';
+import {
+    Answer as MatchAnswer,
+    QuestionType,
+    MatchTermAnswersResult,
+    MatchTermQuestionAnswers,
+    Question as MatchQuestion,
+    QuizAnswerOption,
+    QuizAnswersState,
+    QuizDetail,
+    QuizQuestionDetail,
+    QuizTakeAnswerDto,
+    QuizTakeQuestionSubmissionDto,
+    SubmitQuizTakeParams
+} from '@/component-models/types';
 import { get, post } from '@/services/HttpService';
-
-export interface QuizAnswerOption {
-    id: number;
-    text: string;
-    questionId: number;
-}
-
-export interface QuizQuestionDetail {
-    id: number;
-    text: string;
-    questionType: number;
-    parentId: number | null;
-    children: QuizQuestionDetail[];
-    answers: QuizAnswerOption[];
-}
-
-export interface QuizDetail {
-    questions: QuizQuestionDetail[];
-}
-
-export interface MatchAnswerSubmission {
-    questionId: number;
-    answerId: number;
-    parentId?: number | null;
-    parentQuestionId?: number | null;
-    text: string;
-}
-
-export type QuizAnswerSelection = QuizAnswerOption | QuizAnswerOption[] | MatchAnswerSubmission[];
-
-export type QuizAnswersState = Record<number, QuizAnswerSelection>;
-
-export interface SubmitQuizTakeParams {
-    quizId: number;
-    questions: QuizQuestionDetail[];
-    answers: QuizAnswersState;
-    startedAt?: Date;
-    endedAt: Date;
-    takeUserName: string;
-    takeUserType: number;
-    cityAssociationId: number;
-}
-
-export interface MatchTermQuestionAnswers {
-    question: MatchQuestion;
-    correctAnswer: MatchAnswer | null;
-    answers: MatchAnswer[];
-}
-
-export interface MatchTermAnswersResult {
-    items: MatchTermQuestionAnswers[];
-}
 
 function mapQuizAnswerOption(dto: any): QuizAnswerOption {
     return {
@@ -65,7 +26,7 @@ function mapQuizQuestionDetail(dto: any): QuizQuestionDetail {
     return {
         id: dto.id,
         text: dto.text,
-        questionType: dto.questionType,
+        questionType: dto.questionType as QuestionType,
         parentId: dto.parentId ?? null,
         children: (dto.children ?? []).map((child: any) => mapQuizQuestionDetail(child)),
         answers: (dto.answers ?? []).map((answer: any) => mapQuizAnswerOption(answer))
@@ -110,38 +71,44 @@ export async function getQuizDetail(quizId: number): Promise<QuizDetail> {
     return mapQuizDetail(response.data);
 }
 
-export async function submitQuizTake(params: SubmitQuizTakeParams): Promise<number> {
-    const questionDtos = params.questions.map((question, index) => {
-        const storedAnswer = params.answers[question.id];
-        let mappedAnswers: MatchAnswerSubmission[] = [];
+function mapStoredAnswersToDtos(
+    question: QuizQuestionDetail,
+    storedAnswer: QuizAnswersState[number]
+): QuizTakeAnswerDto[] {
+    if (!storedAnswer) {
+        return [];
+    }
 
-        if (question.questionType === 4) {
-            mappedAnswers = Array.isArray(storedAnswer) ? storedAnswer as MatchAnswerSubmission[] : [];
-        } else if (Array.isArray(storedAnswer)) {
-            mappedAnswers = (storedAnswer as QuizAnswerOption[]).map((answer) => ({
-                questionId: question.id,
-                answerId: answer.id,
-                text: answer.text,
-                parentQuestionId: question.parentId ?? undefined
-            }));
-        } else if (storedAnswer) {
-            const answer = storedAnswer as QuizAnswerOption;
-            mappedAnswers = [{
-                questionId: question.id,
-                answerId: answer.id,
-                text: answer.text,
-                parentQuestionId: question.parentId ?? undefined
-            }];
-        }
+    if (question.questionType === QuestionType.MatchTerms) {
+        return Array.isArray(storedAnswer) ? storedAnswer as QuizTakeAnswerDto[] : [];
+    }
 
-        return {
-            id: 0,
+    if (Array.isArray(storedAnswer)) {
+        return (storedAnswer as QuizAnswerOption[]).map((answer) => ({
             questionId: question.id,
-            index,
-            parentId: question.parentId ?? undefined,
-            answers: mappedAnswers
-        };
-    });
+            answerId: answer.id,
+            text: answer.text,
+            parentQuestionId: question.parentId ?? undefined
+        } satisfies QuizTakeAnswerDto));
+    }
+
+    const answer = storedAnswer as QuizAnswerOption;
+    return [{
+        questionId: question.id,
+        answerId: answer.id,
+        text: answer.text,
+        parentQuestionId: question.parentId ?? undefined
+    }];
+}
+
+export async function submitQuizTake(params: SubmitQuizTakeParams): Promise<number> {
+    const questionDtos: QuizTakeQuestionSubmissionDto[] = params.questions.map((question, index) => ({
+        id: 0,
+        questionId: question.id,
+        index,
+        parentId: question.parentId ?? undefined,
+        answers: mapStoredAnswersToDtos(question, params.answers[question.id])
+    }));
 
     const requestBody = {
         quizId: params.quizId,

@@ -12,7 +12,8 @@ import UserInfo from '@/components/TakeQuiz/UserInfo';
 
 import { useConfig } from '@/components/providers/ConfigProvider';
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { getQuizDetail, MatchAnswerSubmission, QuizAnswerOption, QuizAnswersState, QuizDetail, submitQuizTake } from '@/repositories/QuizRepository';
+import { QuizAnswerOption, QuizAnswersState, QuizDetail, QuizTakeAnswerDto } from '@/component-models/types';
+import { getQuizDetail, submitQuizTake } from '@/repositories/QuizRepository';
 
 export default function QuizView() {
     const router = useRouter();
@@ -113,7 +114,7 @@ export default function QuizView() {
         setAnswers(updatedAnswers);
     };
 
-    const handleAnswer = (questionId: number, answer: MatchAnswerSubmission[]) => {
+    const handleAnswer = (questionId: number, answer: QuizTakeAnswerDto[]) => {
         setEnableNext(true);
         const updatedAnswers = {
             ...answers,
