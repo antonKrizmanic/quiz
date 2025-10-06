@@ -12,42 +12,8 @@ import UserInfo from '@/components/TakeQuiz/UserInfo';
 
 import { useConfig } from '@/components/providers/ConfigProvider';
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { get, post } from '../../services/HttpService';
-
-interface QuizTakeQuestionDto {
-    id: number;
-    questionId: number;
-    index: number;
-    parentId?: number | null;
-    answers: QuizTakeAnswerDto[];
-}
-
-
-interface QuizTakeAnswerDto {
-    questionId: number;
-    answerId: number;
-    parentId?: number;
-    text: string;
-}
-
-interface Answer {
-    id: number;
-    text: string;
-    questionId: number;
-}
-
-interface Question {
-    id: number;
-    text: string;
-    questionType: number;
-    parentId: number | null;
-    children: Question[] | null;
-    answers: Answer[];
-}
-
-interface QuizDetail {
-    questions: Question[];
-}
+import { QuizAnswerOption, QuizAnswersState, QuizDetail, QuizTakeAnswerDto } from '@/types/quiz';
+import { getQuizDetail, submitQuizTake } from '@/repositories/QuizRepository';
 
 export default function QuizView() {
     const router = useRouter();
@@ -58,7 +24,7 @@ export default function QuizView() {
     const [quiz, setQuiz] = useState<QuizDetail | null>(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(true);
-    const [answers, setAnswers] = useState<any>({});
+    const [answers, setAnswers] = useState<QuizAnswersState>({});
     const [enablePrevious, setEnablePrevious] = useState<boolean>(false);
     const [enableNext, setEnableNext] = useState<boolean>(false);
     const [startedAt, setStartedAt] = useState<Date>();
@@ -66,8 +32,8 @@ export default function QuizView() {
     useEffect(() => {
         const fetchQuizDetails = async () => {
             try {
-                const response = await get(`quizzes/PublicQuiz/GetDetail/${quizId}`);
-                setQuiz(response.data);
+                const quizDetail = await getQuizDetail(parseInt(quizId));
+                setQuiz(quizDetail);
             } catch (error) {
                 console.error('Error fetching quiz details:', error);
             } finally {
@@ -116,7 +82,7 @@ export default function QuizView() {
         router.back();
     };
 
-    const handleSingleAnswer = (questionId: number, answer: Answer) => {
+    const handleSingleAnswer = (questionId: number, answer: QuizAnswerOption) => {
         setEnableNext(true);
         const updatedAnswers = {
             ...answers,
@@ -125,7 +91,7 @@ export default function QuizView() {
         setAnswers(updatedAnswers);
     };
 
-    const handleMultipleAnswer = (questionId: number, givenAnswers: Answer[]) => {
+    const handleMultipleAnswer = (questionId: number, givenAnswers: QuizAnswerOption[]) => {
         setEnableNext(true);
         const updatedAnswers = {
             ...answers,
@@ -136,7 +102,7 @@ export default function QuizView() {
 
     const handleTextAnswer = (questionId: number, answerText: string) => {
         setEnableNext(true);
-        const answer = {
+        const answer: QuizAnswerOption = {
             id: 0,
             text: answerText,
             questionId: questionId
@@ -158,51 +124,21 @@ export default function QuizView() {
     };
 
     const submitQuiz = async (name: string, role: string) => {
-        const quizTakeDto = {
-            quizId: parseInt(quizId!),
-            startedAt: startedAt,
+        if (!quizId || !quiz) {
+            return;
+        }
+
+        const submissionId = await submitQuizTake({
+            quizId: parseInt(quizId),
+            questions: quiz.questions,
+            answers,
+            startedAt,
             endedAt: new Date(),
             takeUserName: name,
             takeUserType: parseInt(role),
-            questions: Object.keys(quiz.questions).map((key, index) => {
-                const question = quiz.questions[key];
-                let questionAnswers = [];
-                if (question.questionType === 4) {
-                    questionAnswers = answers[question.id];
-                }
-                else {
-                    if (Array.isArray(answers[question.id])) {
-                        questionAnswers = answers[question.id].map((answer: Answer) => {
-                            return {
-                                questionId: question.id,
-                                answerId: answer.id,
-                                text: answer.text,
-                                parentQuestionId: question.parentId
-                            };
-                        });
-                    }
-                    else {
-                        questionAnswers = [{
-                            questionId: question.id,
-                            answerId: answers[question.id].id,
-                            text: answers[question.id].text,
-                            parentQuestionId: question.parentId
-                        }];
-                    }
-                }
-                const quizTakeQuestionDto: QuizTakeQuestionDto = {
-                    id: 0,
-                    questionId: question.id,
-                    index: index,
-                    parentId: question.parentId,
-                    answers: questionAnswers
-                };
-                return quizTakeQuestionDto;
-            }),
             cityAssociationId: config.cityAssociationId
-        };
-        const response = await post('quizzes/PublicQuizTake', quizTakeDto);
-        router.push(`/result?take-id=${response.data}`);
+        });
+        router.push(`/result?take-id=${submissionId}`);
     };
 
 

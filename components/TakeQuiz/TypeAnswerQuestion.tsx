@@ -2,13 +2,12 @@ import { Input } from "@/components/ui/input";
 import { PenTool } from "lucide-react";
 import React, { useEffect, useState } from 'react';
 
+import { QuizQuestionDetail } from '@/types/quiz';
+
 import QuestionHeader from '../reusable/QuestionHeader';
 
 interface TypeAnswerQuestionProps {
-    question: {
-        id: number;
-        text: string;
-    };
+    question: Pick<QuizQuestionDetail, 'id' | 'text'>;
     questionIndex: number;
     questionCount: number;
     onAnswer: (questionId: number, answer: string) => void;
