@@ -1,0 +1,76 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  changelog-release:
+    name: Generate release
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run changelog manager
+        id: changelog
+        uses: Enterwell/ChangelogManager-GitHub-Action@v3
+        with:
+          changelog_path: CHANGELOG.md
+          release_prefix: v
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Stop if no release is needed
+        if: steps.changelog.outputs.should_release != 'true'
+        run: echo "No new release entries detected"
+
+      - name: Update package.json version
+        if: steps.changelog.outputs.should_release == 'true'
+        env:
+          VERSION: ${{ steps.changelog.outputs.version }}
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const path = 'package.json';
+          const version = process.env.VERSION;
+          const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+          pkg.version = version;
+          fs.writeFileSync(path, JSON.stringify(pkg, null, 2) + '\n');
+          NODE
+
+      - name: Commit version bump
+        if: steps.changelog.outputs.should_release == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- package.json; then
+            echo "package.json already at version ${{ steps.changelog.outputs.version }}"
+            exit 0
+          fi
+          git add package.json
+          git commit -m "chore: release ${{ steps.changelog.outputs.tag }} [skip ci]"
+
+      - name: Push version bump
+        if: steps.changelog.outputs.should_release == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push origin HEAD:main
+
+      - name: Create release tag
+        if: steps.changelog.outputs.should_release == 'true'
+        run: |
+          git tag -a "${{ steps.changelog.outputs.tag }}" -m "${{ steps.changelog.outputs.changelog }}"
+          git push origin "${{ steps.changelog.outputs.tag }}"
