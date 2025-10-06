@@ -1,76 +1,89 @@
 name: Release
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-
-permissions:
-  contents: write
 
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  changelog-release:
-    name: Generate release
+  release:
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, '[skip ci]') == false
+    permissions:
+      contents: write
+      pull-requests: write
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Run changelog manager
-        id: changelog
-        uses: Enterwell/ChangelogManager-GitHub-Action@v3
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
         with:
-          changelog_path: CHANGELOG.md
-          release_prefix: v
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          version: 9
 
-      - name: Stop if no release is needed
-        if: steps.changelog.outputs.should_release != 'true'
-        run: echo "No new release entries detected"
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
 
-      - name: Update package.json version
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate changelog
+        id: changelog
+        uses: atnons/changelog-manager@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update package version
         if: steps.changelog.outputs.should_release == 'true'
-        env:
-          VERSION: ${{ steps.changelog.outputs.version }}
-        run: |
-          node <<'NODE'
-          const fs = require('fs');
-          const path = 'package.json';
-          const version = process.env.VERSION;
-          const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
-          pkg.version = version;
-          fs.writeFileSync(path, JSON.stringify(pkg, null, 2) + '\n');
-          NODE
+        run: node scripts/release/update-package-version.mjs "${{ steps.changelog.outputs.version }}"
 
-      - name: Commit version bump
+      - name: Commit release assets
         if: steps.changelog.outputs.should_release == 'true'
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- package.json; then
-            echo "package.json already at version ${{ steps.changelog.outputs.version }}"
-            exit 0
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "Nothing to commit"
+          else
+            git commit -am "chore: release ${{ steps.changelog.outputs.tag_name }}"
           fi
-          git add package.json
-          git commit -m "chore: release ${{ steps.changelog.outputs.tag }} [skip ci]"
 
-      - name: Push version bump
+      - name: Write changelog to file
         if: steps.changelog.outputs.should_release == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: changelog_file
         run: |
-          git push origin HEAD:main
+          notes_path="RELEASE_NOTES.txt"
+          printf '%s' "${{ steps.changelog.outputs.changelog }}" > "$notes_path"
+          printf '\n' >> "$notes_path"
+          echo "path=$notes_path" >> "$GITHUB_OUTPUT"
 
-      - name: Create release tag
+      - name: Create annotated tag
         if: steps.changelog.outputs.should_release == 'true'
         run: |
-          git tag -a "${{ steps.changelog.outputs.tag }}" -m "${{ steps.changelog.outputs.changelog }}"
-          git push origin "${{ steps.changelog.outputs.tag }}"
+          git tag -a "${{ steps.changelog.outputs.tag_name }}" -F "${{ steps.changelog_file.outputs.path }}"
+
+      - name: Push changes
+        if: steps.changelog.outputs.should_release == 'true'
+        run: git push --follow-tags
+
+      - name: Publish release
+        if: steps.changelog.outputs.should_release == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag_name }}
+          name: ${{ steps.changelog.outputs.tag_name }}
+          body_path: ${{ steps.changelog_file.outputs.path }}
+
+      - name: Clean up changelog file
+        if: steps.changelog.outputs.should_release == 'true'
+        run: rm -f "${{ steps.changelog_file.outputs.path }}"
