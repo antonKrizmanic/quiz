@@ -3,7 +3,7 @@
 import { CheckCircle, X, XCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from 'react';
 
-import { Answer, MatchTermQuestionAnswers, QuizTakeQuestion } from '@/component-models/types';
+import { Answer, MatchTermQuestionAnswers, QuizTakeQuestion } from '@/types/quiz';
 import { getMatchTermQuestionAnswers } from '@/repositories/QuizRepository';
 import { useConfig } from "../providers/ConfigProvider";
 

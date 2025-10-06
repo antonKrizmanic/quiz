@@ -4,7 +4,7 @@ import { ArrowLeft, Brain, Trophy } from "lucide-react";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { QuizTakeDetailViewModel } from '@/component-models/types';
+import { QuizTakeDetailViewModel } from '@/types/quiz';
 import MatchTermAnswer from '@/components/TakeAnswer/MatchTermAnswer';
 import MultiSelectAnswer from '@/components/TakeAnswer/MultiSelectAnswer';
 import SingleSelectAnswer from '@/components/TakeAnswer/SingleSelectAnswer';

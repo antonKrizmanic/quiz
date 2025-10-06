@@ -12,7 +12,7 @@ import UserInfo from '@/components/TakeQuiz/UserInfo';
 
 import { useConfig } from '@/components/providers/ConfigProvider';
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { QuizAnswerOption, QuizAnswersState, QuizDetail, QuizTakeAnswerDto } from '@/component-models/types';
+import { QuizAnswerOption, QuizAnswersState, QuizDetail, QuizTakeAnswerDto } from '@/types/quiz';
 import { getQuizDetail, submitQuizTake } from '@/repositories/QuizRepository';
 
 export default function QuizView() {
