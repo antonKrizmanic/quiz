@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { PenTool } from "lucide-react";
 import React, { useEffect, useState } from 'react';
 
-import { QuizQuestionDetail } from '@/component-models/types';
+import { QuizQuestionDetail } from '@/types/quiz';
 
 import QuestionHeader from '../reusable/QuestionHeader';
 

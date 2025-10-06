@@ -2,7 +2,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useEffect, useState } from 'react';
 
-import { QuizAnswerOption, QuizQuestionDetail } from '@/component-models/types';
+import { QuizAnswerOption, QuizQuestionDetail } from '@/types/quiz';
 
 import QuestionHeader from '../reusable/QuestionHeader';
 

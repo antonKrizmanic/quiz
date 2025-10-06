@@ -5,7 +5,7 @@ import { ArrowLeft, BookOpen, ChevronRight } from "lucide-react";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { QuizCategory } from '@/component-models/types';
+import { QuizCategory } from '@/types/quiz';
 import { useConfig } from "@/components/providers/ConfigProvider";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { getQuizCategoriesWithQuestions } from '@/repositories/QuizCategoryRepository';

@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Link } from "lucide-react";
 import { useEffect, useState } from 'react';
 
-import { QuizAnswerOption, QuizQuestionDetail, QuizTakeAnswerDto } from '@/component-models/types';
+import { QuizAnswerOption, QuizQuestionDetail, QuizTakeAnswerDto } from '@/types/quiz';
 
 import QuestionHeader from '../reusable/QuestionHeader';
 

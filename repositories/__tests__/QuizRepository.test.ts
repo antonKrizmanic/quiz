@@ -13,7 +13,7 @@ import {
     QuizAnswersState,
     QuizQuestionDetail,
     QuizTakeAnswerDto
-} from '../../component-models/types';
+} from '../../types/quiz';
 
 afterEach(() => {
     mock.restoreAll();

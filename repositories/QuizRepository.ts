@@ -11,7 +11,7 @@ import {
     QuizTakeAnswerDto,
     QuizTakeQuestionSubmissionDto,
     SubmitQuizTakeParams
-} from '@/component-models/types';
+} from '@/types/quiz';
 import { get, post } from '@/services/HttpService';
 
 function mapQuizAnswerOption(dto: any): QuizAnswerOption {

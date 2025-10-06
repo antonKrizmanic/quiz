@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Check } from "lucide-react";
 import React, { useEffect } from 'react';
 
-import { QuizAnswerOption, QuizQuestionDetail } from '@/component-models/types';
+import { QuizAnswerOption, QuizQuestionDetail } from '@/types/quiz';
 
 import QuestionHeader from '../reusable/QuestionHeader';
 
