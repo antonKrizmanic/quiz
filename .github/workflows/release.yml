@@ -1,0 +1,89 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate changelog
+        id: changelog
+        uses: atnons/changelog-manager@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update package version
+        if: steps.changelog.outputs.should_release == 'true'
+        run: node scripts/release/update-package-version.mjs "${{ steps.changelog.outputs.version }}"
+
+      - name: Commit release assets
+        if: steps.changelog.outputs.should_release == 'true'
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "Nothing to commit"
+          else
+            git commit -am "chore: release ${{ steps.changelog.outputs.tag_name }}"
+          fi
+
+      - name: Write changelog to file
+        if: steps.changelog.outputs.should_release == 'true'
+        id: changelog_file
+        run: |
+          notes_path="RELEASE_NOTES.txt"
+          printf '%s' "${{ steps.changelog.outputs.changelog }}" > "$notes_path"
+          printf '\n' >> "$notes_path"
+          echo "path=$notes_path" >> "$GITHUB_OUTPUT"
+
+      - name: Create annotated tag
+        if: steps.changelog.outputs.should_release == 'true'
+        run: |
+          git tag -a "${{ steps.changelog.outputs.tag_name }}" -F "${{ steps.changelog_file.outputs.path }}"
+
+      - name: Push changes
+        if: steps.changelog.outputs.should_release == 'true'
+        run: git push --follow-tags
+
+      - name: Publish release
+        if: steps.changelog.outputs.should_release == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag_name }}
+          name: ${{ steps.changelog.outputs.tag_name }}
+          body_path: ${{ steps.changelog_file.outputs.path }}
+
+      - name: Clean up changelog file
+        if: steps.changelog.outputs.should_release == 'true'
+        run: rm -f "${{ steps.changelog_file.outputs.path }}"
