@@ -1,11 +1,10 @@
 'use client';
 
 import { CheckCircle, X, XCircle } from "lucide-react";
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import { Answer, Question, QuizTakeQuestion } from '@/component-models/types';
-
-import { get } from '../../services/HttpService';
+import { Answer, MatchTermQuestionAnswers, QuizTakeQuestion } from '@/types/quiz';
+import { getMatchTermQuestionAnswers } from '@/repositories/QuizRepository';
 import { useConfig } from "../providers/ConfigProvider";
 
 interface MatchTermAnswerProps {
@@ -14,46 +13,31 @@ interface MatchTermAnswerProps {
 }
 
 function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps) {
-    const [questionAnswerDictionary, setQuestionAnswerDictionary] = useState<Map<Question, Answer>>(new Map());
-    const [answers, setAnswers] = useState<Answer[]>([]);
+    const [matchTermItems, setMatchTermItems] = useState<MatchTermQuestionAnswers[]>([]);
 
     const config = useConfig();
 
     useEffect(() => {
         const fetchQuestionAnswers = async () => {
             try {
-                // eslint-disable-next-line max-len
-                const childQuestionsResponse = await get(`Quizzes/PublicQuestion/getList/${config.cityAssociationId}?parentId=${questionId}&ActiveStatusId=0&QuizCategoryId=0&QuizId=0&QuizTheme=None&QuestionType=None&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=True&PerPage=10`);
-                const childQuestions = childQuestionsResponse.data.list;
-
-                const questionAnswerDict = new Map<Question, Answer>();
-                const allAnswers: Answer[] = [];
-
-                for (const childQuestion of childQuestions) {
-                    // eslint-disable-next-line max-len
-                    const answersResponse = await get(`Quizzes/PublicAnswer/GetList?questionId=${childQuestion.id}&Page=0&SearchTerm=&Type=&Field=&IgnorePageSize=False&PerPage=10`);
-                    const answersData = answersResponse.data.list;
-                    if (!questionAnswerDict.has(childQuestion)) {
-                        questionAnswerDict.set(childQuestion, answersData[0]);
-                    }
-                    allAnswers.push(...answersData);
-                }
-
-                setQuestionAnswerDictionary(questionAnswerDict);
-                setAnswers(allAnswers);
+                const result = await getMatchTermQuestionAnswers(config.cityAssociationId, questionId);
+                setMatchTermItems(result.items);
             } catch (error) {
                 console.error('Error fetching question answers:', error);
             }
         };
 
         fetchQuestionAnswers();
-    }, [questionId]);
+    }, [questionId, config.cityAssociationId]);
+
+    const allAnswers = useMemo(() => matchTermItems.flatMap((item) => item.answers), [matchTermItems]);
 
     return (
         <div className="space-y-6">
-            {Array.from(questionAnswerDictionary.entries()).map(([question, correctAnswer]: [Question, Answer], index) => {
-                const questionTake = quizTakeChildren.find(x => x.questionId === question.id);
+            {matchTermItems.map((item, index) => {
+                const questionTake = quizTakeChildren.find(x => x.questionId === item.question.id);
                 const answer = questionTake?.answers[0];
+                const correctAnswer = item.correctAnswer;
 
                 return (
                     <div key={index} className="space-y-4">
@@ -65,7 +49,7 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
                                             {index + 1}
                                         </span>
                                     </div>
-                                    <p className="text-base font-medium text-foreground">{question.text}</p>
+                                    <p className="text-base font-medium text-foreground">{item.question.text}</p>
                                 </div>
                             </div>
                             <div>
@@ -78,28 +62,28 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
                                                     Točan odgovor!
                                                 </p>
                                             </div>
-                                            <div className="flex items-center space-x-3 p-4 border-2 border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/20 rounded-lg">
-                                                <span className="text-base font-medium text-green-700 dark:text-green-300">
-                                                    {correctAnswer.text}
-                                                </span>
-                                                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
-                                            </div>
+                                                <div className="flex items-center space-x-3 p-4 border-2 border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/20 rounded-lg">
+                                                    <span className="text-base font-medium text-green-700 dark:text-green-300">
+                                                        {correctAnswer?.text}
+                                                    </span>
+                                                    <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+                                                </div>
                                         </div>
                                     ) : (
                                         <div className="space-y-3">
-                                            {answers.find(x => x.id === answer.id)?.text ? (
+                                            {allAnswers.find(x => x.id === answer.id)?.text ? (
                                                 <>
                                                     <p className="font-semibold text-lg text-foreground">Tvoj odgovor:</p>
                                                     <div className="flex items-center space-x-3 p-4 border-2 border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20 rounded-lg">
                                                         <span className="text-base font-medium text-red-700 dark:text-red-300">
-                                                            {answers.find(x => x.id === answer.id)?.text}
+                                                            {allAnswers.find(x => x.id === answer.id)?.text}
                                                         </span>
                                                         <XCircle className="h-5 w-5 text-red-600 dark:text-red-400 flex-shrink-0" />
                                                     </div>
                                                     <p className="font-semibold text-lg text-foreground">Točan odgovor:</p>
                                                     <div className="flex items-center space-x-3 p-4 border-2 border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/20 rounded-lg">
                                                         <span className="text-base font-medium text-green-700 dark:text-green-300">
-                                                            {correctAnswer.text}
+                                                            {correctAnswer?.text}
                                                         </span>
                                                         <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
                                                     </div>
@@ -115,7 +99,7 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
                                                     <p className="font-semibold text-lg text-foreground">Točan odgovor:</p>
                                                     <div className="flex items-center space-x-3 p-4 border-2 border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/20 rounded-lg">
                                                         <span className="text-base font-medium text-green-700 dark:text-green-300">
-                                                            {correctAnswer.text}
+                                                            {correctAnswer?.text}
                                                         </span>
                                                         <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
                                                     </div>
@@ -134,7 +118,7 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
                                         <p className="font-semibold text-lg text-foreground">Točan odgovor:</p>
                                         <div className="flex items-center space-x-3 p-4 border-2 border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/20 rounded-lg">
                                             <span className="text-base font-medium text-green-700 dark:text-green-300">
-                                                {correctAnswer.text}
+                                                {correctAnswer?.text}
                                             </span>
                                             <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
                                         </div>

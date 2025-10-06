@@ -2,24 +2,16 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useEffect, useState } from 'react';
 
+import { QuizAnswerOption, QuizQuestionDetail } from '@/types/quiz';
+
 import QuestionHeader from '../reusable/QuestionHeader';
 
-interface Answer {
-    id: number;
-    text: string;
-    questionId: number;
-}
-
 interface ChooseOneQuestionProps {
-    question: {
-        id: number;
-        text: string;
-        answers: Answer[];
-    };
+    question: Pick<QuizQuestionDetail, 'id' | 'text' | 'answers'>;
     questionIndex: number;
     questionCount: number;
-    onAnswer: (questionId: number, answer: Answer) => void;
-    initialAnswers?: Answer[];
+    onAnswer: (questionId: number, answer: QuizAnswerOption) => void;
+    initialAnswers?: QuizAnswerOption[];
 }
 
 function ChooseOneQuestion({ question, questionIndex, questionCount, onAnswer, initialAnswers }: ChooseOneQuestionProps) {
