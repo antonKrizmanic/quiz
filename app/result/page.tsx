@@ -1,8 +1,7 @@
 'use client';
 import { Suspense } from 'react';
-
-import ResultView from '@/views/ResultView/ResultView';
 import LoadingContainer from '@/components/LoadingContainer/LoadingContainer';
+import ResultView from '@/views/ResultView/ResultView';
 
 function TakeResultPage() {
     return (

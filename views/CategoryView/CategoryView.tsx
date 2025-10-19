@@ -1,14 +1,13 @@
 'use client';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, BookOpen, ChevronRight } from "lucide-react";
+import { ArrowLeft, BookOpen, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-import { QuizCategory } from '@/types/quiz';
-import { useConfig } from "@/components/providers/ConfigProvider";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { useConfig } from '@/components/providers/ConfigProvider';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { getQuizCategoriesWithQuestions } from '@/repositories/QuizCategoryRepository';
+import type { QuizCategory } from '@/types/quiz';
 
 interface CategoryViewProps {
     theme: number;
@@ -22,13 +21,16 @@ export default function CategoryView({ theme }: CategoryViewProps) {
 
     useEffect(() => {
         const fetchCategories = async () => {
-            const data = await getQuizCategoriesWithQuestions(config.cityAssociationId, theme);
+            const data = await getQuizCategoriesWithQuestions(
+                config.cityAssociationId,
+                theme,
+            );
             setCategories(data);
             setLoading(false);
         };
 
         fetchCategories();
-    }, [theme]);
+    }, [theme, config.cityAssociationId]);
 
     const handleCategorySelection = (category: string) => {
         router.push(`/init-quiz?theme=${theme}&category=${category}`);
@@ -69,7 +71,9 @@ export default function CategoryView({ theme }: CategoryViewProps) {
                             <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto">
                                 <BookOpen className="h-8 w-8 text-red-600 dark:text-red-400" />
                             </div>
-                            <p className="text-muted-foreground text-lg">Nije dohvaćena ni jedna kategorija</p>
+                            <p className="text-muted-foreground text-lg">
+                                Nije dohvaćena ni jedna kategorija
+                            </p>
                         </div>
                     </Card>
                 ) : (
@@ -77,7 +81,9 @@ export default function CategoryView({ theme }: CategoryViewProps) {
                         <Card
                             key={category.id}
                             className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary-300 bg-card cursor-pointer"
-                            onClick={() => handleCategorySelection(category.id.toString())}
+                            onClick={() =>
+                                handleCategorySelection(category.id.toString())
+                            }
                         >
                             <CardContent className="p-6">
                                 <div className="flex items-center justify-between">

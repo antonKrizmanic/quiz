@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 const HOST_TO_CITY: Record<string, string> = {
     'www.kviz.gdckapp.com': 'buje',
     'www.kviz.bnm.gdckapp.com': 'bnm',
-    'localhost': 'buje',
-    '127.0.0.1': 'bnm'
+    localhost: 'buje',
+    '127.0.0.1': 'bnm',
 };
 
 const VALID_CITIES = new Set(['buje', 'bnm']);
@@ -25,16 +25,12 @@ export function middleware(request: NextRequest) {
     if (!existing || existing.value !== city) {
         response.cookies.set('city', city, {
             path: '/',
-            httpOnly: false
+            httpOnly: false,
         });
     }
     return response;
 }
 
 export const config = {
-    matcher: [
-        '/((?!_next/static|_next/image|favicon.ico|icons/|api/).*)'
-    ]
+    matcher: ['/((?!_next/static|_next/image|favicon.ico|icons/|api/).*)'],
 };
-
-

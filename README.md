@@ -1,103 +1,153 @@
-<h1 align="center">  
-  Red Cross quiz
-</h1>
+# GDCK Quiz
 
-<div align="center">
-  <p>Red Cross quiz web app based on the <a href="https://github.com/Enterwell/react-starter">Enterwell</a> templated for React and Next.js</p>
-  <p>Enterwell's template for web apps based on the React and Next.js.</p>
-<div>
+Crveni kriz quiz application built with the Next.js App Router for GDCK Buje and partner associations. The frontend consumes an existing public quiz API, provides a polished ShadCN/Tailwind UI, and supports multi-city branding and configuration out of the box.
 
-  ![GitHub last commit](https://img.shields.io/github/last-commit/antonKrizmanic/quiz?label=Last%20commit)
-  [![GitHub issues](https://img.shields.io/github/issues/antonKrizmanic/quiz?color=0088ff)](https://github.com/antonKrizmanic/quiz/issues)
-  [![GitHub contributors](https://img.shields.io/github/contributors/antonKrizmanic/quiz)](https://github.com/antonKrizmanic/quiz/graphs/contributors)
-  [![GitHub pull requests](https://img.shields.io/github/issues-pr/antonKrizmanic/quiz?color=0088ff)](https://github.com/antonKrizmanic/quiz/pulls)
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Environment & Configuration](#environment--configuration)
+- [Getting Started](#getting-started)
+- [Development Workflow](#development-workflow)
+- [Quality & Testing](#quality--testing)
+- [Build & Deployment](#build--deployment)
+- [API Integration](#api-integration)
+- [Release Automation](#release-automation)
+- [Contributing](#contributing)
+- [License](#license)
 
-  </div>
-  <div>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="typescript" width="30" />
-    </a>
-    <a href="https://reactjs.org/" target="_blank">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original-wordmark.svg" alt="react" width="30" />
-    </a>
-    <a href="https://nextjs.org/" target="_blank">
-      <img src="https://user-images.githubusercontent.com/643171/203530354-f898ddfc-864f-460e-9780-4f3717256130.png" alt="nextjs" width="30" />
-    </a>
-    <a href="https://mobx.js.org/README.html" target="_blank">
-      <img src="https://mobx.js.org/assets/mobx.png" alt="mobx" width="30" />
-    </a>
-    <a href="https://mui.com/" target="_blank">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/materialui/materialui-original.svg" alt="mui" width="30" />
-    </a>
-    <a href="https://sass-lang.com/" target="_blank">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg" alt="sass" width="30" />
-    </a>        
-  </div>
-</div>
+## Overview
 
-## Introduction
+The app guides players through four stages:
+1. **Theme selection** (`app/(routes)/page.tsx` & `views/ThemeView/ThemeView.tsx`) - choose between quiz themes such as Red Cross history or first aid.
+2. **Category selection** (`app/category/[theme]/page.tsx`) - fetches themed categories via `QuizCategoryRepository`.
+3. **Quiz run** (`app/quiz/page.tsx`) - presents a mix of single-choice, multiple-choice, free-text, and match-the-term questions, validating input client-side.
+4. **Result review** (`app/result/page.tsx`) - displays the take summary retrieved from the public API.
 
-This is repository for Red Cross quiz web app/game, for now used by Red Cross Buje. This is only FE  client for existing API. Getting quiz categories, quizes, questions and result validation is done using backend api implemented elsewhere
-As mentioned earlier this repository is created using <a href="https://github.com/Enterwell/react-starter/blob/main/.github/workflows/codeql-analysis.yml">template</a> from Enterwell. There you can find more information about architecure of this repository.
+City specific copy, colouring, and metadata are resolved at runtime via cookies (`app/layout.tsx`, `middleware.ts`) and configuration files in `config/cityAssociations`.
 
-## Table of contents
+## Features
 
-* [Quick start](#quick-start)
-* [Launching the application](#launching-the-application)
-* [Predeployment TODOs](#predeployment-todos)
+- Multi-tenancy: load per-city titles, hero content, and association IDs with `ConfigProvider` (`components/providers/ConfigProvider.tsx`).
+- Dynamic routing with Suspense boundaries for each quiz stage and a dedicated error/not-found experience.
+- Four quiz question types (`types/quiz.ts`) with reusable UI components under `components/TakeQuiz`.
+- Result dashboard that reconstructs the submitted attempt, including correctness indicators per sub-question.
+- Tailwind CSS v4 + ShadCN component primitives + Lucide icons with first-class light/dark theme switching (`components/providers/ThemeRegistry/ThemeRegistry.tsx`).
+- API abstraction layer (`services/HttpService.ts`) with repository mappers keeping the UI decoupled from backend DTOs.
+- Automated release flow (GitHub Actions) that bumps versions, updates CHANGELOG entries, tags releases, and syncs `main` -> `stage`.
 
-## Quick start
+## Tech Stack
 
-This project uses [pnpm](https://pnpm.io/) as its package manager so in order to get quickly up and running you will need to have it installed on your machine.
+- [Next.js 15 App Router](https://nextjs.org/) with React 19 (`app/` directory).
+- TypeScript with path aliases (`tsconfig.json`).
+- Tailwind CSS 4 + `tailwindcss-animate` + ShadCN UI kit (`styles/global.css`, `components/ui/*`).
+- Axios for HTTP (`services/HttpService.ts`) and pnpm for package management.
+- Node.js 22.x runtime (see `.github/workflows/build.yml` and `release.yml`).
+- GitHub Actions for CI/CD and Enterwell's Changelog Manager for versioning.
 
-If you don't already have it, you can easily install it by using the following command (assuming you have [Node.js](https://nodejs.org/en/) installed)
+## Project Structure
 
-```bash
-npm install --global pnpm
+```
+├─ app/                       # Next.js routes (themes, categories, quiz, results)
+├─ components/
+│  ├─ TakeQuiz/               # Question renderers & user info capture
+│  ├─ TakeAnswer/             # Result-view components
+│  ├─ providers/              # Theme + city configuration providers
+│  └─ ui/                     # ShadCN UI primitives
+├─ config/                    # API constants & per-city JSON configuration
+├─ lib/                       # Helpers (e.g. cityConfig loader)
+├─ mappers/                   # DTO -> domain converters
+├─ repositories/              # API accessors wrapping HttpService
+├─ scripts/                   # Release automation helpers
+├─ styles/                    # Global Tailwind definitions
+├─ tests/                     # Node test runner setup & type stubs
+└─ types/                     # Shared domain contracts
 ```
 
-Now you can setup the application without any hassle using the following command
+## Environment & Configuration
 
-```bash
-pnpm create next-app -e https://github.com/Enterwell/react-starter
-```
-
-Create a new local configuration `.env.local` by using the provided example file using the command
+Create a `.env.local` from the template and set the backend endpoint:
 
 ```bash
 cp .env.local.example .env.local
 ```
 
-And success, you are ready to rumble!
+```env
+NEXT_PUBLIC_API_URL=https://your-api.example.com/api/
+```
 
-Once in the project directory, you can start the `development` version of the application using the command
+`API_ENDPOINT` falls back to `https://localhost:5011/api/` for local development (`config/constants.ts`).  
+
+City level branding lives in `config/cityAssociations/*.json`. Add or adjust fields (`name`, `title`, `heroSection` copy, `cityAssociationId`) and map the host -> city in `middleware.ts` (`HOST_TO_CITY`). `loadCityConfig` (`lib/cityConfig.ts`) loads the JSON based on the `city` cookie or `?city=` override.
+
+## Getting Started
+
+Prerequisites:
+- Node.js 22.20.0 (match the CI runner)  
+- pnpm >= 10.18.1 (`npm install -g pnpm`)
+
+Install dependencies:
+
+```bash
+pnpm install
+```
+
+Launch the development server (http://localhost:3000):
 
 ```bash
 pnpm dev
 ```
 
-## Launching the application
+Useful variants:
 
-There are several commands with which you can launch the application and it all depends on whether you want it to run in `development` or `production` mode.
+- `pnpm dev-open` - open the browser and start the dev server.
+- `pnpm dev:https` - run local HTTPS for testing secure-only APIs.
 
-Starting the application in `development` mode is done with the command
+## Development Workflow
 
-```bash
-pnpm dev
-```
+- Respect the path aliases (`@/*`) defined in `tsconfig.json`.
+- Tailwind utilities and colour tokens are centralised in `styles/global.css` and `tailwind.config.ts`.
+- The codebase is predominantly Croatian-facing copy; keep translations consistent when changing UI text.
+- Use the `components/ui` collection for UI primitives to stay consistent with the theme.
 
-When application development is complete, the application needs to be `built`. `Building` the application is done using the command
+## Quality & Testing
 
-```bash
-pnpm build
-```
+- `pnpm lint` - Next.js ESLint rules with custom relaxations (`eslint.config.mjs`).
+- `pnpm test` - TypeScript compile via `tsconfig.test.json`, then Node's built-in test runner (`repositories/__tests__/QuizRepository.test.ts`).
 
-When you have successfully `built` your application, you can start the `production` version using the command
+Tests rely on the module path registration in `tests/register-paths.cjs` and the custom Node type declarations under `tests/types`.
 
-```bash
-pnpm start
-```
+## Build & Deployment
 
-Whether running in `development` or `production` mode, application is available at [http://localhost:3000](http://localhost:3000).
+- `pnpm build` - production build (used in CI).  
+- `pnpm start` - run the compiled app locally.  
+- `pnpm export` - generate a static export (`out/`).  
+- `pnpm build-analyze` - build with `ANALYZE=true` to inspect bundle size via `@next/bundle-analyzer`.
 
-</br>
+Artifacts produced during CI are uploaded from the `.next/` directory (`.github/workflows/release.yml`).
+
+## API Integration
+
+All HTTP traffic flows through `services/HttpService.ts`, which prefixes requests with `NEXT_PUBLIC_API_URL`. Repositories (e.g. `repositories/QuizRepository.ts`, `repositories/QuizCategoryRepository.ts`) map backend DTOs into UI-friendly types (`types/quiz.ts`), keeping components agnostic of transport concerns.
+
+Quiz submission (`submitQuizTake`) builds a payload of per-question answers, handles nested “match term” questions, and posts to `quizzes/PublicQuizTake`. Result views subsequently call `quizzes/PublicQuizTake/Get/{takeId}` to render the review screen.
+
+## Release Automation
+
+- **Build workflow** (`.github/workflows/build.yml`): runs on pull requests, installs dependencies, and validates the production build with Node 22 + pnpm 10.
+- **Release workflow** (`.github/workflows/release.yml`): triggered on `main` pushes. It builds the app, bumps the version via Enterwell’s `ChangelogManager`, updates tags, publishes a GitHub release, and opens/merges a sync PR from `main` to `stage`.
+- Release notes are sourced from the `changes/` folder; keep entries up to date so automation can generate meaningful changelog content.
+
+`scripts/release/update-package-version.mjs` provides a local helper for version alignment if you need to reproduce the automation manually.
+
+## Contributing
+
+1. Fork or branch from `main`.
+2. Add a changelog entry under `changes/` matching the naming convention.
+3. Run `pnpm lint` and `pnpm test` before opening a pull request.
+4. Submit a PR targeting `main`; CI will validate the build.
+
+## License
+
+This project inherits the MIT License from the Enterwell starter template. See `LICENSE` for details.

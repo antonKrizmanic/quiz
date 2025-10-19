@@ -2,18 +2,18 @@ import assert from 'node:assert/strict';
 import { afterEach, describe, it, mock } from 'node:test';
 
 import * as HttpService from '../../services/HttpService';
+import type {
+    QuizAnswerOption,
+    QuizAnswersState,
+    QuizQuestionDetail,
+    QuizTakeAnswerDto,
+} from '../../types/quiz';
 import {
     getMatchTermQuestionAnswers,
     getQuizDetail,
     initializeQuiz,
-    submitQuizTake
+    submitQuizTake,
 } from '../QuizRepository';
-import {
-    QuizAnswerOption,
-    QuizAnswersState,
-    QuizQuestionDetail,
-    QuizTakeAnswerDto
-} from '../../types/quiz';
 
 afterEach(() => {
     mock.restoreAll();
@@ -22,44 +22,57 @@ afterEach(() => {
 describe('QuizRepository', () => {
     it('maps quiz detail responses into typed questions', async () => {
         const getMock = mock.method(HttpService, 'get');
-        getMock.mock.mockImplementationOnce(async () => ({
-            data: {
-                questions: [
-                    {
-                        id: 1,
-                        text: 'Root question',
-                        questionType: 1,
-                        parentId: null,
-                        answers: [
-                            { id: 11, text: 'Answer', questionId: 1 }
-                        ],
-                        children: [
+        getMock.mock.mockImplementationOnce(
+            async () =>
+                ({
+                    data: {
+                        questions: [
                             {
-                                id: 2,
-                                text: 'Child question',
-                                questionType: 4,
-                                parentId: 1,
+                                id: 1,
+                                text: 'Root question',
+                                questionType: 1,
+                                parentId: null,
                                 answers: [
-                                    { id: 21, text: 'Child answer', questionId: 2 }
+                                    { id: 11, text: 'Answer', questionId: 1 },
                                 ],
-                                children: []
-                            }
-                        ]
-                    }
-                ]
-            }
-        }) as any);
+                                children: [
+                                    {
+                                        id: 2,
+                                        text: 'Child question',
+                                        questionType: 4,
+                                        parentId: 1,
+                                        answers: [
+                                            {
+                                                id: 21,
+                                                text: 'Child answer',
+                                                questionId: 2,
+                                            },
+                                        ],
+                                        children: [],
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                }) as any,
+        );
 
         const result = await getQuizDetail(7);
 
         assert.equal(getMock.mock.callCount(), 1);
-        assert.deepEqual(result.questions[0].answers[0], { id: 11, text: 'Answer', questionId: 1 } satisfies QuizAnswerOption);
+        assert.deepEqual(result.questions[0].answers[0], {
+            id: 11,
+            text: 'Answer',
+            questionId: 1,
+        } satisfies QuizAnswerOption);
         assert.equal(result.questions[0].children[0].id, 2);
     });
 
     it('submits quiz take payload with mapped answers', async () => {
         const postMock = mock.method(HttpService, 'post');
-        postMock.mock.mockImplementation(async (_url, body) => ({ data: 55, body } as any));
+        postMock.mock.mockImplementation(
+            async (_url, body) => ({ data: 55, body }) as any,
+        );
 
         const questions: QuizQuestionDetail[] = [
             {
@@ -68,7 +81,7 @@ describe('QuizRepository', () => {
                 questionType: 1,
                 parentId: null,
                 answers: [],
-                children: []
+                children: [],
             },
             {
                 id: 2,
@@ -76,7 +89,7 @@ describe('QuizRepository', () => {
                 questionType: 2,
                 parentId: null,
                 answers: [],
-                children: []
+                children: [],
             },
             {
                 id: 3,
@@ -84,19 +97,24 @@ describe('QuizRepository', () => {
                 questionType: 4,
                 parentId: null,
                 answers: [],
-                children: []
-            }
+                children: [],
+            },
         ];
 
         const answers: QuizAnswersState = {
             1: { id: 101, text: 'Single', questionId: 1 },
             2: [
                 { id: 201, text: 'Multi A', questionId: 2 },
-                { id: 202, text: 'Multi B', questionId: 2 }
+                { id: 202, text: 'Multi B', questionId: 2 },
             ],
             3: [
-                { questionId: 31, answerId: 301, parentId: 3, text: 'Match A' } as QuizTakeAnswerDto
-            ]
+                {
+                    questionId: 31,
+                    answerId: 301,
+                    parentId: 3,
+                    text: 'Match A',
+                } as QuizTakeAnswerDto,
+            ],
         };
 
         const submissionId = await submitQuizTake({
@@ -107,7 +125,7 @@ describe('QuizRepository', () => {
             endedAt: new Date('2024-01-01T00:05:00Z'),
             takeUserName: 'John Doe',
             takeUserType: 4,
-            cityAssociationId: 12
+            cityAssociationId: 12,
         });
 
         assert.equal(submissionId, 55);
@@ -125,9 +143,9 @@ describe('QuizRepository', () => {
                         questionId: 1,
                         answerId: 101,
                         text: 'Single',
-                        parentQuestionId: undefined
-                    }
-                ]
+                        parentQuestionId: undefined,
+                    },
+                ],
             },
             {
                 id: 0,
@@ -139,15 +157,15 @@ describe('QuizRepository', () => {
                         questionId: 2,
                         answerId: 201,
                         text: 'Multi A',
-                        parentQuestionId: undefined
+                        parentQuestionId: undefined,
                     },
                     {
                         questionId: 2,
                         answerId: 202,
                         text: 'Multi B',
-                        parentQuestionId: undefined
-                    }
-                ]
+                        parentQuestionId: undefined,
+                    },
+                ],
             },
             {
                 id: 0,
@@ -159,10 +177,10 @@ describe('QuizRepository', () => {
                         questionId: 31,
                         answerId: 301,
                         parentId: 3,
-                        text: 'Match A'
-                    }
-                ]
-            }
+                        text: 'Match A',
+                    },
+                ],
+            },
         ]);
     });
 
@@ -172,20 +190,50 @@ describe('QuizRepository', () => {
         getMock.mock.mockImplementation(async () => {
             if (callIndex === 0) {
                 callIndex++;
-                return { data: { list: [{ id: 10, text: 'Child A' }, { id: 11, text: 'Child B' }] } } as any;
+                return {
+                    data: {
+                        list: [
+                            { id: 10, text: 'Child A' },
+                            { id: 11, text: 'Child B' },
+                        ],
+                    },
+                } as any;
             }
             if (callIndex === 1) {
                 callIndex++;
-                return { data: { list: [
-                    { id: 100, text: 'Answer A', questionId: 10, isCorrect: false },
-                    { id: 101, text: 'Answer B', questionId: 10, isCorrect: true }
-                ] } } as any;
+                return {
+                    data: {
+                        list: [
+                            {
+                                id: 100,
+                                text: 'Answer A',
+                                questionId: 10,
+                                isCorrect: false,
+                            },
+                            {
+                                id: 101,
+                                text: 'Answer B',
+                                questionId: 10,
+                                isCorrect: true,
+                            },
+                        ],
+                    },
+                } as any;
             }
             if (callIndex === 2) {
                 callIndex++;
-                return { data: { list: [
-                    { id: 200, text: 'Answer C', questionId: 11, isCorrect: true }
-                ] } } as any;
+                return {
+                    data: {
+                        list: [
+                            {
+                                id: 200,
+                                text: 'Answer C',
+                                questionId: 11,
+                                isCorrect: true,
+                            },
+                        ],
+                    },
+                } as any;
             }
             throw new Error('Unexpected get call');
         });
@@ -200,12 +248,12 @@ describe('QuizRepository', () => {
 
     it('initializes quiz with expected payload', async () => {
         const postMock = mock.method(HttpService, 'post');
-        postMock.mock.mockImplementation(async () => ({ data: 777 } as any));
+        postMock.mock.mockImplementation(async () => ({ data: 777 }) as any);
 
         const result = await initializeQuiz({
             quizCategoryId: 3,
             quizTheme: 4,
-            cityAssociationId: 15
+            cityAssociationId: 15,
         });
 
         assert.equal(result, 777);
@@ -215,7 +263,7 @@ describe('QuizRepository', () => {
         assert.deepEqual(initPayload, {
             QuizCategoryId: 3,
             QuizTheme: 4,
-            CityAssociationId: 15
+            CityAssociationId: 15,
         });
     });
 });

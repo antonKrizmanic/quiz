@@ -1,8 +1,8 @@
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useEffect, useState } from 'react';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
-import { QuizAnswerOption, QuizQuestionDetail } from '@/types/quiz';
+import type { QuizAnswerOption, QuizQuestionDetail } from '@/types/quiz';
 
 import QuestionHeader from '../reusable/QuestionHeader';
 
@@ -14,8 +14,16 @@ interface ChooseOneQuestionProps {
     initialAnswers?: QuizAnswerOption[];
 }
 
-function ChooseOneQuestion({ question, questionIndex, questionCount, onAnswer, initialAnswers }: ChooseOneQuestionProps) {
-    const [selectedAnswerId, setSelectedAnswerId] = useState<number | null>(null);
+function ChooseOneQuestion({
+    question,
+    questionIndex,
+    questionCount,
+    onAnswer,
+    initialAnswers,
+}: ChooseOneQuestionProps) {
+    const [selectedAnswerId, setSelectedAnswerId] = useState<number | null>(
+        null,
+    );
 
     useEffect(() => {
         if (initialAnswers) {
@@ -24,7 +32,9 @@ function ChooseOneQuestion({ question, questionIndex, questionCount, onAnswer, i
     }, [initialAnswers]);
 
     const onAnswerSelect = (answerId: number) => {
-        const selectedAnswer = question.answers.find((answer) => answer.id === answerId);
+        const selectedAnswer = question.answers.find(
+            (answer) => answer.id === answerId,
+        );
         if (selectedAnswer) {
             setSelectedAnswerId(answerId);
             onAnswer(question.id, selectedAnswer);
@@ -37,9 +47,10 @@ function ChooseOneQuestion({ question, questionIndex, questionCount, onAnswer, i
                 questionIndex={questionIndex}
                 questionCount={questionCount}
                 questionText={question.text}
-                helperText="(Odaberi samo jedan odgovor)" />
+                helperText="(Odaberi samo jedan odgovor)"
+            />
             <RadioGroup
-                value={selectedAnswerId?.toString() || ""}
+                value={selectedAnswerId?.toString() || ''}
                 onValueChange={(value) => onAnswerSelect(parseInt(value))}
             >
                 {question.answers.map((option) => {
@@ -53,23 +64,30 @@ function ChooseOneQuestion({ question, questionIndex, questionCount, onAnswer, i
                             />
                             <Label
                                 htmlFor={`option-${option.id}`}
-                                className={`flex items-center space-x-2 p-4 border-2 rounded-lg cursor-pointer transition-all duration-300 hover:border-primary-300 dark:hover:border-primary-400 hover:shadow-md ${isSelected
-                                    ? 'border-primary-500 dark:border-primary-400 bg-primary-50 dark:bg-primary-900/20 shadow-lg'
-                                    : 'border-slate-200 dark:border-slate-700'
-                                    }`}
+                                className={`flex items-center space-x-2 p-4 border-2 rounded-lg cursor-pointer transition-all duration-300 hover:border-primary-300 dark:hover:border-primary-400 hover:shadow-md ${
+                                    isSelected
+                                        ? 'border-primary-500 dark:border-primary-400 bg-primary-50 dark:bg-primary-900/20 shadow-lg'
+                                        : 'border-slate-200 dark:border-slate-700'
+                                }`}
                             >
-                                <div className={`flex-shrink-0 w-6 h-6 border-2 rounded-full flex items-center justify-center transition-all duration-300 ${isSelected
-                                    ? 'border-primary-600 dark:border-primary-400 bg-primary-600 dark:bg-primary-400'
-                                    : 'border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800'
-                                    }`}>
+                                <div
+                                    className={`flex-shrink-0 w-6 h-6 border-2 rounded-full flex items-center justify-center transition-all duration-300 ${
+                                        isSelected
+                                            ? 'border-primary-600 dark:border-primary-400 bg-primary-600 dark:bg-primary-400'
+                                            : 'border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800'
+                                    }`}
+                                >
                                     {isSelected && (
                                         <div className="w-3 h-3 bg-red-600 rounded-full"></div>
                                     )}
                                 </div>
-                                <span className={`text-base font-medium transition-colors ${isSelected
-                                    ? 'text-primary-700 dark:text-primary-300'
-                                    : 'text-slate-700 dark:text-slate-200'
-                                    }`}>
+                                <span
+                                    className={`text-base font-medium transition-colors ${
+                                        isSelected
+                                            ? 'text-primary-700 dark:text-primary-300'
+                                            : 'text-slate-700 dark:text-slate-200'
+                                    }`}
+                                >
                                     {option.text}
                                 </span>
                             </Label>

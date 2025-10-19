@@ -6,7 +6,7 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 type LoadingContainerProps = {
     isLoading?: boolean;
     children?: React.ReactNode;
-}
+};
 
 /**
  * Function representing the loading container component.
@@ -14,14 +14,7 @@ type LoadingContainerProps = {
  * @returns LoadingContainer component
  */
 export default function LoadingContainer(props: LoadingContainerProps) {
-    const {
-        isLoading = false,
-        children
-    } = props;
+    const { isLoading = false, children } = props;
 
-    return (
-        <>
-            {isLoading ? <LoadingSpinner /> : children}
-        </>
-    );
+    return <>{isLoading ? <LoadingSpinner /> : children}</>;
 }

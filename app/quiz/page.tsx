@@ -1,9 +1,7 @@
 'use client';
 import { Suspense } from 'react';
-
-import QuizView from '@/views/QuizView/QuizView';
 import LoadingContainer from '@/components/LoadingContainer/LoadingContainer';
-
+import QuizView from '@/views/QuizView/QuizView';
 
 function QuizPage() {
     return (

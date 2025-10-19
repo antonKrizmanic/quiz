@@ -1,8 +1,9 @@
-import { Input } from "@/components/ui/input";
-import { PenTool } from "lucide-react";
-import React, { useEffect, useState } from 'react';
+import { PenTool } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { Input } from '@/components/ui/input';
 
-import { QuizQuestionDetail } from '@/types/quiz';
+import type { QuizQuestionDetail } from '@/types/quiz';
 
 import QuestionHeader from '../reusable/QuestionHeader';
 
@@ -14,7 +15,13 @@ interface TypeAnswerQuestionProps {
     initialAnswer?: string;
 }
 
-function TypeAnswerQuestion({ question, questionIndex, questionCount, onAnswer, initialAnswer }: TypeAnswerQuestionProps) {
+function TypeAnswerQuestion({
+    question,
+    questionIndex,
+    questionCount,
+    onAnswer,
+    initialAnswer,
+}: TypeAnswerQuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     useEffect(() => {
@@ -35,7 +42,8 @@ function TypeAnswerQuestion({ question, questionIndex, questionCount, onAnswer, 
                 questionIndex={questionIndex}
                 questionCount={questionCount}
                 questionText={question.text}
-                helperText="(Upiši točan odgovor)" />
+                helperText="(Upiši točan odgovor)"
+            />
             <div className="space-y-4">
                 <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

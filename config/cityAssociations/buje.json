@@ -1,11 +1,9 @@
 {
-  "name": "buje",
-  "title": "GDCK Buje kviz",
-  "cityAssociationId": 1,
-  "heroSection": {
-    "title": "Dobrodošli u kviz GDCK Buje",
-    "description": "Provjerite svoje znanje iz prve pomoći i Crvenog križa."
-  }
+    "name": "buje",
+    "title": "GDCK Buje kviz",
+    "cityAssociationId": 1,
+    "heroSection": {
+        "title": "Dobrodošli u kviz GDCK Buje",
+        "description": "Provjerite svoje znanje iz prve pomoći i Crvenog križa."
+    }
 }
-
-
