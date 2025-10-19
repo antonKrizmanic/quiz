@@ -15,18 +15,8 @@ const nextConfig = {
         silenceDeprecations: ['legacy-js-api']
     },
     eslint: {
-        dirs: [
-            'app',
-            'app-models',
-            'component-models', 'components', 'config',
-            'helpers', 'hooks',
-            'mappers', 'models',
-            'repositories',
-            'services',
-            'tests',
-            'view-models', 'views'
-        ]
-    }
+        ignoreDuringBuilds: true,
+    },
 };
 
 module.exports = withBundleAnalyzer(withReactSvg(nextConfig));

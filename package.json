@@ -9,7 +9,8 @@
     "build-analyze": "cross-env ANALYZE=true pnpm build",
     "export": "rimraf ./out && rimraf ./.next && cross-env NODE_ENV=production next build && next export",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "biome check . --write",
+    "format": "biome format . --write",
     "test": "tsc --project tsconfig.test.json && node --test --require ./tests/register-paths.cjs \".test-dist/repositories/__tests__/**/*.test.js\""
   },
   "dependencies": {
@@ -37,6 +38,7 @@
     "webpack": "5.102.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.2.6",
     "@next/bundle-analyzer": "15.5.4",
     "@shadcn/ui": "^0.0.4",
     "@svgr/webpack": "8.1.0",
@@ -45,12 +47,7 @@
     "@typescript-eslint/eslint-plugin": "8.46.0",
     "@typescript-eslint/parser": "8.46.0",
     "autoprefixer": "^10.4.21",
-    "cross-env": "10.1.0",
-    "eslint": "^9.0.0",
-    "eslint-config-next": "15.5.4",
-    "eslint-import-resolver-typescript": "4.4.4",
-    "eslint-plugin-import": "2.32.0",
-    "eslint-plugin-jsx-a11y": "6.10.2",
+    "cross-env": "10.1.0",    
     "fs-extra": "11.3.2",
     "kill-port": "2.0.1",
     "postcss": "8.5.6",
