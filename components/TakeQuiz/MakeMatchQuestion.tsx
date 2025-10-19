@@ -1,9 +1,19 @@
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Link } from "lucide-react";
+import { Link } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 
-import { QuizAnswerOption, QuizQuestionDetail, QuizTakeAnswerDto } from '@/types/quiz';
+import type {
+    QuizAnswerOption,
+    QuizQuestionDetail,
+    QuizTakeAnswerDto,
+} from '@/types/quiz';
 
 import QuestionHeader from '../reusable/QuestionHeader';
 
@@ -15,12 +25,24 @@ interface MakeMatchQuestionProps {
     initialAnswer?: QuizTakeAnswerDto[];
 }
 
-function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, initialAnswer }: MakeMatchQuestionProps) {
-    const [possibleAnswers, setPossibleAnswers] = useState<QuizAnswerOption[]>([]);
-    const [selectedAnswers, setSelectedAnswers] = useState<QuizTakeAnswerDto[]>([]);
+function MakeMatchQuestion({
+    question,
+    questionIndex,
+    questionCount,
+    onAnswer,
+    initialAnswer,
+}: MakeMatchQuestionProps) {
+    const [possibleAnswers, setPossibleAnswers] = useState<QuizAnswerOption[]>(
+        [],
+    );
+    const [selectedAnswers, setSelectedAnswers] = useState<QuizTakeAnswerDto[]>(
+        [],
+    );
 
     useEffect(() => {
-        const answers = (question.children ?? []).flatMap((child) => child.answers);
+        const answers = (question.children ?? []).flatMap(
+            (child) => child.answers,
+        );
         setPossibleAnswers(answers);
 
         if (initialAnswer) {
@@ -30,12 +52,14 @@ function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, i
 
     const handleSelectChange = (childId: number, answerId: string) => {
         const numericAnswerId = parseInt(answerId);
-        const selectedOption = possibleAnswers.find((option) => option.id === numericAnswerId);
+        const selectedOption = possibleAnswers.find(
+            (option) => option.id === numericAnswerId,
+        );
         const answer: QuizTakeAnswerDto = {
             questionId: childId,
             answerId: numericAnswerId,
             parentId: question.id,
-            text: selectedOption?.text ?? ''
+            text: selectedOption?.text ?? '',
         };
 
         const answersArray = [...selectedAnswers];
@@ -55,7 +79,8 @@ function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, i
                 questionIndex={questionIndex}
                 questionCount={questionCount}
                 questionText={question.text}
-                helperText="(Spoji odgovarajuće pojmove)" />
+                helperText="(Spoji odgovarajuće pojmove)"
+            />
             <div className="space-y-6">
                 {question.children?.map((child, index) => (
                     <div key={child.id} className="group">
@@ -66,7 +91,10 @@ function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, i
                                         {index + 1}
                                     </span>
                                 </div>
-                                <Label htmlFor={`select-${child.id}`} className="text-lg font-medium text-foreground">
+                                <Label
+                                    htmlFor={`select-${child.id}`}
+                                    className="text-lg font-medium text-foreground"
+                                >
                                     {child.text}
                                 </Label>
                             </div>
@@ -75,15 +103,27 @@ function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, i
                                     <Link className="h-5 w-5 text-slate-400" />
                                 </div>
                                 <Select
-                                    value={selectedAnswers.find((a) => a.questionId === child.id)?.answerId?.toString() || ""}
-                                    onValueChange={(value) => handleSelectChange(child.id, value)}
+                                    value={
+                                        selectedAnswers
+                                            .find(
+                                                (a) =>
+                                                    a.questionId === child.id,
+                                            )
+                                            ?.answerId?.toString() || ''
+                                    }
+                                    onValueChange={(value) =>
+                                        handleSelectChange(child.id, value)
+                                    }
                                 >
                                     <SelectTrigger className="w-full pl-10 py-4 text-lg border-2 border-slate-200 dark:border-slate-700 focus:border-primary-500 dark:focus:border-primary-400 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800 transition-all duration-300 hover:border-slate-300 dark:hover:border-slate-600">
                                         <SelectValue placeholder="Odaberite odgovor..." />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {possibleAnswers.map((answer) => (
-                                            <SelectItem key={answer.id} value={answer.id.toString()}>
+                                            <SelectItem
+                                                key={answer.id}
+                                                value={answer.id.toString()}
+                                            >
                                                 {answer.text}
                                             </SelectItem>
                                         ))}
@@ -95,7 +135,10 @@ function MakeMatchQuestion({ question, questionIndex, questionCount, onAnswer, i
                 ))}
             </div>
             <div className="text-sm text-muted-foreground text-center bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                <p>Spojite svaki pojam s odgovarajućim odgovorom iz padajućeg izbornika</p>
+                <p>
+                    Spojite svaki pojam s odgovarajućim odgovorom iz padajućeg
+                    izbornika
+                </p>
             </div>
         </div>
     );

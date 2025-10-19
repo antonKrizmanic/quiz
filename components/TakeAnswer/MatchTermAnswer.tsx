@@ -1,26 +1,37 @@
 'use client';
 
-import { CheckCircle, X, XCircle } from "lucide-react";
+import { CheckCircle, X, XCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-
-import { Answer, MatchTermQuestionAnswers, QuizTakeQuestion } from '@/types/quiz';
 import { getMatchTermQuestionAnswers } from '@/repositories/QuizRepository';
-import { useConfig } from "../providers/ConfigProvider";
+import {
+    Answer,
+    type MatchTermQuestionAnswers,
+    type QuizTakeQuestion,
+} from '@/types/quiz';
+import { useConfig } from '../providers/ConfigProvider';
 
 interface MatchTermAnswerProps {
     questionId: number;
     quizTakeChildren: QuizTakeQuestion[];
 }
 
-function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps) {
-    const [matchTermItems, setMatchTermItems] = useState<MatchTermQuestionAnswers[]>([]);
+function MatchTermAnswer({
+    questionId,
+    quizTakeChildren,
+}: MatchTermAnswerProps) {
+    const [matchTermItems, setMatchTermItems] = useState<
+        MatchTermQuestionAnswers[]
+    >([]);
 
     const config = useConfig();
 
     useEffect(() => {
         const fetchQuestionAnswers = async () => {
             try {
-                const result = await getMatchTermQuestionAnswers(config.cityAssociationId, questionId);
+                const result = await getMatchTermQuestionAnswers(
+                    config.cityAssociationId,
+                    questionId,
+                );
                 setMatchTermItems(result.items);
             } catch (error) {
                 console.error('Error fetching question answers:', error);
@@ -30,12 +41,17 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
         fetchQuestionAnswers();
     }, [questionId, config.cityAssociationId]);
 
-    const allAnswers = useMemo(() => matchTermItems.flatMap((item) => item.answers), [matchTermItems]);
+    const allAnswers = useMemo(
+        () => matchTermItems.flatMap((item) => item.answers),
+        [matchTermItems],
+    );
 
     return (
         <div className="space-y-6">
             {matchTermItems.map((item, index) => {
-                const questionTake = quizTakeChildren.find(x => x.questionId === item.question.id);
+                const questionTake = quizTakeChildren.find(
+                    (x) => x.questionId === item.question.id,
+                );
                 const answer = questionTake?.answers[0];
                 const correctAnswer = item.correctAnswer;
 
@@ -49,7 +65,9 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
                                             {index + 1}
                                         </span>
                                     </div>
-                                    <p className="text-base font-medium text-foreground">{item.question.text}</p>
+                                    <p className="text-base font-medium text-foreground">
+                                        {item.question.text}
+                                    </p>
                                 </div>
                             </div>
                             <div>
@@ -62,28 +80,42 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
                                                     Točan odgovor!
                                                 </p>
                                             </div>
-                                                <div className="flex items-center space-x-3 p-4 border-2 border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/20 rounded-lg">
-                                                    <span className="text-base font-medium text-green-700 dark:text-green-300">
-                                                        {correctAnswer?.text}
-                                                    </span>
-                                                    <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
-                                                </div>
+                                            <div className="flex items-center space-x-3 p-4 border-2 border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/20 rounded-lg">
+                                                <span className="text-base font-medium text-green-700 dark:text-green-300">
+                                                    {correctAnswer?.text}
+                                                </span>
+                                                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+                                            </div>
                                         </div>
                                     ) : (
                                         <div className="space-y-3">
-                                            {allAnswers.find(x => x.id === answer.id)?.text ? (
+                                            {allAnswers.find(
+                                                (x) => x.id === answer.id,
+                                            )?.text ? (
                                                 <>
-                                                    <p className="font-semibold text-lg text-foreground">Tvoj odgovor:</p>
+                                                    <p className="font-semibold text-lg text-foreground">
+                                                        Tvoj odgovor:
+                                                    </p>
                                                     <div className="flex items-center space-x-3 p-4 border-2 border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20 rounded-lg">
                                                         <span className="text-base font-medium text-red-700 dark:text-red-300">
-                                                            {allAnswers.find(x => x.id === answer.id)?.text}
+                                                            {
+                                                                allAnswers.find(
+                                                                    (x) =>
+                                                                        x.id ===
+                                                                        answer.id,
+                                                                )?.text
+                                                            }
                                                         </span>
                                                         <XCircle className="h-5 w-5 text-red-600 dark:text-red-400 flex-shrink-0" />
                                                     </div>
-                                                    <p className="font-semibold text-lg text-foreground">Točan odgovor:</p>
+                                                    <p className="font-semibold text-lg text-foreground">
+                                                        Točan odgovor:
+                                                    </p>
                                                     <div className="flex items-center space-x-3 p-4 border-2 border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/20 rounded-lg">
                                                         <span className="text-base font-medium text-green-700 dark:text-green-300">
-                                                            {correctAnswer?.text}
+                                                            {
+                                                                correctAnswer?.text
+                                                            }
                                                         </span>
                                                         <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
                                                     </div>
@@ -96,10 +128,14 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
                                                             Nisi odgovorio!
                                                         </p>
                                                     </div>
-                                                    <p className="font-semibold text-lg text-foreground">Točan odgovor:</p>
+                                                    <p className="font-semibold text-lg text-foreground">
+                                                        Točan odgovor:
+                                                    </p>
                                                     <div className="flex items-center space-x-3 p-4 border-2 border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/20 rounded-lg">
                                                         <span className="text-base font-medium text-green-700 dark:text-green-300">
-                                                            {correctAnswer?.text}
+                                                            {
+                                                                correctAnswer?.text
+                                                            }
                                                         </span>
                                                         <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
                                                     </div>
@@ -115,7 +151,9 @@ function MatchTermAnswer({ questionId, quizTakeChildren }: MatchTermAnswerProps)
                                                 Nisi odgovorio!
                                             </p>
                                         </div>
-                                        <p className="font-semibold text-lg text-foreground">Točan odgovor:</p>
+                                        <p className="font-semibold text-lg text-foreground">
+                                            Točan odgovor:
+                                        </p>
                                         <div className="flex items-center space-x-3 p-4 border-2 border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/20 rounded-lg">
                                             <span className="text-base font-medium text-green-700 dark:text-green-300">
                                                 {correctAnswer?.text}

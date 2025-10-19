@@ -1,5 +1,5 @@
 // General imports
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { type AxiosRequestConfig } from 'axios';
 
 import { API_ENDPOINT } from '@/config/constants';
 
@@ -8,14 +8,14 @@ export type HttpMethod = 'get' | 'post' | 'put' | 'delete';
 // Response interceptors
 axios.interceptors.response.use(
     (response) => response,
-    (error) => error
+    (error) => error,
 );
 
 /**
-   * Gets the base url.
-   *
-   * @returns API's URL
-   */
+ * Gets the base url.
+ *
+ * @returns API's URL
+ */
 function _getBaseUrl() {
     return API_ENDPOINT;
 }
@@ -25,7 +25,9 @@ function _getBaseUrl() {
  *
  * @returns default headers
  */
-function _getDefaultHeaders() { return {}; }
+function _getDefaultHeaders() {
+    return {};
+}
 
 /**
  * Makes the HTTP request.
@@ -37,27 +39,32 @@ function _getDefaultHeaders() { return {}; }
  * @param [headers={}] Request headers
  * @returns Promise
  */
-async function _request(method: HttpMethod, url: string, data?: any, headers?: Record<string, string>) {
+async function _request(
+    method: HttpMethod,
+    url: string,
+    data?: any,
+    headers?: Record<string, string>,
+) {
     // Prepares the request payload
     let request: AxiosRequestConfig = {
         url: `${_getBaseUrl()}${url}`,
         method,
         headers: {
-            ...(_getDefaultHeaders()),
-            ...headers
-        }
+            ..._getDefaultHeaders(),
+            ...headers,
+        },
     };
 
     // Depending on the method, set the request data
     if (method.toLowerCase() !== 'get') {
         request = {
             ...request,
-            data
+            data,
         };
     } else if (data) {
         request = {
             ...request,
-            params: data
+            params: data,
         };
     }
 
@@ -74,7 +81,11 @@ async function _request(method: HttpMethod, url: string, data?: any, headers?: R
  * @param [headers={}] Request headers
  * @returns Promise
  */
-export async function get(url: string, data?: any, headers?: Record<string, string>) {
+export async function get(
+    url: string,
+    data?: any,
+    headers?: Record<string, string>,
+) {
     return _request('get', url, data, headers);
 }
 
@@ -87,7 +98,11 @@ export async function get(url: string, data?: any, headers?: Record<string, stri
  * @param [headers={}] Request headers
  * @returns Promise
  */
-export async function post(url: string, data?: any, headers?: Record<string, string>) {
+export async function post(
+    url: string,
+    data?: any,
+    headers?: Record<string, string>,
+) {
     return _request('post', url, data, headers);
 }
 
@@ -100,7 +115,11 @@ export async function post(url: string, data?: any, headers?: Record<string, str
  * @param [headers={}] Request headers
  * @returns Promise
  */
-export async function put(url: string, data?: any, headers?: Record<string, string>) {
+export async function put(
+    url: string,
+    data?: any,
+    headers?: Record<string, string>,
+) {
     return _request('put', url, data, headers);
 }
 
@@ -113,6 +132,10 @@ export async function put(url: string, data?: any, headers?: Record<string, stri
  * @param [headers={}] Request headers
  * @returns Promise
  */
-export async function requestDelete(url: string, data?: any, headers?: Record<string, string>) {
+export async function requestDelete(
+    url: string,
+    data?: any,
+    headers?: Record<string, string>,
+) {
     return _request('delete', url, data, headers);
 }

@@ -1,19 +1,22 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { ArrowLeft, ArrowRight, Brain } from "lucide-react";
+import { ArrowLeft, ArrowRight, Brain } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
+import { useConfig } from '@/components/providers/ConfigProvider';
 import ChooseManyQuestion from '@/components/TakeQuiz/ChooseManyQuestion';
 import ChooseOneQuestion from '@/components/TakeQuiz/ChooseOneQuestion';
 import MakeMatchQuestion from '@/components/TakeQuiz/MakeMatchQuestion';
 import TypeAnswerQuestion from '@/components/TakeQuiz/TypeAnswerQuestion';
 import UserInfo from '@/components/TakeQuiz/UserInfo';
-
-import { useConfig } from '@/components/providers/ConfigProvider';
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { QuizAnswerOption, QuizAnswersState, QuizDetail, QuizTakeAnswerDto } from '@/types/quiz';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { getQuizDetail, submitQuizTake } from '@/repositories/QuizRepository';
+import type {
+    QuizAnswerOption,
+    QuizAnswersState,
+    QuizDetail,
+    QuizTakeAnswerDto,
+} from '@/types/quiz';
 
 export default function QuizView() {
     const router = useRouter();
@@ -72,7 +75,10 @@ export default function QuizView() {
     };
 
     const handlePreviousQuestion = () => {
-        if (showUserInfo) { setShowUserInfo(false); return; }
+        if (showUserInfo) {
+            setShowUserInfo(false);
+            return;
+        }
         if (currentQuestionIndex > 0) {
             setCurrentQuestionIndex(currentQuestionIndex - 1);
         }
@@ -82,20 +88,26 @@ export default function QuizView() {
         router.back();
     };
 
-    const handleSingleAnswer = (questionId: number, answer: QuizAnswerOption) => {
+    const handleSingleAnswer = (
+        questionId: number,
+        answer: QuizAnswerOption,
+    ) => {
         setEnableNext(true);
         const updatedAnswers = {
             ...answers,
-            [questionId]: [answer]
+            [questionId]: [answer],
         };
         setAnswers(updatedAnswers);
     };
 
-    const handleMultipleAnswer = (questionId: number, givenAnswers: QuizAnswerOption[]) => {
+    const handleMultipleAnswer = (
+        questionId: number,
+        givenAnswers: QuizAnswerOption[],
+    ) => {
         setEnableNext(true);
         const updatedAnswers = {
             ...answers,
-            [questionId]: givenAnswers
+            [questionId]: givenAnswers,
         };
         setAnswers(updatedAnswers);
     };
@@ -105,11 +117,11 @@ export default function QuizView() {
         const answer: QuizAnswerOption = {
             id: 0,
             text: answerText,
-            questionId: questionId
+            questionId: questionId,
         };
         const updatedAnswers = {
             ...answers,
-            [questionId]: answer
+            [questionId]: answer,
         };
         setAnswers(updatedAnswers);
     };
@@ -118,7 +130,7 @@ export default function QuizView() {
         setEnableNext(true);
         const updatedAnswers = {
             ...answers,
-            [questionId]: answer
+            [questionId]: answer,
         };
         setAnswers(updatedAnswers);
     };
@@ -136,11 +148,10 @@ export default function QuizView() {
             endedAt: new Date(),
             takeUserName: name,
             takeUserType: parseInt(role),
-            cityAssociationId: config.cityAssociationId
+            cityAssociationId: config.cityAssociationId,
         });
         router.push(`/result?take-id=${submissionId}`);
     };
-
 
     if (loading) {
         return (
@@ -157,8 +168,13 @@ export default function QuizView() {
                     <div className="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mx-auto">
                         <Brain className="h-8 w-8 text-destructive" />
                     </div>
-                    <h2 className="text-2xl font-semibold text-foreground">Kviz nije dostupan</h2>
-                    <p className="text-muted-foreground">Nažalost, ovaj kviz nema ni jedno pitanje, odaberite drugi</p>
+                    <h2 className="text-2xl font-semibold text-foreground">
+                        Kviz nije dostupan
+                    </h2>
+                    <p className="text-muted-foreground">
+                        Nažalost, ovaj kviz nema ni jedno pitanje, odaberite
+                        drugi
+                    </p>
                 </div>
                 <Card className="w-full">
                     <CardFooter className="flex justify-center pt-6">
@@ -195,12 +211,15 @@ export default function QuizView() {
                 </div>
                 <div className="space-y-2">
                     <h1 className="text-3xl font-bold text-primary-600 dark:text-primary-400">
-                        Pitanje {currentQuestionIndex + 1} od {quiz.questions.length}
+                        Pitanje {currentQuestionIndex + 1} od{' '}
+                        {quiz.questions.length}
                     </h1>
                     <div className="w-full max-w-md mx-auto bg-slate-200 dark:bg-slate-700 rounded-full h-2">
                         <div
                             className="bg-primary-600 h-2 rounded-full transition-all duration-500 ease-out"
-                            style={{ width: `${((currentQuestionIndex + 1) / quiz.questions.length) * 100}%` }}
+                            style={{
+                                width: `${((currentQuestionIndex + 1) / quiz.questions.length) * 100}%`,
+                            }}
                         ></div>
                     </div>
                 </div>
@@ -210,35 +229,46 @@ export default function QuizView() {
             <Card className="w-full group hover:shadow-lg transition-all duration-300 border-2 border-slate-200 dark:border-slate-700 hover:border-primary-300 dark:hover:border-primary-400">
                 <CardContent className="pt-8 pb-6">
                     {showUserInfo && (
-                        <UserInfo onBack={handlePreviousQuestion} onSubmit={submitQuiz} />
+                        <UserInfo
+                            onBack={handlePreviousQuestion}
+                            onSubmit={submitQuiz}
+                        />
                     )}
                     {!showUserInfo && currentQuestion.questionType === 1 && (
-                        <ChooseOneQuestion question={currentQuestion}
+                        <ChooseOneQuestion
+                            question={currentQuestion}
                             questionIndex={currentQuestionIndex}
                             questionCount={quiz.questions.length}
                             onAnswer={handleSingleAnswer}
-                            initialAnswers={answers[currentQuestion.id]} />
+                            initialAnswers={answers[currentQuestion.id]}
+                        />
                     )}
                     {!showUserInfo && currentQuestion.questionType === 2 && (
-                        <ChooseManyQuestion question={currentQuestion}
+                        <ChooseManyQuestion
+                            question={currentQuestion}
                             questionIndex={currentQuestionIndex}
                             questionCount={quiz.questions.length}
                             onAnswer={handleMultipleAnswer}
-                            initialAnswers={answers[currentQuestion.id]} />
+                            initialAnswers={answers[currentQuestion.id]}
+                        />
                     )}
                     {!showUserInfo && currentQuestion.questionType === 3 && (
-                        <TypeAnswerQuestion question={currentQuestion}
+                        <TypeAnswerQuestion
+                            question={currentQuestion}
                             questionIndex={currentQuestionIndex}
                             questionCount={quiz.questions.length}
                             onAnswer={handleTextAnswer}
-                            initialAnswer={answers[currentQuestion.id]?.text} />
+                            initialAnswer={answers[currentQuestion.id]?.text}
+                        />
                     )}
                     {!showUserInfo && currentQuestion.questionType === 4 && (
-                        <MakeMatchQuestion question={currentQuestion}
+                        <MakeMatchQuestion
+                            question={currentQuestion}
                             questionIndex={currentQuestionIndex}
                             questionCount={quiz.questions.length}
                             onAnswer={handleAnswer}
-                            initialAnswer={answers[currentQuestion.id]} />
+                            initialAnswer={answers[currentQuestion.id]}
+                        />
                     )}
                 </CardContent>
                 {!showUserInfo && (
@@ -259,10 +289,11 @@ export default function QuizView() {
                             onClick={handleNextQuestion}
                             disabled={!enableNext}
                             variant="outline"
-                            className={`w-full sm:w-auto py-6 px-4 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${enableNext
-                                ? 'bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-800/30 border border-emerald-300 dark:border-emerald-600 hover:border-emerald-400 dark:hover:border-emerald-500 text-emerald-700 dark:text-emerald-300'
-                                : 'bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 text-slate-700 dark:text-slate-200'
-                                }`}
+                            className={`w-full sm:w-auto py-6 px-4 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                                enableNext
+                                    ? 'bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-800/30 border border-emerald-300 dark:border-emerald-600 hover:border-emerald-400 dark:hover:border-emerald-500 text-emerald-700 dark:text-emerald-300'
+                                    : 'bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 text-slate-700 dark:text-slate-200'
+                            }`}
                         >
                             <div className="flex items-center space-x-2">
                                 <span>Sljedeće pitanje</span>

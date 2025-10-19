@@ -12,16 +12,29 @@ declare module 'node:test' {
     export function it(name: string, fn: TestFunction): void;
     export function afterEach(fn: TestFunction): void;
     export const mock: {
-        method<T extends object, K extends keyof T>(target: T, key: K): {
+        method<T extends object, K extends keyof T>(
+            target: T,
+            key: K,
+        ): {
             mock: {
                 callCount(): number;
                 calls: Array<any>;
-                mockImplementation(impl: T[K] extends (...args: any[]) => any ? T[K] : (...args: any[]) => any): void;
-                mockImplementationOnce(impl: T[K] extends (...args: any[]) => any ? T[K] : (...args: any[]) => any): void;
+                mockImplementation(
+                    impl: T[K] extends (...args: any[]) => any
+                        ? T[K]
+                        : (...args: any[]) => any,
+                ): void;
+                mockImplementationOnce(
+                    impl: T[K] extends (...args: any[]) => any
+                        ? T[K]
+                        : (...args: any[]) => any,
+                ): void;
                 restore(): void;
             };
         };
-        fn<T extends (...args: any[]) => any>(impl?: T): T & {
+        fn<T extends (...args: any[]) => any>(
+            impl?: T,
+        ): T & {
             mock: {
                 callCount(): number;
                 calls: Array<any>;

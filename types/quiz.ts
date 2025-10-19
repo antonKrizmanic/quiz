@@ -2,7 +2,7 @@ export enum QuestionType {
     SingleChoice = 1,
     MultipleChoice = 2,
     TextInput = 3,
-    MatchTerms = 4
+    MatchTerms = 4,
 }
 
 export interface Answer {

@@ -1,7 +1,7 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Ambulance, Heart, Users } from "lucide-react";
+import { Ambulance, Heart, Users } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import type { KeyboardEvent } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function ThemeView() {
     const router = useRouter();
@@ -31,7 +31,8 @@ export default function ThemeView() {
                     Odaberite temu kviza
                 </h1>
                 <p className="text-lg text-muted-foreground max-w-md mx-auto">
-                    Testirajte svoje znanje iz područja prve pomoći i pokreta Crvenog križa
+                    Testirajte svoje znanje iz područja prve pomoći i pokreta
+                    Crvenog križa
                 </p>
             </div>
 
@@ -57,7 +58,8 @@ export default function ThemeView() {
                                     Pokret Crvenog križa
                                 </h3>
                                 <p className="text-muted-foreground text-lg">
-                                    Saznajte više o povijesti, principima i aktivnostima Crvenog križa
+                                    Saznajte više o povijesti, principima i
+                                    aktivnostima Crvenog križa
                                 </p>
                             </div>
                             <div className="inline-flex items-center justify-center rounded-md bg-red-600 px-6 py-2 text-lg font-semibold text-white shadow-lg transition-all duration-300 group-hover:scale-105 group-hover:bg-red-700 dark:bg-red-500 dark:group-hover:bg-red-600">
@@ -70,8 +72,8 @@ export default function ThemeView() {
                 <Card
                     role="button"
                     tabIndex={0}
-                    onClick={() => handleThemeSelection('200')}
-                    onKeyDown={(event) => handleCardKeyDown(event, '200')}
+                    onClick={() => handleThemeSelection('100')}
+                    onKeyDown={(event) => handleCardKeyDown(event, '100')}
                     className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary-300 bg-card cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500"
                 >
                     <CardContent className="p-8">
@@ -95,7 +97,6 @@ export default function ThemeView() {
                         </div>
                     </CardContent>
                 </Card>
-
             </div>
 
             {/* Footer Info */}

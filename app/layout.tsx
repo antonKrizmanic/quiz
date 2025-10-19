@@ -2,9 +2,9 @@ import { ConfigProvider } from '@/components/providers/ConfigProvider';
 import ThemeRegistry from '@/components/providers/ThemeRegistry/ThemeRegistry';
 import { loadCityConfig } from '@/lib/cityConfig';
 import '@/styles/global.css';
-import { Metadata } from 'next';
-import { ThemeProvider } from 'next-themes';
+import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import { ThemeProvider } from 'next-themes';
 
 // Checks whether the app is running in a production or development mode
 const isProduction = process.env.NODE_ENV === 'production';
@@ -15,17 +15,18 @@ const isProduction = process.env.NODE_ENV === 'production';
 export const metadata: Metadata = {
     title: {
         default: `GDCK Buje kviz ${isProduction ? '' : '- development'}`,
-        template: '%s | GDCK Buje kviz'
+        template: '%s | GDCK Buje kviz',
     },
-    description: 'Kviz za potrebe GDCK Buje. Kviz omogućava rješavanje kvizova iz područja prve pomoći i poznavanja pokreta Crvenog križa.',
+    description:
+        'Kviz za potrebe GDCK Buje. Kviz omogućava rješavanje kvizova iz područja prve pomoći i poznavanja pokreta Crvenog križa.',
     icons: {
         icon: [
             {
                 url: '/icons/logo.png',
-                href: '/icons/logo.png'
-            }
-        ]
-    }
+                href: '/icons/logo.png',
+            },
+        ],
+    },
 };
 
 type RootLayoutProps = {
