@@ -9,7 +9,7 @@ const HOST_TO_CITY: Record<string, string> = {
 
 const VALID_CITIES = new Set(['buje', 'bnm']);
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
     const url = request.nextUrl;
     const host = request.headers.get('host')?.split(':')[0] || '';
 
