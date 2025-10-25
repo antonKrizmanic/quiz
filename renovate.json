@@ -1,23 +1,34 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["config:recommended"],
+    "extends": [
+        "config:recommended"
+    ],
     "packageRules": [
         {
             "automerge": true,
-            "matchUpdateTypes": ["patch"]
+            "matchUpdateTypes": [
+                "patch"
+            ]
         },
         {
             "rangeStrategy": "pin",
             "automerge": true,
-            "matchPackageNames": ["*"]
+            "matchPackageNames": [
+                "*"
+            ]
         },
         {
-            "matchDepTypes": ["engines", "peerDependencies"],
+            "matchDepTypes": [
+                "engines",
+                "peerDependencies"
+            ],
             "rangeStrategy": "auto"
         }
     ],
     "dependencyDashboard": true,
-    "baseBranches": ["stage"],
+    "baseBranchPatterns": [
+        "stage"
+    ],
     "minimumReleaseAge": "5 days",
     "prHourlyLimit": 6,
     "platformAutomerge": true,
