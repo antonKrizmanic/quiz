@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2025-11-12
+### Changed
+- [Dependencies] Updated major-github-artifact-actions
+- [Dependencies] Updated rimraf-6.x
+- [Dependencies] Updated tailwindcss-monorepo
+- [Dependencies] Updated lucide-monorepo
+- [Dependencies] Updated nextjs-monorepo
+- [Dependencies] Updated biomejs-biome-2.x
+- [Dependencies] Updated radix-ui-primitives-monorepo
+- [Dependencies] Updated node-24.x
+- [Dependencies] Updated sass-1.x
+- [Dependencies] Updated axios-1.x
+- [Dependencies] Updated pnpm-10.x
+
 ## [1.7.0] - 2025-10-25
 ### Changed
 - [Dependencies] Updated migrate-config
