@@ -1,36 +1,26 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-        "config:recommended"
-    ],
-    "packageRules": [
-        {
-            "automerge": true,
-            "matchUpdateTypes": [
-                "patch"
-            ]
-        },
-        {
-            "rangeStrategy": "pin",
-            "automerge": true,
-            "matchPackageNames": [
-                "*"
-            ]
-        },
-        {
-            "matchDepTypes": [
-                "engines",
-                "peerDependencies"
-            ],
-            "rangeStrategy": "auto"
-        }
-    ],
-    "dependencyDashboard": true,
-    "baseBranchPatterns": [
-        "stage"
-    ],
-    "minimumReleaseAge": "5 days",
-    "prHourlyLimit": 6,
-    "platformAutomerge": true,
-    "platformCommit": "enabled"
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": ["config:recommended"],
+	"packageRules": [
+		{
+			"matchUpdateTypes": ["minor", "patch"],
+			"matchCurrentVersion": "!/^0/",
+			"automerge": true
+		},		
+		{
+			"rangeStrategy": "pin",
+			"automerge": true,
+			"matchPackageNames": ["*"]
+		},
+		{
+			"matchDepTypes": ["engines", "peerDependencies"],
+			"rangeStrategy": "auto"
+		}
+	],
+	"dependencyDashboard": true,
+	"baseBranches": ["stage"],
+	"minimumReleaseAge": "5 days",
+	"prHourlyLimit": 6,
+	"platformAutomerge": true,
+	"platformCommit": "enabled"
 }
