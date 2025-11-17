@@ -1,11 +1,12 @@
 // Component imports
-import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "lucide-react";
+
+import { Moon, Sun } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 type ThemeSwitcherProps = {
     isDarkMode?: boolean;
     onModeChange?: () => void;
-}
+};
 
 /**
  * Function representing the theme switcher component.
@@ -13,10 +14,7 @@ type ThemeSwitcherProps = {
  * @returns ThemeSwitcher component
  */
 export default function ThemeSwitcher(props: ThemeSwitcherProps) {
-    const {
-        isDarkMode,
-        onModeChange
-    } = props;
+    const { isDarkMode, onModeChange } = props;
 
     return (
         <Button
@@ -26,7 +24,11 @@ export default function ThemeSwitcher(props: ThemeSwitcherProps) {
             className="fixed top-4 right-4 z-50"
             onClick={onModeChange}
         >
-            {isDarkMode ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+            {isDarkMode ? (
+                <Moon className="h-5 w-5" />
+            ) : (
+                <Sun className="h-5 w-5" />
+            )}
         </Button>
     );
 }

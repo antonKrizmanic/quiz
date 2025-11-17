@@ -1,4 +1,4 @@
-import { QuizCategory } from '@/component-models/types';
+import type { QuizCategory } from '@/types/quiz';
 
 export function mapDtosToQuizCategories(dtos: any[]): QuizCategory[] {
     return dtos.map((dto) => {
@@ -7,7 +7,7 @@ export function mapDtosToQuizCategories(dtos: any[]): QuizCategory[] {
             name: dto.name,
             isActiveDescription: dto.isActiveDescription,
             quizTheme: dto.quizTheme,
-            description: dto.description
+            description: dto.description,
         };
 
         return quizCategory;

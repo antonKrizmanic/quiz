@@ -1,13 +1,23 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Heart, Users } from "lucide-react";
+import { Ambulance, Heart, Users } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import type { KeyboardEvent } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function ThemeView() {
     const router = useRouter();
 
     const handleThemeSelection = (theme: string) => {
         router.push(`/category/${theme}`);
+    };
+
+    const handleCardKeyDown = (
+        event: KeyboardEvent<HTMLDivElement>,
+        theme: string,
+    ) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            handleThemeSelection(theme);
+        }
     };
 
     return (
@@ -21,14 +31,21 @@ export default function ThemeView() {
                     Odaberite temu kviza
                 </h1>
                 <p className="text-lg text-muted-foreground max-w-md mx-auto">
-                    Testirajte svoje znanje iz područja prve pomoći i pokreta Crvenog križa
+                    Testirajte svoje znanje iz područja prve pomoći i pokreta
+                    Crvenog križa
                 </p>
             </div>
 
             {/* Theme Cards */}
             <div className="space-y-6">
                 {/* Red Cross Movement Theme */}
-                <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary-300 bg-card">
+                <Card
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => handleThemeSelection('200')}
+                    onKeyDown={(event) => handleCardKeyDown(event, '200')}
+                    className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary-300 bg-card cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500"
+                >
                     <CardContent className="p-8">
                         <div className="flex flex-col md:flex-row items-center space-x-6 space-y-6 md:space-y-0">
                             <div className="flex-shrink-0">
@@ -41,21 +58,24 @@ export default function ThemeView() {
                                     Pokret Crvenog križa
                                 </h3>
                                 <p className="text-muted-foreground text-lg">
-                                    Saznajte više o povijesti, principima i aktivnostima Crvenog križa
+                                    Saznajte više o povijesti, principima i
+                                    aktivnostima Crvenog križa
                                 </p>
                             </div>
-                            <Button
-                                onClick={() => handleThemeSelection('200')}
-                                size="lg"
-                                className="bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-                            >
+                            <div className="inline-flex items-center justify-center rounded-md bg-red-600 px-6 py-2 text-lg font-semibold text-white shadow-lg transition-all duration-300 group-hover:scale-105 group-hover:bg-red-700 dark:bg-red-500 dark:group-hover:bg-red-600">
                                 Započni kviz
-                            </Button>
+                            </div>
                         </div>
                     </CardContent>
                 </Card>
                 {/* First Aid Theme */}
-                {/* <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary-300 bg-card">
+                <Card
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => handleThemeSelection('100')}
+                    onKeyDown={(event) => handleCardKeyDown(event, '100')}
+                    className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary-300 bg-card cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500"
+                >
                     <CardContent className="p-8">
                         <div className="flex flex-col md:flex-row items-center space-x-6 space-y-6 md:space-y-0">
                             <div className="flex-shrink-0">
@@ -71,17 +91,12 @@ export default function ThemeView() {
                                     Testirajte svoje znanje o prvoj pomoći
                                 </p>
                             </div>
-                            <Button
-                                onClick={() => handleThemeSelection('200')}
-                                size="lg"
-                                className="bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-                            >
+                            <div className="inline-flex items-center justify-center rounded-md bg-red-600 px-6 py-2 text-lg font-semibold text-white shadow-lg transition-all duration-300 group-hover:scale-105 group-hover:bg-red-700 dark:bg-red-500 dark:group-hover:bg-red-600">
                                 Započni kviz
-                            </Button>
+                            </div>
                         </div>
                     </CardContent>
-                </Card> */}
-
+                </Card>
             </div>
 
             {/* Footer Info */}

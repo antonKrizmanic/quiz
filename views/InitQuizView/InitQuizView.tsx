@@ -1,31 +1,41 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { AlertTriangle, ArrowLeft, CheckCircle, Clock, Info, Play, Trophy } from "lucide-react";
+import {
+    AlertTriangle,
+    ArrowLeft,
+    CheckCircle,
+    Clock,
+    Info,
+    Play,
+    Trophy,
+} from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { post } from '../../services/HttpService';
+import { useConfig } from '@/components/providers/ConfigProvider';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { initializeQuiz } from '@/repositories/QuizRepository';
 
 export default function InitQuizView() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const config = useConfig();
     const theme = searchParams.get('theme');
     const category = searchParams.get('category');
     const [quizId, setQuizId] = useState<number | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        const initializeQuiz = async () => {
+        const runInitializeQuiz = async () => {
             try {
-                const data = {
-                    QuizCategoryId: category ? parseInt(category) : null,
-                    QuizTheme: theme ? parseInt(theme) : null,
-                    CityAssociationId: 1
-                };
+                const quizCategoryId = category ? parseInt(category) : null;
+                const quizTheme = theme ? parseInt(theme) : null;
 
-                const response = await post('quizzes/PublicQuiz', data);
-                setQuizId(response.data);
+                const quizIdentifier = await initializeQuiz({
+                    quizCategoryId,
+                    quizTheme,
+                    cityAssociationId: config.cityAssociationId,
+                });
+                setQuizId(quizIdentifier);
             } catch (error) {
                 console.error('Error initializing quiz:', error);
             } finally {
@@ -34,9 +44,9 @@ export default function InitQuizView() {
         };
 
         if (theme && category) {
-            initializeQuiz();
+            runInitializeQuiz();
         }
-    }, [theme, category]);
+    }, [theme, category, config.cityAssociationId]);
 
     const handleStartQuiz = () => {
         if (quizId) {
@@ -59,8 +69,11 @@ export default function InitQuizView() {
     const infoItems = [
         { text: 'Nema vremenskog ograničenja', icon: Clock },
         { text: 'Moraš odgovoriti na sva pitanja', icon: CheckCircle },
-        { text: 'Ako napustiš ovu stranicu za vrijeme rješavanja kviza, morat ćeš početi ispočetka', icon: AlertTriangle },
-        { text: 'Na kraju ćeš moći pregledati svoj rezultat', icon: Trophy }
+        {
+            text: 'Ako napustiš ovu stranicu za vrijeme rješavanja kviza, morat ćeš početi ispočetka',
+            icon: AlertTriangle,
+        },
+        { text: 'Na kraju ćeš moći pregledati svoj rezultat', icon: Trophy },
     ];
 
     return (
@@ -87,7 +100,10 @@ export default function InitQuizView() {
                                 {infoItems.map((item, index) => {
                                     const IconComponent = item.icon;
                                     return (
-                                        <div key={index} className="flex items-start gap-4 group/item">
+                                        <div
+                                            key={index}
+                                            className="flex items-start gap-4 group/item"
+                                        >
                                             <div className="flex-shrink-0 w-10 h-10 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center group-hover/item:bg-primary-200 dark:group-hover/item:bg-primary-800 transition-colors">
                                                 <IconComponent className="h-5 w-5 text-red-600 dark:text-red-400" />
                                             </div>
@@ -128,9 +144,17 @@ export default function InitQuizView() {
                     <div className="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mx-auto">
                         <Info className="h-8 w-8 text-destructive" />
                     </div>
-                    <h2 className="text-2xl font-semibold text-foreground">Greška pri pokretanju kviza</h2>
-                    <p className="text-muted-foreground">Molimo pokušajte ponovno.</p>
-                    <Button onClick={handleBack} variant="outline" className="mt-4">
+                    <h2 className="text-2xl font-semibold text-foreground">
+                        Greška pri pokretanju kviza
+                    </h2>
+                    <p className="text-muted-foreground">
+                        Molimo pokušajte ponovno.
+                    </p>
+                    <Button
+                        onClick={handleBack}
+                        variant="outline"
+                        className="mt-4"
+                    >
                         <ArrowLeft className="h-4 w-4 mr-2" />
                         Natrag
                     </Button>
