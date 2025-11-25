@@ -31,7 +31,7 @@
         "next-themes": "0.4.6",
         "react": "19.2.0",
         "react-dom": "19.2.0",
-        "sass": "1.94.1",
+        "sass": "1.94.2",
         "tailwind-merge": "3.4.0",
         "tailwindcss-animate": "1.0.7",
         "typescript": "5.9.3",
