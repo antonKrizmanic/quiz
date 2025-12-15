@@ -46,7 +46,7 @@ importers:
         version: 4.1.1(mobx@6.15.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       next:
         specifier: 16.0.10
-        version: 16.0.10(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(sass@1.95.0)
+        version: 16.0.10(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(sass@1.95.1)
       next-react-svg:
         specifier: 1.2.0
         version: 1.2.0
@@ -60,8 +60,8 @@ importers:
         specifier: 19.2.3
         version: 19.2.3(react@19.2.3)
       sass:
-        specifier: 1.95.0
-        version: 1.95.0
+        specifier: 1.95.1
+        version: 1.95.1
       tailwind-merge:
         specifier: 3.4.0
         version: 3.4.0
@@ -113,7 +113,7 @@ importers:
         version: 6.1.2
       sass-loader:
         specifier: 16.0.6
-        version: 16.0.6(sass@1.95.0)(webpack@5.103.0)
+        version: 16.0.6(sass@1.95.1)(webpack@5.103.0)
       tailwindcss:
         specifier: 4.1.17
         version: 4.1.17
@@ -3114,8 +3114,8 @@ packages:
       webpack:
         optional: true
 
-  sass@1.95.0:
-    resolution: {integrity: sha512-9QMjhLq+UkOg/4bb8Lt8A+hJZvY3t+9xeZMKSBtBEgxrXA3ed5Ts4NDreUkYgJP1BTmrscQE/xYhf7iShow6lw==}
+  sass@1.95.1:
+    resolution: {integrity: sha512-uPoDh5NIEZV4Dp5GBodkmNY9tSQfXY02pmCcUo+FR1P+x953HGkpw+vV28D4IqYB6f8webZtwoSaZaiPtpTeMg==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -6234,7 +6234,7 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
-  next@16.0.10(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(sass@1.95.0):
+  next@16.0.10(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(sass@1.95.1):
     dependencies:
       '@next/env': 16.0.10
       '@swc/helpers': 0.5.15
@@ -6252,7 +6252,7 @@ snapshots:
       '@next/swc-linux-x64-musl': 16.0.10
       '@next/swc-win32-arm64-msvc': 16.0.10
       '@next/swc-win32-x64-msvc': 16.0.10
-      sass: 1.95.0
+      sass: 1.95.1
       sharp: 0.34.4
     transitivePeerDependencies:
       - '@babel/core'
@@ -6529,14 +6529,14 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass-loader@16.0.6(sass@1.95.0)(webpack@5.103.0):
+  sass-loader@16.0.6(sass@1.95.1)(webpack@5.103.0):
     dependencies:
       neo-async: 2.6.2
     optionalDependencies:
-      sass: 1.95.0
+      sass: 1.95.1
       webpack: 5.103.0
 
-  sass@1.95.0:
+  sass@1.95.1:
     dependencies:
       chokidar: 4.0.3
       immutable: 5.1.4
