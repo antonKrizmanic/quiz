@@ -35,7 +35,7 @@
         "tailwind-merge": "3.5.0",
         "tailwindcss-animate": "1.0.7",
         "typescript": "6.0.2",
-        "webpack": "5.105.4"
+        "webpack": "5.106.0"
     },
     "devDependencies": {
         "@biomejs/biome": "2.4.10",
