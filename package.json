@@ -34,7 +34,7 @@
         "sass": "1.99.0",
         "tailwind-merge": "3.5.0",
         "tailwindcss-animate": "1.0.7",
-        "typescript": "6.0.2",
+        "typescript": "6.0.3",
         "webpack": "5.106.2"
     },
     "devDependencies": {
