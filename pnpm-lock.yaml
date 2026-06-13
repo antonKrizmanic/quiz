@@ -39,11 +39,11 @@ importers:
         specifier: 1.17.0
         version: 1.17.0(react@19.2.7)
       mobx:
-        specifier: 6.16.0
-        version: 6.16.0
+        specifier: 6.16.1
+        version: 6.16.1
       mobx-react-lite:
         specifier: 4.1.1
-        version: 4.1.1(mobx@6.16.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        version: 4.1.1(mobx@6.16.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       next:
         specifier: 16.2.5
         version: 16.2.5(@babel/core@7.28.5)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.100.0)
@@ -2832,8 +2832,8 @@ packages:
       react-native:
         optional: true
 
-  mobx@6.16.0:
-    resolution: {integrity: sha512-qFIcwox4Mc4xRUVBGm0mt2uXmm4zCnfpwBRVkm59Y7zDei498NmpyKvEDsjCR3OYPbnQCKyhV6mLDs0vt2hBxA==}
+  mobx@6.16.1:
+    resolution: {integrity: sha512-syNcDdX3KT+Jq3je6eGjBhuc24Z68td2VG0zNFqRswaE433D9SNH5VRy/xrGbJsUixfppLLccXhAW9JSf6n+SQ==}
 
   mrmime@2.0.1:
     resolution: {integrity: sha512-Y3wQdFg2Va6etvQ5I82yUhGdsKrcYox6p7FfL1LbK2J4V01F9TGlepTIhnK24t7koZibmg82KGglhA1XK5IsLQ==}
@@ -6429,15 +6429,15 @@ snapshots:
 
   minipass@7.1.3: {}
 
-  mobx-react-lite@4.1.1(mobx@6.16.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
+  mobx-react-lite@4.1.1(mobx@6.16.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
     dependencies:
-      mobx: 6.16.0
+      mobx: 6.16.1
       react: 19.2.7
       use-sync-external-store: 1.6.0(react@19.2.7)
     optionalDependencies:
       react-dom: 19.2.7(react@19.2.7)
 
-  mobx@6.16.0: {}
+  mobx@6.16.1: {}
 
   mrmime@2.0.1: {}
 
