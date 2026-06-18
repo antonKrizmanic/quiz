@@ -121,8 +121,8 @@ importers:
         specifier: 1.4.0
         version: 1.4.0
       webpack-dev-server:
-        specifier: 5.2.4
-        version: 5.2.4(webpack@5.107.2(postcss@8.5.15))
+        specifier: 5.2.5
+        version: 5.2.5(webpack@5.107.2(postcss@8.5.15))
 
 packages:
 
@@ -2327,15 +2327,6 @@ packages:
     resolution: {integrity: sha512-6BN9trH7bp3qvnrRyzsBz+g3lZxTNZTbVO2EV1CS0WIcDbawYVdYvGflME/9QP0h0pYlCDBCTjYa9nZzMDpyxQ==}
     engines: {node: '>= 0.8'}
 
-  follow-redirects@1.15.11:
-    resolution: {integrity: sha512-deG2P0JfjrTxl50XGCDyfI97ZGVCxIpfKYmfyrQ54n5FO/0gfIES8C/Psl6kWVDolizcaaxZJnTS0QSMxvnsBQ==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-
   follow-redirects@1.16.0:
     resolution: {integrity: sha512-y5rN/uOsadFT/JfYwhxRS5R7Qce+g3zG97+JrtFZlC9klX/W5hD7iiLzScI4nZqUS7DNUdhPgw4xI8W2LuXlUw==}
     engines: {node: '>=4.0'}
@@ -3618,8 +3609,8 @@ packages:
       webpack:
         optional: true
 
-  webpack-dev-server@5.2.4:
-    resolution: {integrity: sha512-GqDPGZN9bRqKBTkp4aWkobDDHMsrXKoGSdOH56smIri8qR0JG8gfL8/v/f/OZR3/OKXjG8uwJbFVhKm/FNU/UA==}
+  webpack-dev-server@5.2.5:
+    resolution: {integrity: sha512-4wZtCquSuv9CKX8oybo+mqxtxZqWz47uM1Ch94lxowBztOhWCbhqvRbfC/mODOwxgV2brY+JGZpHq58/SuVFYg==}
     engines: {node: '>= 18.12.0'}
     hasBin: true
     peerDependencies:
@@ -6024,8 +6015,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  follow-redirects@1.15.11: {}
-
   follow-redirects@1.16.0: {}
 
   form-data@4.0.5:
@@ -6170,7 +6159,7 @@ snapshots:
   http-proxy@1.18.1:
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.11
+      follow-redirects: 1.16.0
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -7209,7 +7198,7 @@ snapshots:
     optionalDependencies:
       webpack: 5.107.2(postcss@8.5.15)
 
-  webpack-dev-server@5.2.4(webpack@5.107.2(postcss@8.5.15)):
+  webpack-dev-server@5.2.5(webpack@5.107.2(postcss@8.5.15)):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
