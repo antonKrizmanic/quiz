@@ -38,7 +38,7 @@
         "webpack": "5.108.3"
     },
     "devDependencies": {
-        "@biomejs/biome": "2.5.1",
+        "@biomejs/biome": "2.5.2",
         "@next/bundle-analyzer": "16.2.9",
         "@shadcn/ui": "0.0.4",
         "@svgr/webpack": "8.1.0",
