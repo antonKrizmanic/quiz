@@ -121,8 +121,8 @@ importers:
         specifier: 1.4.0
         version: 1.4.0
       webpack-dev-server:
-        specifier: 5.2.5
-        version: 5.2.5(webpack@5.108.3(postcss@8.5.16))
+        specifier: 5.2.6
+        version: 5.2.6(webpack@5.108.3(postcss@8.5.16))
 
 packages:
 
@@ -2611,8 +2611,8 @@ packages:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
 
-  launch-editor@2.11.1:
-    resolution: {integrity: sha512-SEET7oNfgSaB6Ym0jufAdCeo3meJVeCaaDyzRygy0xsp2BFKCprcfHljTq4QkzTLUxEKkFK6OK4811YM2oSrRg==}
+  launch-editor@2.14.1:
+    resolution: {integrity: sha512-QWBrQsMpH7gPr965dsKD/3cKWiNoTjpATQf++Xq63N6sKRGMwlVXz41O1IZTMfZQgBctD/K5Zt06+/I6pP6+HA==}
 
   lightningcss-android-arm64@1.32.0:
     resolution: {integrity: sha512-YK7/ClTt4kAK0vo6w3X+Pnm0D2cf2vPHbhOXdoNti1Ga0al1P4TBZhwjATvjNwLEBCnKvjJc2jQgHXH0NEwlAg==}
@@ -3292,8 +3292,8 @@ packages:
   shell-exec@1.0.2:
     resolution: {integrity: sha512-jyVd+kU2X+mWKMmGhx4fpWbPsjvD53k9ivqetutVW/BQ+WIZoDoP4d8vUMGezV6saZsiNoW2f9GIhg9Dondohg==}
 
-  shell-quote@1.8.3:
-    resolution: {integrity: sha512-ObmnIF4hXNg1BqhnHmgbDETF8dLPCggZWBjkQfhZpbszZnYur5DUljTcCHii5LC3J5E0yeO/1LIMyH+UvHQgyw==}
+  shell-quote@1.9.0:
+    resolution: {integrity: sha512-Iov+JwFv/2HcTpcwNMKd8+IWNb8tboQJNQTkAY/LLVK7gGH9jy+LGkVqPxfekHl+yMmiqXszdGWXgkfml7hjqA==}
     engines: {node: '>= 0.4'}
 
   side-channel-list@1.0.0:
@@ -3590,8 +3590,8 @@ packages:
       webpack:
         optional: true
 
-  webpack-dev-server@5.2.5:
-    resolution: {integrity: sha512-4wZtCquSuv9CKX8oybo+mqxtxZqWz47uM1Ch94lxowBztOhWCbhqvRbfC/mODOwxgV2brY+JGZpHq58/SuVFYg==}
+  webpack-dev-server@5.2.6:
+    resolution: {integrity: sha512-HNLRmamRvVavZQ+avceZifmv8hmdUjg43t6MI4SqJDwFdW7RPQwH5vzGhDRZSX59SgfbeHhLnq3g+uooWo7pVw==}
     engines: {node: '>= 18.12.0'}
     hasBin: true
     peerDependencies:
@@ -6243,10 +6243,10 @@ snapshots:
 
   kleur@3.0.3: {}
 
-  launch-editor@2.11.1:
+  launch-editor@2.14.1:
     dependencies:
       picocolors: 1.1.1
-      shell-quote: 1.8.3
+      shell-quote: 1.9.0
 
   lightningcss-android-arm64@1.32.0:
     optional: true
@@ -6864,7 +6864,7 @@ snapshots:
 
   shell-exec@1.0.2: {}
 
-  shell-quote@1.8.3: {}
+  shell-quote@1.9.0: {}
 
   side-channel-list@1.0.0:
     dependencies:
@@ -7161,7 +7161,7 @@ snapshots:
     optionalDependencies:
       webpack: 5.108.3(postcss@8.5.16)
 
-  webpack-dev-server@5.2.5(webpack@5.108.3(postcss@8.5.16)):
+  webpack-dev-server@5.2.6(webpack@5.108.3(postcss@8.5.16)):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -7181,7 +7181,7 @@ snapshots:
       graceful-fs: 4.2.11
       http-proxy-middleware: 2.0.9(@types/express@4.17.25)
       ipaddr.js: 2.2.0
-      launch-editor: 2.11.1
+      launch-editor: 2.14.1
       open: 10.2.0
       p-retry: 6.2.1
       schema-utils: 4.3.3
