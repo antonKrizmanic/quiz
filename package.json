@@ -44,7 +44,7 @@
         "@svgr/webpack": "8.1.0",
         "@tailwindcss/postcss": "4.3.2",
         "@total-typescript/ts-reset": "0.6.1",
-        "autoprefixer": "10.5.2",
+        "autoprefixer": "10.5.3",
         "cross-env": "10.1.0",
         "fs-extra": "11.3.6",
         "kill-port": "2.0.1",
