@@ -100,8 +100,8 @@ importers:
         specifier: 10.1.0
         version: 10.1.0
       fs-extra:
-        specifier: 11.3.6
-        version: 11.3.6
+        specifier: 11.4.0
+        version: 11.4.0
       kill-port:
         specifier: 2.0.1
         version: 2.0.1
@@ -2411,8 +2411,8 @@ packages:
     resolution: {integrity: sha512-Rx/WycZ60HOaqLKAi6cHRKKI7zxWbJ31MhntmtwMoaTeF7XFH9hhBp8vITaMidfljRQ6eYWCKkaTK+ykVJHP2A==}
     engines: {node: '>= 0.8'}
 
-  fs-extra@11.3.6:
-    resolution: {integrity: sha512-w8ZNZr2mKIc7qeNaQ9AVPT1+iFaI+Avd4xudVOvdDJ8VytREi1Ft5Ih7hd9jjehod8vAM5GMsfQ/TpPf4EyoEA==}
+  fs-extra@11.4.0:
+    resolution: {integrity: sha512-EQsFzMUJkCKGr1ePqlYADkIUmHW1s3ZXr5Yqy6wbGrfUCphpl2maM/kyOIRA2HpP3AaFQTZXD4ldjek+nccddA==}
     engines: {node: '>=14.14'}
 
   function-bind@1.1.2:
@@ -5185,7 +5185,7 @@ snapshots:
       chalk: 5.2.0
       commander: 10.0.1
       execa: 7.2.0
-      fs-extra: 11.3.6
+      fs-extra: 11.4.0
       node-fetch: 3.3.2
       ora: 6.3.1
       prompts: 2.4.2
@@ -6081,7 +6081,7 @@ snapshots:
 
   fresh@2.0.0: {}
 
-  fs-extra@11.3.6:
+  fs-extra@11.4.0:
     dependencies:
       graceful-fs: 4.2.11
       jsonfile: 6.2.0
