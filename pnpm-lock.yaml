@@ -72,8 +72,8 @@ importers:
         specifier: 6.0.3
         version: 6.0.3
       webpack:
-        specifier: 5.109.1
-        version: 5.109.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)
+        specifier: 5.109.2
+        version: 5.109.2(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)
     devDependencies:
       '@biomejs/biome':
         specifier: 2.5.6
@@ -113,7 +113,7 @@ importers:
         version: 6.1.3
       sass-loader:
         specifier: 17.0.0
-        version: 17.0.0(sass@1.102.0)(webpack@5.109.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24))
+        version: 17.0.0(sass@1.102.0)(webpack@5.109.2(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24))
       tailwindcss:
         specifier: 4.3.3
         version: 4.3.3
@@ -122,7 +122,7 @@ importers:
         version: 1.4.0
       webpack-dev-server:
         specifier: 6.0.0
-        version: 6.0.0(supports-color@8.1.1)(tslib@2.8.1)(webpack@5.109.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24))
+        version: 6.0.0(supports-color@8.1.1)(tslib@2.8.1)(webpack@5.109.2(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24))
 
 packages:
 
@@ -2283,6 +2283,10 @@ packages:
     resolution: {integrity: sha512-PwKooW9JUzh5chmYfHM3IQl5OkK2u2Nm011MgeZrss3JmFraUx/fqrf78kk8GUMYoibx/14MdwTl/1WKkG7TpQ==}
     engines: {node: '>=10.13.0'}
 
+  enhanced-resolve@5.24.5:
+    resolution: {integrity: sha512-L1l8TNvomm6UVW5B253AGxQagSQr+vGwhMlrrfRS2qmhx46AMpMVJKQYLvWYbysTMY8VoicOvzHzoHMbyzB+4A==}
+    engines: {node: '>=10.13.0'}
+
   entities@4.5.0:
     resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
     engines: {node: '>=0.12'}
@@ -3614,8 +3618,8 @@ packages:
     resolution: {integrity: sha512-jyuiGJdtvY434z5bUZrjz67v76/ePNvFZTp9Mdz29IlH4+GPsgyGjiv0fKI+M7BdkU6ADjulUcKAd3tUK3WlEw==}
     engines: {node: '>=10.13.0'}
 
-  webpack@5.109.1:
-    resolution: {integrity: sha512-Q4XQscWSLNQSaMFsIWUZ+IVpvwLqD+MvjIuSQC1hG8m1ZMK78VAsNMhTjD3icJelypp6aM5Hq8BZNEX3sc1PJw==}
+  webpack@5.109.2:
+    resolution: {integrity: sha512-U9/cvLzxObKNEZ9+TtdqrHM5/9z3lgl2c+c4BzbqGxFQvQvBAq87yql5A8pQ+rrMbS496MZJeF5enVBndIy2hw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     peerDependencies:
@@ -5938,6 +5942,11 @@ snapshots:
       graceful-fs: 4.2.11
       tapable: 2.3.3
 
+  enhanced-resolve@5.24.5:
+    dependencies:
+      graceful-fs: 4.2.11
+      tapable: 2.3.3
+
   entities@4.5.0: {}
 
   error-ex@1.3.4:
@@ -6439,13 +6448,13 @@ snapshots:
     dependencies:
       brace-expansion: 5.0.4
 
-  minimizer-webpack-plugin@5.6.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)(webpack@5.109.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)):
+  minimizer-webpack-plugin@5.6.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)(webpack@5.109.2(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       terser: 5.44.0
-      webpack: 5.109.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)
+      webpack: 5.109.2(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)
     optionalDependencies:
       csso: 5.0.5
       lightningcss: 1.32.0
@@ -6795,10 +6804,10 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass-loader@17.0.0(sass@1.102.0)(webpack@5.109.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)):
+  sass-loader@17.0.0(sass@1.102.0)(webpack@5.109.2(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)):
     optionalDependencies:
       sass: 1.102.0
-      webpack: 5.109.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)
+      webpack: 5.109.2(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)
 
   sass@1.102.0:
     dependencies:
@@ -7176,7 +7185,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  webpack-dev-middleware@8.0.3(tslib@2.8.1)(webpack@5.109.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)):
+  webpack-dev-middleware@8.0.3(tslib@2.8.1)(webpack@5.109.2(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)):
     dependencies:
       memfs: 4.58.0(tslib@2.8.1)
       mime-types: 3.0.2
@@ -7184,11 +7193,11 @@ snapshots:
       range-parser: 1.2.1
       schema-utils: 4.3.3
     optionalDependencies:
-      webpack: 5.109.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)
+      webpack: 5.109.2(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)
     transitivePeerDependencies:
       - tslib
 
-  webpack-dev-server@6.0.0(supports-color@8.1.1)(tslib@2.8.1)(webpack@5.109.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)):
+  webpack-dev-server@6.0.0(supports-color@8.1.1)(tslib@2.8.1)(webpack@5.109.2(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -7213,10 +7222,10 @@ snapshots:
       selfsigned: 5.5.0
       serve-index: 1.9.2(supports-color@8.1.1)
       tinyglobby: 0.2.17
-      webpack-dev-middleware: 8.0.3(tslib@2.8.1)(webpack@5.109.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24))
+      webpack-dev-middleware: 8.0.3(tslib@2.8.1)(webpack@5.109.2(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24))
       ws: 8.21.0
     optionalDependencies:
-      webpack: 5.109.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)
+      webpack: 5.109.2(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -7225,7 +7234,7 @@ snapshots:
 
   webpack-sources@3.5.1: {}
 
-  webpack@5.109.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24):
+  webpack@5.109.2(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24):
     dependencies:
       '@types/estree': 1.0.8
       '@types/json-schema': 7.0.15
@@ -7235,13 +7244,13 @@ snapshots:
       acorn: 8.16.0
       browserslist: 4.28.6
       chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.24.3
+      enhanced-resolve: 5.24.5
       es-module-lexer: 2.1.0
       eslint-scope: 5.1.1
       events: 3.3.0
       graceful-fs: 4.2.11
       mime-db: 1.54.0
-      minimizer-webpack-plugin: 5.6.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)(webpack@5.109.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24))
+      minimizer-webpack-plugin: 5.6.1(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24)(webpack@5.109.2(csso@5.0.5)(lightningcss@1.32.0)(postcss@8.5.24))
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.3
