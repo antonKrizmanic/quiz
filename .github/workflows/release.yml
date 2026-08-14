@@ -91,7 +91,7 @@ jobs:
 
       # Committing new changes
       - name: Commit changes
-        uses: EndBug/add-and-commit@v10
+        uses: EndBug/add-and-commit@v11
         with:
           default_author: github_actions
           message: "[skip ci] [version-bump] Automated commit for version ${{ steps.version-bump.outputs.bumped-semantic-version }}"
