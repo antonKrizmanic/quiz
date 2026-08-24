@@ -39,11 +39,11 @@ importers:
         specifier: 1.32.0
         version: 1.32.0(react@19.2.8)
       mobx:
-        specifier: 7.0.0
-        version: 7.0.0
+        specifier: 7.0.3
+        version: 7.0.3
       mobx-react-lite:
         specifier: 5.0.0
-        version: 5.0.0(mobx@7.0.0)(react@19.2.8)
+        version: 5.0.0(mobx@7.0.3)(react@19.2.8)
       next:
         specifier: 16.2.12
         version: 16.2.12(@babel/core@7.28.5(supports-color@8.1.1))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(sass@1.102.0)
@@ -2885,8 +2885,8 @@ packages:
       mobx: ^7.0.0
       react: ^18 || ^19
 
-  mobx@7.0.0:
-    resolution: {integrity: sha512-J+hR/wq6RdBnB4QXQRqGrWL9vOOLKaYhXh0ooxLAW4AE72av10Y5+xiaxohUYmPZiUswfpxMjQooYqpWkv+Fxg==}
+  mobx@7.0.3:
+    resolution: {integrity: sha512-KopyyzqZ8xT1fqxFNl8ItKKMpGifRe2ySaNAHs80/cx0mL1bpJtJ46S+FSyzXKRjW0TODWj5zwq/Y9hUdJUy4w==}
 
   mrmime@2.0.1:
     resolution: {integrity: sha512-Y3wQdFg2Va6etvQ5I82yUhGdsKrcYox6p7FfL1LbK2J4V01F9TGlepTIhnK24t7koZibmg82KGglhA1XK5IsLQ==}
@@ -6463,12 +6463,12 @@ snapshots:
 
   minipass@7.1.3: {}
 
-  mobx-react-lite@5.0.0(mobx@7.0.0)(react@19.2.8):
+  mobx-react-lite@5.0.0(mobx@7.0.3)(react@19.2.8):
     dependencies:
-      mobx: 7.0.0
+      mobx: 7.0.3
       react: 19.2.8
 
-  mobx@7.0.0: {}
+  mobx@7.0.3: {}
 
   mrmime@2.0.1: {}
 
