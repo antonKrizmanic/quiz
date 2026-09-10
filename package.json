@@ -39,7 +39,7 @@
     },
     "devDependencies": {
         "@biomejs/biome": "2.5.12",
-        "@next/bundle-analyzer": "16.2.12",
+        "@next/bundle-analyzer": "16.3.4",
         "@shadcn/ui": "0.0.4",
         "@svgr/webpack": "8.1.0",
         "@tailwindcss/postcss": "4.3.3",
