@@ -3,15 +3,15 @@
     "compilerOptions": {
         "noEmit": false,
         "outDir": ".test-dist",
-        "module": "commonjs",
-        "moduleResolution": "node",
+        "module": "Node16",
+        "moduleResolution": "Node16",
         "target": "ES2020",
         "jsx": "react-jsx",
-        "baseUrl": ".",
         "paths": {
             "@/*": ["./*"]
         },
-        "typeRoots": ["./tests/types"]
+        "typeRoots": ["./tests/types"],
+        "types": ["node"]
     },
     "include": [
         "component-models/**/*.ts",

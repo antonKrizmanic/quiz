@@ -5,7 +5,7 @@
         "dev": "next dev",
         "dev:https": "next dev --experimental-https",
         "dev-open": "start http://localhost:3000 && pnpm dev",
-        "build": "next build",
+        "build": "next build --webpack",
         "build-analyze": "cross-env ANALYZE=true pnpm build",
         "export": "rimraf ./out && rimraf ./.next && cross-env NODE_ENV=production next build && next export",
         "start": "next start",
