@@ -1,74 +1,98 @@
-import { ConfigProvider } from '@/components/providers/ConfigProvider';
-import ThemeRegistry from '@/components/providers/ThemeRegistry/ThemeRegistry';
-import { loadCityConfig } from '@/lib/cityConfig';
-import '@/styles/global.css';
 import type { Metadata } from 'next';
-import { cookies } from 'next/headers';
-import { ThemeProvider } from 'next-themes';
+import { headers } from 'next/headers';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ConfigProvider } from '@/components/quiz/config-provider';
+import { ThemeToggle } from '@/components/quiz/theme-toggle';
+import { getCityConfig } from '@/lib/city-config';
+import { getPublicQuizApiUrl } from '@/lib/quiz-api-url';
+import '@/styles/global.css';
 
-// Checks whether the app is running in a production or development mode
-const isProduction = process.env.NODE_ENV === 'production';
-
-/**
- * Page metadata.
- */
 export const metadata: Metadata = {
     title: {
-        default: `GDCK Buje kviz ${isProduction ? '' : '- development'}`,
-        template: '%s | GDCK Buje kviz',
+        default: 'Kviz Crvenog križa',
+        template: '%s | Kviz Crvenog križa',
     },
     description:
-        'Kviz za potrebe GDCK Buje. Kviz omogućava rješavanje kvizova iz područja prve pomoći i poznavanja pokreta Crvenog križa.',
+        'Riješite kviz Crvenog križa i pregledajte svoj rezultat nakon završetka.',
     icons: {
         icon: [
+            { url: '/favicon.svg?v=2', type: 'image/svg+xml' },
+            { url: '/favicon.ico?v=2', sizes: 'any' },
             {
-                url: '/icons/logo.png',
-                href: '/icons/logo.png',
+                url: '/icons/favicon-32.png?v=2',
+                sizes: '32x32',
+                type: 'image/png',
+            },
+            {
+                url: '/icons/favicon-16.png?v=2',
+                sizes: '16x16',
+                type: 'image/png',
+            },
+        ],
+        shortcut: '/favicon.ico?v=2',
+        apple: [
+            {
+                url: '/icons/apple-touch-icon.png',
+                sizes: '180x180',
+                type: 'image/png',
             },
         ],
     },
 };
 
-type RootLayoutProps = {
-    children: React.ReactNode;
-};
-
-/**
- * Function representing the RootLayout component.
- *
- * @returns RootLayout component
- */
-export default async function RootLayout({ children }: RootLayoutProps) {
-    const cookieStore = await cookies();
-    const city = cookieStore.get('city')?.value || 'buje';
-    const config = await loadCityConfig(city);
+export default async function RootLayout({
+    children,
+}: Readonly<{ children: React.ReactNode }>) {
+    const city = getCityConfig((await headers()).get('x-quiz-city'));
+    const apiBaseUrl = getPublicQuizApiUrl();
     return (
-        <html lang="hr" suppressHydrationWarning>
-            <body className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-primary-50 dark:bg-none dark:bg-slate-900">
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="light"
-                    enableSystem
-                >
-                    <ThemeRegistry>
-                        <ConfigProvider config={config}>
-                            {/* Background decorative elements - only visible in light mode */}
-                            <div className="fixed inset-0 overflow-hidden pointer-events-none dark:hidden">
-                                <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-                                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-                                <div className="absolute top-40 left-40 w-80 h-80 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        <html lang="hr">
+            <body className="antialiased">
+                <div className="quiz-shell flex flex-col">
+                    <header className="quiz-header">
+                        <div className="quiz-container quiz-header-inner">
+                            <Link href="/" className="quiz-brand">
+                                <Image
+                                    src="/brand/quiz-logo.svg"
+                                    alt=""
+                                    width={42}
+                                    height={42}
+                                    className="quiz-brand-logo"
+                                />
+                                <span>{city.title}</span>
+                            </Link>
+                            <div className="quiz-header-actions">
+                                <span className="quiz-header-caption">
+                                    Provjerite svoje znanje
+                                </span>
+                                <ThemeToggle />
                             </div>
-
-                            <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen">
-                                <div className="flex flex-col justify-start lg:justify-center items-center min-h-screen pt-8 md:pt-8">
-                                    <div className="w-full max-w-2xl">
-                                        {children}
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+                    </header>
+                    <main className="quiz-container quiz-main flex-1">
+                        <ConfigProvider config={city} apiBaseUrl={apiBaseUrl}>
+                            {children}
                         </ConfigProvider>
-                    </ThemeRegistry>
-                </ThemeProvider>
+                    </main>
+                    <footer className="quiz-footer">
+                        <div className="quiz-container quiz-footer-inner">
+                            <Link href="/" className="quiz-brand">
+                                <Image
+                                    src="/brand/quiz-logo.svg"
+                                    alt=""
+                                    width={42}
+                                    height={42}
+                                    className="quiz-brand-logo"
+                                />
+                                <span>{city.title}</span>
+                            </Link>
+                            <span className="quiz-footer-copy">
+                                Kvizovi Crvenog križa
+                            </span>
+                        </div>
+                    </footer>
+                </div>
             </body>
         </html>
     );

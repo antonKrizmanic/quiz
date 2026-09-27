@@ -17,7 +17,6 @@
                 "name": "next"
             }
         ],
-        "baseUrl": ".",
         "paths": {
             "@/*": ["./*"]
         },
@@ -30,7 +29,6 @@
         ".next/types/**/*.ts",
         "postcss.config.mjs",
         ".next/dev/types/**/*.ts",
-        ".next\\dev/types/**/*.ts",
         ".next\\dev/types/**/*.ts"
     ],
     "exclude": ["node_modules"]
