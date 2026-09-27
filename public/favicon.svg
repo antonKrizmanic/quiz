@@ -1,0 +1,8 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>Kviz Crvenog križa</title>
+  <circle cx="34" cy="34" r="29" fill="#E30613"/>
+  <path d="M26 27C26 21 30 17 36 17C42 17 47 21 47 27C47 32 43 35 39 38C35 41 34 42 34 45" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="34" cy="52" r="3.5" fill="white"/>
+  <circle cx="14" cy="14" r="12" fill="white" stroke="#E30613" stroke-width="3"/>
+  <path d="M11 6H17V11H22V17H17V22H11V17H6V11H11V6Z" fill="#E30613"/>
+</svg>

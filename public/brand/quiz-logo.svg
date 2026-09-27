@@ -1,0 +1,55 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>Kviz Crvenog križa</title>
+  <!-- Speech bubble -->
+  <path d="M184 494
+           C184 309 334 159 519 159
+           C704 159 854 309 854 494
+           C854 679 704 829 519 829
+           C452 829 389 810 336 777
+           L178 846
+           L224 692
+           C198 633 184 566 184 494Z"
+        stroke="#E30613"
+        stroke-width="44"
+        stroke-linejoin="round"
+        fill="white"/>
+
+  <!-- Red Cross -->
+  <path d="M454 287
+           H584
+           V420
+           H717
+           V550
+           H584
+           V683
+           H454
+           V550
+           H321
+           V420
+           H454
+           Z"
+        fill="#E30613"/>
+
+  <!-- Quiz badge -->
+  <circle cx="754" cy="716" r="122" fill="#E30613" stroke="white" stroke-width="16"/>
+  <path d="M715 677
+           C715 625 752 595 802 595
+           C849 595 882 621 882 663
+           C882 696 864 715 836 733
+           C812 748 799 758 799 784
+           V795
+           H751
+           V777
+           C751 741 771 721 798 704
+           C819 691 831 681 831 664
+           C831 648 819 638 800 638
+           C779 638 766 652 765 677
+           Z"
+        fill="white"
+        transform="translate(234 247) scale(0.65)"/>
+  <circle cx="754" cy="794" r="18" fill="white"/>
+
+  <!-- Accent rays -->
+  <path d="M900 598 L937 568" stroke="#E30613" stroke-width="20" stroke-linecap="round"/>
+  <path d="M925 652 L973 634" stroke="#E30613" stroke-width="20" stroke-linecap="round"/>
+</svg>
