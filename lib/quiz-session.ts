@@ -56,7 +56,9 @@ export function clearQuizSession(instanceId: number, publicCode: string) {
     }
 }
 
-const personalKey = (attemptId: number) => `quiz-personal-attempt:${attemptId}`;
+const personalSessionPrefix = 'quiz-personal-attempt:';
+const personalKey = (attemptId: number) =>
+    `${personalSessionPrefix}${attemptId}`;
 const personalMemory = new Map<number, QuizSession>();
 
 export function readPersonalSession(attemptId: number): QuizSession | null {
@@ -82,8 +84,19 @@ export function readPersonalSession(attemptId: number): QuizSession | null {
 }
 
 export function savePersonalSession(session: QuizSession) {
+    personalMemory.clear();
     personalMemory.set(session.attemptId, session);
     try {
+        const previousKeys: string[] = [];
+        for (let index = 0; index < localStorage.length; index++) {
+            const storedKey = localStorage.key(index);
+            if (storedKey?.startsWith(personalSessionPrefix)) {
+                previousKeys.push(storedKey);
+            }
+        }
+        for (const storedKey of previousKeys) {
+            localStorage.removeItem(storedKey);
+        }
         localStorage.setItem(
             personalKey(session.attemptId),
             JSON.stringify(session),
