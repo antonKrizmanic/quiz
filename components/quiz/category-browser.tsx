@@ -139,10 +139,10 @@ export function CategoryBrowser() {
                                             setExpandedIds((current) =>
                                                 current.includes(category.id)
                                                     ? current.filter(
-                                                          (id) =>
-                                                              id !==
-                                                              category.id,
-                                                      )
+                                                        (id) =>
+                                                            id !==
+                                                            category.id,
+                                                    )
                                                     : [...current, category.id],
                                             )
                                         }
@@ -390,10 +390,6 @@ export function CategoryBrowser() {
                                                 className="mt-2 w-full quiz-field px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand-soft"
                                             />
                                         </div>
-                                        <p className="text-sm text-subtle sm:col-span-2">
-                                            Ako je dostupno manje pitanja, kviz
-                                            će sadržavati sva dostupna pitanja.
-                                        </p>
                                         {personalError && (
                                             <p
                                                 role="alert"
@@ -514,9 +510,9 @@ export function CategoryBrowser() {
                                             type="button"
                                             disabled={
                                                 page >=
-                                                    catalog.metadata
-                                                        .totalPages -
-                                                        1 || loadingCatalog
+                                                catalog.metadata
+                                                    .totalPages -
+                                                1 || loadingCatalog
                                             }
                                             onClick={() =>
                                                 setPage((value) => value + 1)
