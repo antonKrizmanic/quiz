@@ -1,6 +1,9 @@
 {
     "name": "ck-quiz",
     "version": "1.8.0",
+    "engines": {
+        "node": "24.x"
+    },
     "scripts": {
         "dev": "next dev",
         "build": "next build --webpack",
@@ -18,7 +21,7 @@
     "devDependencies": {
         "@biomejs/biome": "2.5.14",
         "@tailwindcss/postcss": "4.3.3",
-        "@types/node": "26.6.2",
+        "@types/node": "24.9.1",
         "@types/react": "19.3.0",
         "tailwindcss": "4.3.3",
         "typescript": "7.0.2"
