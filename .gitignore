@@ -40,3 +40,6 @@ yarn-error.log*
 .env.production.local
 .test-dist
 certificates
+
+
+next-env.d.ts

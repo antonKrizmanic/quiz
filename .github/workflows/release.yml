@@ -31,7 +31,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6.1.0
         with:
-          version: 12.6.0
+          version: 15.5.1
 
       - name: Get pnpm store directory
         shell: bash
@@ -138,4 +138,3 @@ jobs:
           else
             echo "No sync pull request created or found."
           fi
-
