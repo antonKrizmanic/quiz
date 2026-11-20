@@ -1,10 +1,284 @@
-import { ArrowLeft, CheckCircle2, RotateCcw, XCircle } from 'lucide-react';
+'use client';
+
+import {
+    ArrowRight,
+    Check,
+    CircleCheck,
+    CircleX,
+    Home,
+    Lightbulb,
+    RotateCcw,
+    X,
+} from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
+import { Button, buttonClass } from '@/components/ui/button';
+import { ScoreMeter } from '@/components/ui/progress';
+import { Segmented } from '@/components/ui/segmented';
+import { cx } from '@/lib/cx';
+import { formatNumber, pointsLabel } from '@/lib/format';
 import type { QuizQuestionResult, QuizResult } from '@/types/quiz-public';
 import { QuestionType } from '@/types/quiz-public';
 
-const formatScore = (value: number) =>
-    new Intl.NumberFormat('hr-HR', { maximumFractionDigits: 2 }).format(value);
+type Filter = 'all' | 'wrong' | 'right';
+
+type ResultViewProps = {
+    result: QuizResult;
+    restartLabel: string;
+    announce: boolean;
+    onRestart: () => void;
+};
+
+export function ResultView({
+    result,
+    restartLabel,
+    announce,
+    onRestart,
+}: ResultViewProps) {
+    const headingRef = useRef<HTMLHeadingElement>(null);
+    const wrongCount = result.questions.filter(
+        (item) => !item.isCorrect,
+    ).length;
+    const rightCount = result.questions.length - wrongCount;
+    const [filter, setFilter] = useState<Filter>(
+        wrongCount > 0 ? 'wrong' : 'all',
+    );
+    const visible = result.questions
+        .map((item, index) => ({ item, number: index + 1 }))
+        .filter(
+            ({ item }) =>
+                filter === 'all' ||
+                (filter === 'wrong' ? !item.isCorrect : item.isCorrect),
+        );
+    const passed = result.passed;
+    const tone = passed === false ? 'primary' : 'success';
+
+    useEffect(() => {
+        if (!announce) return;
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        headingRef.current?.focus({ preventScroll: true });
+    }, [announce]);
+
+    return (
+        <div className="mx-auto grid max-w-2xl gap-6">
+            <section className="card relative isolate overflow-hidden px-5 py-7 sm:px-8 sm:py-9">
+                <span
+                    aria-hidden="true"
+                    className={cx(
+                        'absolute -top-24 -right-20 -z-10 size-64 rounded-full border-[48px]',
+                        tone === 'success'
+                            ? 'border-success/8'
+                            : 'border-primary/6',
+                    )}
+                />
+                <p className="text-sm font-bold text-primary">
+                    Kviz je završen
+                </p>
+                <h1
+                    ref={headingRef}
+                    tabIndex={-1}
+                    className="mt-1 text-2xl font-extrabold tracking-tight text-balance outline-none sm:text-3xl"
+                >
+                    {result.quizName || 'Vaš rezultat'}
+                </h1>
+
+                <div className="mt-6 flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+                    <p className="text-5xl font-extrabold tracking-tight tabular-nums">
+                        {formatNumber(result.score)}
+                        <span className="ml-2 text-2xl font-semibold text-muted">
+                            / {formatNumber(result.maximumScore)}
+                        </span>
+                    </p>
+                    <p className="pb-1 text-2xl font-bold text-muted tabular-nums">
+                        {formatNumber(result.percentage)}%
+                    </p>
+                </div>
+                <ScoreMeter
+                    className="mt-4"
+                    value={result.percentage}
+                    max={100}
+                    tone={tone}
+                    label="Uspješnost"
+                    valueLabel={`${formatNumber(result.percentage)} %`}
+                />
+
+                <div className="mt-5 flex flex-wrap items-center gap-2 text-sm font-semibold">
+                    {passed !== null && (
+                        <span
+                            className={cx(
+                                'inline-flex items-center gap-1.5 rounded-full px-3 py-1',
+                                passed
+                                    ? 'bg-success-soft text-success'
+                                    : 'bg-danger-soft text-danger',
+                            )}
+                        >
+                            {passed ? (
+                                <CircleCheck
+                                    aria-hidden="true"
+                                    className="size-4"
+                                />
+                            ) : (
+                                <CircleX
+                                    aria-hidden="true"
+                                    className="size-4"
+                                />
+                            )}
+                            {passed ? 'Položeno' : 'Nije položeno'}
+                        </span>
+                    )}
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-sunken px-3 py-1 text-fg">
+                        <Check
+                            aria-hidden="true"
+                            className="size-4 text-success"
+                        />
+                        Točno: {rightCount}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-sunken px-3 py-1 text-fg">
+                        <X aria-hidden="true" className="size-4 text-danger" />
+                        Netočno: {wrongCount}
+                    </span>
+                </div>
+
+                <div className="mt-7 flex flex-col gap-2 sm:flex-row">
+                    <Button size="lg" className="sm:flex-1" onClick={onRestart}>
+                        <RotateCcw aria-hidden="true" />
+                        {restartLabel}
+                    </Button>
+                    <Link
+                        href="/"
+                        className={cx(
+                            buttonClass({ variant: 'secondary', size: 'lg' }),
+                            'sm:flex-1',
+                        )}
+                    >
+                        <Home aria-hidden="true" />
+                        Početna stranica
+                    </Link>
+                </div>
+            </section>
+
+            <section aria-labelledby="review-heading" className="grid gap-3">
+                <div className="flex flex-wrap items-center justify-between gap-3 px-1">
+                    <h2 id="review-heading" className="text-lg font-bold">
+                        Pregled odgovora
+                    </h2>
+                    <Segmented<Filter>
+                        aria-label="Prikaži pitanja"
+                        value={filter}
+                        onValueChange={setFilter}
+                        className="max-sm:w-full"
+                        block
+                        items={[
+                            {
+                                value: 'all',
+                                label: `Sva (${result.questions.length})`,
+                            },
+                            {
+                                value: 'wrong',
+                                label: `Netočna (${wrongCount})`,
+                            },
+                            { value: 'right', label: `Točna (${rightCount})` },
+                        ]}
+                    />
+                </div>
+
+                {visible.length === 0 ? (
+                    <p className="card px-5 py-6 text-center text-muted">
+                        {filter === 'wrong'
+                            ? 'Sve ste odgovorili točno. Bravo!'
+                            : 'Nema točnih odgovora za prikaz.'}
+                    </p>
+                ) : (
+                    <ol className="grid gap-3">
+                        {visible.map(({ item, number }) => (
+                            <li key={item.question.id}>
+                                <ReviewCard item={item} number={number} />
+                            </li>
+                        ))}
+                    </ol>
+                )}
+
+                <Link
+                    href="/"
+                    className={cx(
+                        buttonClass({ variant: 'ghost' }),
+                        'justify-self-center text-primary',
+                    )}
+                >
+                    Pogledajte ostale kvizove
+                    <ArrowRight aria-hidden="true" />
+                </Link>
+            </section>
+        </div>
+    );
+}
+
+function ReviewCard({
+    item,
+    number,
+}: {
+    item: QuizQuestionResult;
+    number: number;
+}) {
+    return (
+        <article className="card p-4 sm:p-6">
+            <div className="flex items-start gap-3">
+                <span
+                    className={cx(
+                        'grid size-8 shrink-0 place-items-center rounded-full',
+                        item.isCorrect
+                            ? 'bg-success-soft text-success'
+                            : 'bg-danger-soft text-danger',
+                    )}
+                >
+                    {item.isCorrect ? (
+                        <Check
+                            aria-hidden="true"
+                            strokeWidth={3}
+                            className="size-4"
+                        />
+                    ) : (
+                        <X
+                            aria-hidden="true"
+                            strokeWidth={3}
+                            className="size-4"
+                        />
+                    )}
+                    <span className="sr-only">
+                        {item.isCorrect ? 'Točno' : 'Netočno'}
+                    </span>
+                </span>
+                <div className="min-w-0 flex-1">
+                    <p className="text-xs font-semibold text-muted">
+                        Pitanje {number} ·{' '}
+                        <span className="tabular-nums">
+                            {formatNumber(item.score)} /{' '}
+                            {pointsLabel(item.question.maximumPoints)}
+                        </span>
+                    </p>
+                    <h3 className="mt-1 font-semibold leading-snug text-pretty">
+                        {item.question.text}
+                    </h3>
+                </div>
+            </div>
+            <div className="mt-4">
+                <AnswerReview item={item} />
+            </div>
+            {item.explanation && (
+                <div className="mt-4 flex gap-3 rounded-2xl bg-sunken p-3.5 text-sm">
+                    <Lightbulb
+                        aria-hidden="true"
+                        className="mt-0.5 size-4 shrink-0 text-primary"
+                    />
+                    <p>
+                        <span className="font-semibold">Objašnjenje: </span>
+                        <span className="text-muted">{item.explanation}</span>
+                    </p>
+                </div>
+            )}
+        </article>
+    );
+}
 
 function AnswerReview({ item }: { item: QuizQuestionResult }) {
     const { question } = item;
@@ -14,7 +288,7 @@ function AnswerReview({ item }: { item: QuizQuestionResult }) {
         question.type === QuestionType.MultipleAnswers
     ) {
         return (
-            <ul className="space-y-2">
+            <ul className="grid gap-2">
                 {question.choices.map((choice) => {
                     const selected = question.selectedChoiceIds.includes(
                         choice.id,
@@ -23,25 +297,49 @@ function AnswerReview({ item }: { item: QuizQuestionResult }) {
                     return (
                         <li
                             key={choice.id}
-                            className={`rounded-lg border px-3 py-2 text-sm ${
+                            className={cx(
+                                'flex items-start gap-2.5 rounded-xl border px-3 py-2.5 text-sm',
                                 correct
-                                    ? 'border-success-line bg-success-soft text-success'
+                                    ? 'border-success/40 bg-success-soft'
                                     : selected
-                                      ? 'border-brand bg-brand-soft text-brand'
-                                      : 'border-line text-ink'
-                            }`}
+                                      ? 'border-danger/40 bg-danger-soft'
+                                      : 'border-line',
+                            )}
                         >
-                            {choice.text}
-                            {selected && (
-                                <span className="ml-2 font-semibold">
-                                    Vaš odabir
-                                </span>
-                            )}
-                            {correct && (
-                                <span className="ml-2 font-semibold">
-                                    Točno
-                                </span>
-                            )}
+                            <span
+                                aria-hidden="true"
+                                className={cx(
+                                    'mt-px',
+                                    correct
+                                        ? 'text-success'
+                                        : selected
+                                          ? 'text-danger'
+                                          : 'text-muted',
+                                )}
+                            >
+                                {correct ? (
+                                    <Check className="size-4" strokeWidth={3} />
+                                ) : selected ? (
+                                    <X className="size-4" strokeWidth={3} />
+                                ) : (
+                                    <span className="block size-4" />
+                                )}
+                            </span>
+                            <span className="min-w-0 flex-1 text-fg">
+                                {choice.text}
+                            </span>
+                            <span className="flex shrink-0 flex-wrap justify-end gap-1 text-xs font-bold">
+                                {selected && (
+                                    <span className="rounded-full bg-surface px-2 py-0.5 text-fg">
+                                        Vaš odabir
+                                    </span>
+                                )}
+                                {correct && (
+                                    <span className="rounded-full bg-surface px-2 py-0.5 text-success">
+                                        Točno
+                                    </span>
+                                )}
+                            </span>
                         </li>
                     );
                 })}
@@ -51,21 +349,36 @@ function AnswerReview({ item }: { item: QuizQuestionResult }) {
 
     if (question.type === QuestionType.TextAnswer) {
         return (
-            <div className="space-y-2 text-sm text-ink">
-                <p>
-                    <span className="font-semibold">Vaš odgovor:</span>{' '}
-                    {question.textAnswer || 'Bez odgovora'}
-                </p>
-                <p>
-                    <span className="font-semibold">Prihvaćeni odgovori:</span>{' '}
-                    {item.acceptedTextAnswers.join(', ')}
-                </p>
-            </div>
+            <dl className="grid gap-2 text-sm">
+                <div
+                    className={cx(
+                        'rounded-xl border px-3 py-2.5',
+                        item.isCorrect
+                            ? 'border-success/40 bg-success-soft'
+                            : 'border-danger/40 bg-danger-soft',
+                    )}
+                >
+                    <dt className="text-xs font-bold text-muted">
+                        Vaš odgovor
+                    </dt>
+                    <dd className="mt-0.5 text-fg">
+                        {question.textAnswer?.trim() || 'Bez odgovora'}
+                    </dd>
+                </div>
+                <div className="rounded-xl border border-line px-3 py-2.5">
+                    <dt className="text-xs font-bold text-muted">
+                        Prihvaćeni odgovori
+                    </dt>
+                    <dd className="mt-0.5 text-fg">
+                        {item.acceptedTextAnswers.join(', ') || '—'}
+                    </dd>
+                </div>
+            </dl>
         );
     }
 
     return (
-        <div className="space-y-2 text-sm text-ink">
+        <ul className="grid gap-2 text-sm">
             {question.leftOptions.map((left) => {
                 const selectedId = question.selectedMatches.find(
                     (match) => match.leftOptionId === left.id,
@@ -73,141 +386,48 @@ function AnswerReview({ item }: { item: QuizQuestionResult }) {
                 const correctId = item.correctMatches.find(
                     (match) => match.leftOptionId === left.id,
                 )?.rightOptionId;
-                const selected = question.rightOptions.find(
-                    (option) => option.id === selectedId,
-                )?.text;
-                const correct = question.rightOptions.find(
-                    (option) => option.id === correctId,
-                )?.text;
+                const textOf = (id: string | undefined) =>
+                    question.rightOptions.find((option) => option.id === id)
+                        ?.text;
+                const ok = selectedId !== undefined && selectedId === correctId;
                 return (
-                    <p key={left.id} className="rounded-lg bg-muted px-3 py-2">
-                        <span className="font-semibold">{left.text}</span> →{' '}
-                        {selected ?? 'Bez odgovora'}
-                        {selectedId !== correctId && (
-                            <span className="ml-2 text-success">
-                                Točno: {correct}
-                            </span>
+                    <li
+                        key={left.id}
+                        className={cx(
+                            'rounded-xl border px-3 py-2.5',
+                            ok
+                                ? 'border-success/40 bg-success-soft'
+                                : 'border-danger/40 bg-danger-soft',
                         )}
-                    </p>
-                );
-            })}
-        </div>
-    );
-}
-
-export function ResultView({
-    result,
-    onRestart,
-    restartLabel = 'Novi pokušaj',
-}: {
-    result: QuizResult;
-    onRestart: () => void;
-    restartLabel?: string;
-}) {
-    return (
-        <div className="space-y-8">
-            <section className="quiz-card p-6 shadow-panel sm:p-10">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
-                    Kviz je završen
-                </p>
-                <h1 className="mt-3 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-                    {result.quizName || 'Vaš rezultat'}
-                </h1>
-                <div className="mt-8 flex flex-wrap items-end gap-5">
-                    <p className="text-5xl font-semibold tracking-tight text-ink">
-                        {formatScore(result.score)}
-                        <span className="text-2xl font-normal text-subtle">
-                            {' '}
-                            / {formatScore(result.maximumScore)}
-                        </span>
-                    </p>
-                    <p className="pb-1 text-lg text-subtle">
-                        {formatScore(result.percentage)}%
-                    </p>
-                </div>
-                {result.passed !== null && (
-                    <p
-                        className={`mt-5 inline-flex rounded-full px-3 py-1 text-sm font-semibold ${
-                            result.passed
-                                ? 'bg-success-soft text-success'
-                                : 'bg-brand-soft text-brand'
-                        }`}
                     >
-                        {result.passed ? 'Položeno' : 'Nije položeno'}
-                    </p>
-                )}
-                <p className="mt-5 text-sm text-subtle">
-                    Sada možete pregledati točne odgovore i objašnjenja.
-                </p>
-            </section>
-
-            <section className="space-y-4" aria-label="Pregled odgovora">
-                <h2 className="text-xl font-semibold text-ink">
-                    Pregled odgovora
-                </h2>
-                {result.questions.map((item, index) => (
-                    <article
-                        key={item.question.id}
-                        className="quiz-card p-5 sm:p-6"
-                    >
-                        <div className="flex items-start gap-3">
-                            {item.isCorrect ? (
-                                <CheckCircle2
-                                    className="mt-0.5 size-6 shrink-0 text-success"
+                        <p className="font-semibold text-fg">{left.text}</p>
+                        <p className="mt-0.5 flex items-start gap-1.5 text-fg">
+                            {ok ? (
+                                <Check
                                     aria-hidden="true"
+                                    strokeWidth={3}
+                                    className="mt-0.5 size-4 shrink-0 text-success"
                                 />
                             ) : (
-                                <XCircle
-                                    className="mt-0.5 size-6 shrink-0 text-brand"
+                                <X
                                     aria-hidden="true"
+                                    strokeWidth={3}
+                                    className="mt-0.5 size-4 shrink-0 text-danger"
                                 />
                             )}
-                            <div className="min-w-0 flex-1">
-                                <div className="flex flex-wrap items-start justify-between gap-2">
-                                    <h3 className="font-semibold text-ink">
-                                        {index + 1}. {item.question.text}
-                                    </h3>
-                                    <span className="text-sm text-subtle">
-                                        Bodovi: {formatScore(item.score)} /{' '}
-                                        {formatScore(
-                                            item.question.maximumPoints,
-                                        )}
-                                    </span>
-                                </div>
-                                <div className="mt-4">
-                                    <AnswerReview item={item} />
-                                </div>
-                                {item.explanation && (
-                                    <p className="mt-4 border-t border-line pt-4 text-sm text-subtle">
-                                        <span className="font-semibold">
-                                            Objašnjenje:
-                                        </span>{' '}
-                                        {item.explanation}
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-                    </article>
-                ))}
-            </section>
-
-            <div className="flex flex-wrap gap-3 pb-8">
-                <button
-                    type="button"
-                    onClick={onRestart}
-                    className="inline-flex items-center gap-2 quiz-button-primary px-5 py-3 font-semibold text-on-brand transition-colors hover:bg-brand-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-                >
-                    <RotateCcw className="size-4" aria-hidden="true" />
-                    {restartLabel}
-                </button>
-                <Link
-                    href="/"
-                    className="quiz-button-secondary inline-flex items-center gap-2 px-5 py-3"
-                >
-                    <ArrowLeft className="size-4" aria-hidden="true" />
-                    Početna stranica
-                </Link>
-            </div>
-        </div>
+                            <span>
+                                <span className="sr-only">Vaš par: </span>
+                                {textOf(selectedId) ?? 'Bez odgovora'}
+                            </span>
+                        </p>
+                        {!ok && (
+                            <p className="mt-1 pl-5.5 font-medium text-success">
+                                Točno: {textOf(correctId)}
+                            </p>
+                        )}
+                    </li>
+                );
+            })}
+        </ul>
     );
 }

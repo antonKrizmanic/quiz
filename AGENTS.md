@@ -19,4 +19,5 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Keep the four question types aligned with the backend DTOs: single choice, multiple choice, text answer, and matching. Save an answer before moving between questions or completing.
 - Read the relevant local Next.js 16 guide in `node_modules/next/dist/docs/` before changing routing, data fetching, or server/client boundaries.
 - Use Croatian text, accessible labels and controls, and layouts that work on narrow screens.
+- UI is built on headless `@ui-sdk/react` components styled with Tailwind. Before using ui-sdk, read `node_modules/@ui-sdk/react/docs/llms.txt` and the pages of the components you use. Shared styled wrappers live in `components/ui/`, design tokens in `styles/global.css`, and the color scheme preference in `components/app/theme.tsx`. Design for phones first: 44px touch targets, 16px form text, and safe-area insets.
 - Run `pnpm typecheck`, `pnpm lint`, and `pnpm build` for a complete app change.
