@@ -5,16 +5,14 @@ import {
     CheckboxGroup,
     CheckboxIndicator,
 } from '@ui-sdk/react/checkbox';
-import { Radio, RadioGroup, RadioIndicator } from '@ui-sdk/react/radio';
+import { Field, FieldDescription, FieldLabel } from '@ui-sdk/react/field';
+import { Radio, RadioGroup } from '@ui-sdk/react/radio';
+import { Textarea } from '@ui-sdk/react/textarea';
 import { Check } from 'lucide-react';
 import type { Ref } from 'react';
-import {
-    Field,
-    FieldDescription,
-    FieldLabel,
-    TextArea,
-} from '@/components/ui/field';
+import { cx } from '@/lib/cx';
 import { pointsLabel } from '@/lib/format';
+import { storyLabel } from '@/lib/story';
 import type {
     PublicQuizQuestion,
     QuizAnswer,
@@ -35,14 +33,18 @@ const instructions: Record<QuestionType, string> = {
     [QuestionType.SingleAnswer]: 'Odaberite jedan odgovor.',
     [QuestionType.MultipleAnswers]: 'Odaberite sve točne odgovore.',
     [QuestionType.TextAnswer]: 'Upišite svoj odgovor.',
-    [QuestionType.MatchTerms]: 'Svakom pojmu pridružite odgovarajući par.',
+    [QuestionType.MatchTerms]: 'Dodirnite pojam, zatim njegov par.',
 };
 
-const choiceCard =
-    'group flex min-h-15 cursor-pointer items-center gap-3 rounded-2xl border border-line bg-surface p-3 pr-4 transition-[border-color,background-color,scale] duration-150 hover:border-control active:scale-[0.99] has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary has-data-checked:border-primary has-data-checked:bg-primary-soft motion-reduce:transition-none';
+const pill =
+    'group flex min-h-15 w-full items-center gap-3.5 rounded-[1.25rem] bg-white py-2.5 pr-4 pl-2.5 text-left text-lg font-bold text-ink transition-[background-color,color,box-shadow,scale] duration-150 active:scale-[0.98] data-checked:bg-ink data-checked:text-white data-checked:shadow-[0_0_0_3px_#fff] motion-reduce:transition-none';
 
-const letterBadge =
-    'grid size-9 shrink-0 place-items-center rounded-xl bg-sunken text-sm font-bold text-muted transition-colors group-has-data-checked:bg-primary group-has-data-checked:text-on-primary';
+const headingSize = (text: string) =>
+    text.length > 140
+        ? 'text-2xl'
+        : text.length > 80
+          ? 'text-[1.75rem]'
+          : 'text-[2.125rem]';
 
 export function QuestionCard({
     question,
@@ -54,26 +56,28 @@ export function QuestionCard({
     const headingId = `question-${question.id}`;
 
     return (
-        <section aria-labelledby={headingId} className="grid gap-5">
-            <header className="grid gap-2">
-                <p className="text-sm">
-                    <span className="font-bold text-primary">
-                        Pitanje {number}
-                    </span>
-                    <span className="text-muted">
-                        {' '}
-                        · {pointsLabel(question.maximumPoints)}
-                    </span>
+        <section
+            aria-labelledby={headingId}
+            className="flex flex-1 flex-col gap-6"
+        >
+            <header className="flex flex-1 flex-col justify-center gap-3.5 py-4">
+                <p className="self-start rounded-full bg-white/16 px-3 py-1.5 text-[0.8125rem] font-bold tracking-wide">
+                    {storyLabel[question.type]} ·{' '}
+                    {pointsLabel(question.maximumPoints)}
                 </p>
-                <h2
+                <h1
                     ref={headingRef}
                     id={headingId}
                     tabIndex={-1}
-                    className="scroll-mt-32 text-[1.375rem]/snug font-bold tracking-tight text-pretty outline-none sm:text-2xl"
+                    className={cx(
+                        'leading-[1.06] font-extrabold tracking-tight text-balance outline-none',
+                        headingSize(question.text),
+                    )}
                 >
+                    <span className="sr-only">Pitanje {number}: </span>
                     {question.text}
-                </h2>
-                <p className="text-sm text-muted">
+                </h1>
+                <p className="text-[0.9375rem] text-white/85">
                     {instructions[question.type]}
                 </p>
             </header>
@@ -92,15 +96,18 @@ export function QuestionCard({
                     className="grid gap-2.5"
                 >
                     {question.choices.map((choice, index) => (
-                        <label key={choice.id} className={choiceCard}>
-                            <ChoiceText choice={choice} index={index} />
-                            <Radio
-                                value={choice.id}
-                                className="grid size-6 shrink-0 place-items-center rounded-full border-2 border-control bg-surface transition-colors focus-visible:outline-none data-checked:border-primary"
-                            >
-                                <RadioIndicator className="size-3 rounded-full bg-primary" />
-                            </Radio>
-                        </label>
+                        <Radio
+                            key={choice.id}
+                            value={choice.id}
+                            className={pill}
+                        >
+                            <ChoiceContent choice={choice} index={index} />
+                            <Check
+                                aria-hidden="true"
+                                strokeWidth={2.8}
+                                className="hidden size-6 shrink-0 group-data-checked:block"
+                            />
+                        </Radio>
                     ))}
                 </RadioGroup>
             )}
@@ -119,31 +126,36 @@ export function QuestionCard({
                     className="grid gap-2.5"
                 >
                     {question.choices.map((choice, index) => (
-                        <label key={choice.id} className={choiceCard}>
-                            <ChoiceText choice={choice} index={index} />
-                            <Checkbox
-                                value={choice.id}
-                                className="grid size-6 shrink-0 place-items-center rounded-lg border-2 border-control bg-surface text-on-primary transition-colors focus-visible:outline-none data-checked:border-primary data-checked:bg-primary"
+                        <Checkbox
+                            key={choice.id}
+                            value={choice.id}
+                            className={pill}
+                        >
+                            <ChoiceContent choice={choice} index={index} />
+                            <span
+                                aria-hidden="true"
+                                className="grid size-7 shrink-0 place-items-center rounded-lg border-2 border-ink/25 group-data-checked:border-white group-data-checked:bg-white group-data-checked:text-ink"
                             >
                                 <CheckboxIndicator>
                                     <Check
-                                        aria-hidden="true"
-                                        strokeWidth={3.5}
-                                        className="size-3.5"
+                                        strokeWidth={3.2}
+                                        className="size-4"
                                     />
                                 </CheckboxIndicator>
-                            </Checkbox>
-                        </label>
+                            </span>
+                        </Checkbox>
                     ))}
                 </CheckboxGroup>
             )}
 
             {question.type === QuestionType.TextAnswer && (
-                <Field>
-                    <FieldLabel>Vaš odgovor</FieldLabel>
-                    <TextArea
+                <Field className="grid gap-2">
+                    <FieldLabel className="text-sm font-bold text-white/90">
+                        Vaš odgovor
+                    </FieldLabel>
+                    <Textarea
                         autoResize
-                        rows={4}
+                        rows={3}
                         maxLength={1000}
                         placeholder="Upišite odgovor…"
                         value={answer.text ?? ''}
@@ -154,8 +166,9 @@ export function QuestionCard({
                                 matches: [],
                             })
                         }
+                        className="max-h-72 min-h-32 w-full resize-none rounded-[1.25rem] border-0 bg-white px-4 py-3.5 text-lg leading-relaxed text-ink placeholder:text-ink/55 focus-visible:outline-offset-2"
                     />
-                    <FieldDescription className="text-right tabular-nums">
+                    <FieldDescription className="text-right text-sm text-white/85 tabular-nums">
                         {(answer.text ?? '').length} / 1000 znakova
                     </FieldDescription>
                 </Field>
@@ -173,15 +186,22 @@ export function QuestionCard({
     );
 }
 
-function ChoiceText({ choice, index }: { choice: QuizOption; index: number }) {
+function ChoiceContent({
+    choice,
+    index,
+}: {
+    choice: QuizOption;
+    index: number;
+}) {
     return (
         <>
-            <span aria-hidden="true" className={letterBadge}>
+            <span
+                aria-hidden="true"
+                className="grid size-10 shrink-0 place-items-center rounded-[0.875rem] bg-[color-mix(in_oklab,var(--story)_12%,white)] text-base text-(--story) transition-colors group-data-checked:bg-white group-data-checked:text-ink"
+            >
                 {String.fromCharCode(65 + index)}
             </span>
-            <span className="min-w-0 flex-1 text-base/snug text-fg">
-                {choice.text}
-            </span>
+            <span className="min-w-0 flex-1 leading-snug">{choice.text}</span>
         </>
     );
 }

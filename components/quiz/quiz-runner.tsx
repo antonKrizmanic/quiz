@@ -1,6 +1,7 @@
 'use client';
 
 import { Button as BaseButton } from '@ui-sdk/react/button';
+import { Progress } from '@ui-sdk/react/progress';
 import {
     ArrowLeft,
     ArrowRight,
@@ -9,16 +10,16 @@ import {
     Flag,
     ListChecks,
     SkipForward,
+    X,
 } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { type PointerEvent, useEffect, useRef, useState } from 'react';
 import { useQuizApi } from '@/components/quiz/config-provider';
-import { Button, buttonClass, PendingIcon } from '@/components/ui/button';
+import { Button, PendingIcon } from '@/components/ui/button';
 import {
     ConfirmDialog,
     createAlertDialogController,
 } from '@/components/ui/confirm-dialog';
-import { Notice } from '@/components/ui/notice';
-import { ProgressBar } from '@/components/ui/progress';
 import {
     createSheetController,
     Sheet,
@@ -30,6 +31,7 @@ import { cx } from '@/lib/cx';
 import { questionsLabel } from '@/lib/format';
 import { answerFromQuestion, hasAnswer, sameAnswer } from '@/lib/quiz-answer';
 import { isQuizResult } from '@/lib/quiz-api';
+import { storyColor } from '@/lib/story';
 import type {
     InProgressQuiz,
     QuizAnswer,
@@ -37,6 +39,13 @@ import type {
     QuizSession,
 } from '@/types/quiz-public';
 import { QuestionCard } from './question-card';
+import {
+    StoryNotice,
+    StorySegments,
+    StoryShell,
+    storyButton,
+    storyRoundButton,
+} from './story-shell';
 
 type QuizRunnerProps = {
     quiz: InProgressQuiz;
@@ -52,8 +61,10 @@ export function QuizRunner({
     onComplete,
 }: QuizRunnerProps) {
     const quizApi = useQuizApi();
+    const router = useRouter();
     const [quiz, setQuiz] = useState(initialQuiz);
     const [index, setIndex] = useState(initialIndex);
+    const [direction, setDirection] = useState<'next' | 'prev' | null>(null);
     const [answer, setAnswer] = useState<QuizAnswer>(() =>
         answerFromQuestion(initialQuiz.questions[initialIndex]),
     );
@@ -62,8 +73,10 @@ export function QuizRunner({
     const [finishError, setFinishError] = useState<string | null>(null);
     const [finishDialog] = useState(() => createAlertDialogController());
     const [navigator] = useState(() => createSheetController());
+    const storyRef = useRef<HTMLDivElement>(null);
     const headingRef = useRef<HTMLHeadingElement>(null);
     const focusTarget = useRef<number | null>(null);
+    const swipe = useRef<{ x: number; y: number; id: number } | null>(null);
 
     const question = quiz.questions[index];
     const total = quiz.questions.length;
@@ -79,15 +92,13 @@ export function QuizRunner({
         answeredAt(position),
     ).length;
     const unanswered = total - answeredCount;
+    const answered = hasAnswer(question, answer);
 
     useEffect(() => {
         if (focusTarget.current !== index) return;
         focusTarget.current = null;
-        const heading = headingRef.current;
-        if (!heading) return;
-        if (heading.getBoundingClientRect().top < 96)
-            heading.scrollIntoView({ block: 'start' });
-        heading.focus({ preventScroll: true });
+        storyRef.current?.scrollTo({ top: 0 });
+        headingRef.current?.focus({ preventScroll: true });
     }, [index]);
 
     async function persist(): Promise<InProgressQuiz | null> {
@@ -128,6 +139,7 @@ export function QuizRunner({
         setBusy(false);
         if (!updated) return;
         focusTarget.current = target;
+        setDirection(target > index ? 'next' : 'prev');
         setIndex(target);
         setAnswer(answerFromQuestion(updated.questions[target]));
     }
@@ -141,6 +153,15 @@ export function QuizRunner({
         if (!updated) return;
         setFinishError(null);
         void finishDialog.open();
+    }
+
+    async function exit() {
+        if (busy) return;
+        setBusy(true);
+        setError(null);
+        const updated = await persist();
+        if (updated) router.push('/');
+        else setBusy(false);
     }
 
     async function complete() {
@@ -172,29 +193,77 @@ export function QuizRunner({
         }
     }
 
-    const answered = hasAnswer(question, answer);
+    const advance = () => (last ? requestFinish() : goTo(index + 1));
+
+    function startSwipe(event: PointerEvent<HTMLDivElement>) {
+        const target = event.target as Element;
+        if (
+            event.pointerType !== 'touch' ||
+            target.closest('textarea, input, [data-slot="drawer-content"]')
+        )
+            return;
+        swipe.current = {
+            x: event.clientX,
+            y: event.clientY,
+            id: event.pointerId,
+        };
+    }
+
+    function endSwipe(event: PointerEvent<HTMLDivElement>) {
+        const start = swipe.current;
+        swipe.current = null;
+        if (!start || start.id !== event.pointerId) return;
+        const dx = event.clientX - start.x;
+        const dy = event.clientY - start.y;
+        if (Math.abs(dx) < 64 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+        void (dx < 0 ? advance() : goTo(index - 1));
+    }
 
     return (
-        <div className="mx-auto grid max-w-2xl">
-            <div className="sticky top-0 z-20 -mx-4 -mt-4 border-b border-line bg-bg/90 px-4 py-3 backdrop-blur-md sm:top-3 sm:mx-0 sm:mt-0 sm:rounded-2xl sm:border sm:bg-surface/90 sm:shadow-card">
-                <div className="flex items-center gap-3">
-                    <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-bold">
-                            {quiz.quizName || 'Kviz Crvenog križa'}
-                        </p>
-                        <p className="text-xs text-muted tabular-nums">
-                            Pitanje {index + 1} od {total}
-                        </p>
-                    </div>
+        <StoryShell
+            color={storyColor[question.type]}
+            title={quiz.quizName || 'Kviz Crvenog križa'}
+            subtitle={`Pitanje ${index + 1} od ${total}`}
+            watermark={String(index + 1).padStart(2, '0')}
+            scrollRef={storyRef}
+            onPointerDown={startSwipe}
+            onPointerUp={endSwipe}
+            onPointerCancel={() => {
+                swipe.current = null;
+            }}
+            progress={
+                <Progress
+                    aria-label="Napredak kviza"
+                    value={index + 1}
+                    min={0}
+                    max={total}
+                    getValueLabel={() =>
+                        `Pitanje ${index + 1} od ${total}, odgovoreno ${answeredCount}`
+                    }
+                    className="flex h-1.5 items-center gap-1"
+                >
+                    <StorySegments
+                        segments={quiz.questions.map((item, position) => ({
+                            key: item.id,
+                            fill:
+                                position === index
+                                    ? 'solid'
+                                    : answeredAt(position)
+                                      ? 'soft'
+                                      : 'faint',
+                            tall: position === index,
+                        }))}
+                    />
+                </Progress>
+            }
+            actions={
+                <>
                     <Sheet controller={navigator}>
                         <SheetTrigger
-                            className={buttonClass({
-                                variant: 'secondary',
-                                size: 'sm',
-                            })}
+                            aria-label="Pregled pitanja"
+                            className={storyRoundButton}
                         >
                             <ListChecks aria-hidden="true" />
-                            Pregled
                         </SheetTrigger>
                         <SheetContent
                             title="Pregled pitanja"
@@ -242,9 +311,20 @@ export function QuizRunner({
                                                     className={cx(
                                                         'grid size-9 shrink-0 place-items-center rounded-full text-sm font-bold tabular-nums',
                                                         done
-                                                            ? 'bg-primary text-on-primary'
+                                                            ? 'text-white'
                                                             : 'border-2 border-control text-muted',
                                                     )}
+                                                    style={
+                                                        done
+                                                            ? {
+                                                                  background:
+                                                                      storyColor[
+                                                                          item
+                                                                              .type
+                                                                      ],
+                                                              }
+                                                            : undefined
+                                                    }
                                                 >
                                                     {done ? (
                                                         <Check
@@ -275,19 +355,84 @@ export function QuizRunner({
                             </ol>
                         </SheetContent>
                     </Sheet>
+                    <BaseButton
+                        aria-label="Izađi iz kviza"
+                        disabled={busy}
+                        focusableWhenDisabled
+                        onClick={exit}
+                        className={storyRoundButton}
+                    >
+                        <X aria-hidden="true" />
+                    </BaseButton>
+                </>
+            }
+            footer={
+                <div className="flex items-center gap-2.5">
+                    {index > 0 && (
+                        <BaseButton
+                            aria-label="Prethodno pitanje"
+                            disabled={busy}
+                            focusableWhenDisabled
+                            onClick={() => goTo(index - 1)}
+                            className="grid size-13 shrink-0 place-items-center rounded-full border-2 border-white/55 transition-colors hover:bg-white/12 [&_svg]:size-[1.375rem]"
+                        >
+                            <PendingIcon icon={ArrowLeft} />
+                        </BaseButton>
+                    )}
+                    <p className="min-w-0 flex-1 text-center text-[0.8125rem] text-white/85">
+                        <span className="hidden pointer-coarse:inline">
+                            Povucite za{' '}
+                            {last ? 'završetak' : 'sljedeće pitanje'}
+                        </span>
+                    </p>
+                    <BaseButton
+                        disabled={busy}
+                        focusableWhenDisabled
+                        onClick={advance}
+                        className={storyButton({
+                            variant: answered || last ? 'solid' : 'outline',
+                        })}
+                    >
+                        {last ? 'Završi' : answered ? 'Dalje' : 'Preskoči'}
+                        <PendingIcon
+                            icon={
+                                last
+                                    ? CircleCheck
+                                    : answered
+                                      ? ArrowRight
+                                      : SkipForward
+                            }
+                        />
+                    </BaseButton>
                 </div>
-                <ProgressBar
-                    className="mt-3"
-                    value={index + 1}
-                    max={total}
-                    label="Napredak kviza"
-                    valueLabel={`Pitanje ${index + 1} od ${total}`}
+            }
+            outside={
+                <ConfirmDialog
+                    controller={finishDialog}
+                    title="Završiti kviz?"
+                    description={
+                        unanswered > 0
+                            ? `Bez odgovora: ${questionsLabel(unanswered)}. Nakon završetka odgovore više nije moguće mijenjati.`
+                            : 'Odgovorili ste na sva pitanja. Nakon završetka odgovore više nije moguće mijenjati.'
+                    }
+                    cancelLabel="Nastavi rješavati"
+                    confirmLabel="Završi kviz"
+                    confirmIcon={Flag}
+                    pendingAnnouncement="Završavanje kviza"
+                    error={finishError}
+                    onConfirm={complete}
                 />
-            </div>
-
-            <div className="pt-6 sm:pt-8">
+            }
+        >
+            <div
+                key={question.id}
+                className={cx(
+                    'flex flex-1 flex-col motion-reduce:animate-none',
+                    direction === 'next' && 'animate-story-next',
+                    direction === 'prev' && 'animate-story-prev',
+                )}
+            >
                 <QuestionCard
-                    key={question.id}
                     question={question}
                     answer={answer}
                     number={index + 1}
@@ -297,78 +442,8 @@ export function QuizRunner({
                         setError(null);
                     }}
                 />
+                {error && <StoryNotice className="mt-4">{error}</StoryNotice>}
             </div>
-
-            {error && (
-                <Notice tone="danger" className="mt-5">
-                    {error}
-                </Notice>
-            )}
-
-            <p className="mt-6 text-center text-sm text-muted">
-                Točni odgovori bit će prikazani nakon završetka kviza.
-            </p>
-
-            <div className="sticky bottom-0 z-20 -mx-4 mt-4 border-t border-line bg-surface/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-float backdrop-blur-md sm:bottom-3 sm:mx-0 sm:rounded-2xl sm:border sm:px-3 sm:pb-3">
-                <div className="flex items-center gap-2">
-                    {index > 0 && (
-                        <Button
-                            variant="secondary"
-                            size="lg"
-                            aria-label="Prethodno pitanje"
-                            className="w-13 shrink-0 px-0 sm:w-auto sm:px-5"
-                            disabled={busy}
-                            focusableWhenDisabled
-                            onClick={() => goTo(index - 1)}
-                        >
-                            <PendingIcon icon={ArrowLeft} />
-                            <span className="hidden sm:inline">Prethodno</span>
-                        </Button>
-                    )}
-                    {last ? (
-                        <Button
-                            size="lg"
-                            className="flex-1"
-                            disabled={busy}
-                            focusableWhenDisabled
-                            onClick={requestFinish}
-                        >
-                            <PendingIcon icon={CircleCheck} />
-                            Završi kviz
-                        </Button>
-                    ) : (
-                        <Button
-                            size="lg"
-                            variant={answered ? 'primary' : 'secondary'}
-                            className="flex-1"
-                            disabled={busy}
-                            focusableWhenDisabled
-                            onClick={() => goTo(index + 1)}
-                        >
-                            {answered ? 'Sljedeće pitanje' : 'Preskoči pitanje'}
-                            <PendingIcon
-                                icon={answered ? ArrowRight : SkipForward}
-                            />
-                        </Button>
-                    )}
-                </div>
-            </div>
-
-            <ConfirmDialog
-                controller={finishDialog}
-                title="Završiti kviz?"
-                description={
-                    unanswered > 0
-                        ? `Bez odgovora: ${questionsLabel(unanswered)}. Nakon završetka odgovore više nije moguće mijenjati.`
-                        : 'Odgovorili ste na sva pitanja. Nakon završetka odgovore više nije moguće mijenjati.'
-                }
-                cancelLabel="Nastavi rješavati"
-                confirmLabel="Završi kviz"
-                confirmIcon={Flag}
-                pendingAnnouncement="Završavanje kviza"
-                error={finishError}
-                onConfirm={complete}
-            />
-        </div>
+        </StoryShell>
     );
 }

@@ -73,9 +73,9 @@ function CategoryItems({
                 value={String(category.id)}
                 label={category.name}
             >
-                <TreeItemLabel className="group/row flex min-h-12 items-center gap-1 rounded-xl py-1.5 pr-2 pl-[calc((var(--tree-level)-1)*1rem)] text-[0.9375rem] text-fg transition-colors hover:bg-sunken data-selected:bg-primary-soft data-selected:font-semibold data-selected:text-primary">
+                <TreeItemLabel className="group/row flex min-h-12 items-center gap-1 rounded-full py-1.5 pr-2 pl-[calc((var(--tree-level)-1)*1rem)] text-[0.9375rem] font-semibold text-fg transition-colors hover:bg-sunken data-selected:bg-primary data-selected:font-extrabold data-selected:text-white data-selected:hover:bg-primary-hover">
                     {hasChildren ? (
-                        <TreeItemIndicator className="grid size-9 shrink-0 place-items-center rounded-lg text-muted transition-transform duration-150 data-expanded:rotate-90 motion-reduce:transition-none">
+                        <TreeItemIndicator className="grid size-9 shrink-0 place-items-center rounded-full text-muted group-data-selected/row:text-white transition-transform duration-150 data-expanded:rotate-90 motion-reduce:transition-none">
                             <ChevronRight
                                 aria-hidden="true"
                                 className="size-4"
@@ -87,7 +87,7 @@ function CategoryItems({
                     <span className="min-w-0 flex-1 leading-snug">
                         {category.name}
                     </span>
-                    <span className="shrink-0 rounded-full bg-sunken px-2 py-0.5 text-xs font-semibold text-muted tabular-nums group-data-selected/row:bg-surface group-data-selected/row:text-primary">
+                    <span className="shrink-0 rounded-full bg-sunken px-2 py-0.5 text-xs font-semibold text-muted tabular-nums group-data-selected/row:bg-white group-data-selected/row:text-primary">
                         <span aria-hidden="true">
                             {category.availableQuestionCount}
                         </span>

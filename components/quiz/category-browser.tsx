@@ -67,21 +67,23 @@ export function CategoryBrowser() {
         <div className="grid gap-5 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:items-start lg:gap-8">
             <section
                 className={cx(
-                    'card relative isolate overflow-hidden px-5 py-7 sm:px-8 sm:py-10 lg:col-span-2',
+                    'relative isolate overflow-hidden pt-4 pb-3 sm:pt-8 sm:pb-6 lg:col-span-2',
                     detailView && 'max-lg:sr-only',
                 )}
             >
                 <span
                     aria-hidden="true"
-                    className="absolute -top-24 -right-20 -z-10 size-64 rounded-full border-[48px] border-primary/6"
-                />
-                <p className="inline-flex rounded-full bg-primary-soft px-3 py-1 text-xs font-bold tracking-wide text-primary">
+                    className="pointer-events-none absolute -top-8 right-0 -z-10 text-[15rem] leading-none font-extrabold text-white/8 select-none sm:-top-16 sm:text-[22rem]"
+                >
+                    ?
+                </span>
+                <p className="inline-flex rounded-full bg-white/16 px-3 py-1.5 text-[0.8125rem] font-bold tracking-wide">
                     {city.title}
                 </p>
-                <h1 className="mt-4 max-w-3xl text-[1.75rem]/[1.15] font-extrabold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+                <h1 className="mt-4 max-w-3xl text-[2.5rem]/[1.04] font-extrabold tracking-tight text-balance sm:text-6xl/[1.02]">
                     {city.heroSection.title}
                 </h1>
-                <p className="mt-3 max-w-2xl text-muted sm:text-lg">
+                <p className="mt-4 max-w-2xl text-[1.0625rem] leading-relaxed text-white/90 sm:text-xl/relaxed">
                     {city.heroSection.description} Odaberite kategoriju i kviz
                     koji želite riješiti.
                 </p>
@@ -104,7 +106,7 @@ export function CategoryBrowser() {
                         />
                         <h2
                             id="categories-heading"
-                            className="text-base font-bold"
+                            className="text-lg font-extrabold tracking-tight"
                         >
                             Kategorije
                         </h2>
@@ -180,12 +182,12 @@ function EmptyState({
     action?: React.ReactNode;
 }) {
     return (
-        <div className="card grid justify-items-center gap-3 px-6 py-12 text-center">
-            <span className="grid size-14 place-items-center rounded-2xl bg-primary-soft text-primary">
+        <div className="grid justify-items-center gap-3 rounded-[1.5rem] border-2 border-dashed border-white/40 bg-white/8 px-6 py-12 text-center">
+            <span className="grid size-14 place-items-center rounded-full bg-white text-primary">
                 <FolderSearch aria-hidden="true" className="size-7" />
             </span>
-            <h2 className="text-xl font-bold">{title}</h2>
-            <p className="max-w-sm text-muted">{text}</p>
+            <h2 className="text-2xl font-extrabold tracking-tight">{title}</h2>
+            <p className="max-w-sm text-white/90">{text}</p>
             {action}
         </div>
     );

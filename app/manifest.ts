@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
         description: 'Provjerite svoje znanje u kvizu Crvenog križa.',
         start_url: '/',
         display: 'standalone',
-        background_color: '#ffffff',
-        theme_color: '#c6323e',
+        background_color: '#c8102e',
+        theme_color: '#c8102e',
         icons: [
             {
                 src: '/icons/icon-192.png',
