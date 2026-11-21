@@ -1,19 +1,35 @@
 'use client';
 
+import { CircleAlert, Home, RotateCcw } from 'lucide-react';
+import Link from 'next/link';
+import { Button, buttonClass } from '@/components/ui/button';
+import { StatusCard } from '@/components/ui/status-card';
+
 export default function ErrorPage({ reset }: { reset: () => void }) {
     return (
-        <div className="mx-auto max-w-xl quiz-card p-8 text-center shadow-panel sm:p-12">
-            <h1 className="text-3xl font-semibold text-ink">
-                Nešto nije uspjelo
-            </h1>
-            <p className="mt-3 text-subtle">Pokušajte ponovno učitati kviz.</p>
-            <button
-                type="button"
-                onClick={reset}
-                className="mt-7 quiz-button-primary px-5 py-3 font-semibold text-on-brand hover:bg-brand-hover"
-            >
-                Pokušaj ponovno
-            </button>
-        </div>
+        <StatusCard
+            icon={<CircleAlert aria-hidden="true" />}
+            title="Nešto nije uspjelo"
+            actions={
+                <>
+                    <Button size="lg" onClick={reset}>
+                        <RotateCcw aria-hidden="true" />
+                        Pokušaj ponovno
+                    </Button>
+                    <Link
+                        href="/"
+                        className={buttonClass({
+                            variant: 'secondary',
+                            size: 'lg',
+                        })}
+                    >
+                        <Home aria-hidden="true" />
+                        Početna
+                    </Link>
+                </>
+            }
+        >
+            <p>Pokušajte ponovno učitati stranicu.</p>
+        </StatusCard>
     );
 }

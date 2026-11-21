@@ -9,6 +9,21 @@ export function answerFromQuestion(question: PublicQuizQuestion): QuizAnswer {
     };
 }
 
+export function sameAnswer(a: QuizAnswer, b: QuizAnswer): boolean {
+    const ids = (answer: QuizAnswer) =>
+        [...answer.choiceOptionIds].sort().join('\u001f');
+    const pairs = (answer: QuizAnswer) =>
+        answer.matches
+            .map((match) => `${match.leftOptionId}\u001e${match.rightOptionId}`)
+            .sort()
+            .join('\u001f');
+    return (
+        ids(a) === ids(b) &&
+        (a.text ?? '') === (b.text ?? '') &&
+        pairs(a) === pairs(b)
+    );
+}
+
 export function hasAnswer(
     question: PublicQuizQuestion,
     answer: QuizAnswer,

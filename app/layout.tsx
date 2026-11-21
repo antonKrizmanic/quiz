@@ -1,12 +1,17 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
+import { Bricolage_Grotesque } from 'next/font/google';
 import { headers } from 'next/headers';
-import Image from 'next/image';
-import Link from 'next/link';
+import { SiteFooter, SiteHeader } from '@/components/app/site-chrome';
 import { ConfigProvider } from '@/components/quiz/config-provider';
-import { ThemeToggle } from '@/components/quiz/theme-toggle';
 import { getCityConfig } from '@/lib/city-config';
 import { getPublicQuizApiUrl } from '@/lib/quiz-api-url';
 import '@/styles/global.css';
+
+const storyFont = Bricolage_Grotesque({
+    subsets: ['latin', 'latin-ext'],
+    display: 'swap',
+    variable: '--font-bricolage',
+});
 
 export const metadata: Metadata = {
     title: {
@@ -41,57 +46,30 @@ export const metadata: Metadata = {
     },
 };
 
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    viewportFit: 'cover',
+    themeColor: '#c8102e',
+    colorScheme: 'light',
+};
+
 export default async function RootLayout({
     children,
 }: Readonly<{ children: React.ReactNode }>) {
     const city = getCityConfig((await headers()).get('x-quiz-city'));
     const apiBaseUrl = getPublicQuizApiUrl();
     return (
-        <html lang="hr">
-            <body className="antialiased">
-                <div className="quiz-shell flex flex-col">
-                    <header className="quiz-header">
-                        <div className="quiz-container quiz-header-inner">
-                            <Link href="/" className="quiz-brand">
-                                <Image
-                                    src="/brand/quiz-logo.svg"
-                                    alt=""
-                                    width={42}
-                                    height={42}
-                                    className="quiz-brand-logo"
-                                />
-                                <span>{city.title}</span>
-                            </Link>
-                            <div className="quiz-header-actions">
-                                <span className="quiz-header-caption">
-                                    Provjerite svoje znanje
-                                </span>
-                                <ThemeToggle />
-                            </div>
-                        </div>
-                    </header>
-                    <main className="quiz-container quiz-main flex-1">
+        <html lang="hr" className={storyFont.variable}>
+            <body>
+                <div className="flex min-h-dvh flex-col">
+                    <SiteHeader title={city.title} />
+                    <main className="gutter mx-auto w-full max-w-5xl flex-1 pt-2 pb-10 sm:pt-6 sm:pb-16">
                         <ConfigProvider config={city} apiBaseUrl={apiBaseUrl}>
                             {children}
                         </ConfigProvider>
                     </main>
-                    <footer className="quiz-footer">
-                        <div className="quiz-container quiz-footer-inner">
-                            <Link href="/" className="quiz-brand">
-                                <Image
-                                    src="/brand/quiz-logo.svg"
-                                    alt=""
-                                    width={42}
-                                    height={42}
-                                    className="quiz-brand-logo"
-                                />
-                                <span>{city.title}</span>
-                            </Link>
-                            <span className="quiz-footer-copy">
-                                Kvizovi Crvenog križa
-                            </span>
-                        </div>
-                    </footer>
+                    <SiteFooter title={city.title} />
                 </div>
             </body>
         </html>
