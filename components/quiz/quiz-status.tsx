@@ -1,28 +1,44 @@
 'use client';
 
+import { Button } from '@ui-sdk/react/button';
 import { CircleAlert, Home, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
-import { Button, buttonClass } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { StatusCard } from '@/components/ui/status-card';
+import { useConfig } from '@/components/quiz/config-provider';
+import { storyCover } from '@/lib/story';
+import { StoryCloseLink, StoryShell, storyButton } from './story-shell';
+
+const block =
+    'block animate-pulse rounded-full bg-white/16 motion-reduce:animate-none';
 
 export function QuizLoading() {
+    const city = useConfig();
     return (
-        <div className="mx-auto grid max-w-2xl gap-5">
+        <StoryShell
+            color={storyCover}
+            title={city.title}
+            subtitle="Učitavanje…"
+            actions={<StoryCloseLink />}
+        >
             <span role="status" className="sr-only">
                 Učitavanje kviza…
             </span>
-            <div className="card grid gap-3 p-5 sm:p-8">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-8 w-4/5" />
-                <Skeleton className="h-4 w-1/2" />
+            <div aria-hidden="true" className="flex flex-1 flex-col gap-6">
+                <div className="flex flex-1 flex-col justify-center gap-4 py-4">
+                    <span className={`${block} h-7 w-36`} />
+                    <span className={`${block} h-10 w-11/12 rounded-2xl`} />
+                    <span className={`${block} h-10 w-2/3 rounded-2xl`} />
+                    <span className={`${block} h-4 w-1/2`} />
+                </div>
+                <div className="grid gap-2.5">
+                    {[0, 1, 2, 3].map((key) => (
+                        <span
+                            key={key}
+                            className={`${block} h-15 rounded-[1.25rem]`}
+                        />
+                    ))}
+                </div>
             </div>
-            <div className="grid gap-2.5">
-                {[0, 1, 2, 3].map((key) => (
-                    <Skeleton key={key} className="h-15 rounded-2xl" />
-                ))}
-            </div>
-        </div>
+        </StoryShell>
     );
 }
 
@@ -33,32 +49,50 @@ export function QuizUnavailable({
     personal: boolean;
     message: string | null;
 }) {
+    const city = useConfig();
     return (
-        <StatusCard
-            icon={<CircleAlert aria-hidden="true" />}
-            title={personal ? 'Pokušaj nije dostupan' : 'Kviz nije dostupan'}
-            actions={
-                <>
-                    <Button size="lg" onClick={() => window.location.reload()}>
+        <StoryShell
+            color={storyCover}
+            title={city.title}
+            subtitle={personal ? 'Vlastiti kviz' : 'Pripremljeni kviz'}
+            watermark="!"
+            actions={<StoryCloseLink />}
+            footer={
+                <div className="grid gap-2.5">
+                    <Button
+                        onClick={() => window.location.reload()}
+                        className={storyButton({ block: true })}
+                    >
                         <RotateCcw aria-hidden="true" />
                         Pokušaj ponovno
                     </Button>
                     <Link
                         href="/"
-                        className={buttonClass({
-                            variant: 'secondary',
-                            size: 'lg',
+                        className={storyButton({
+                            variant: 'outline',
+                            block: true,
                         })}
                     >
                         <Home aria-hidden="true" />
                         Početna
                     </Link>
-                </>
+                </div>
             }
         >
-            <p role="alert">
-                {message || 'Provjerite poveznicu i pokušajte ponovno.'}
-            </p>
-        </StatusCard>
+            <div className="flex flex-1 flex-col justify-center gap-4 py-4">
+                <span className="grid size-14 place-items-center rounded-full bg-white text-(--story)">
+                    <CircleAlert aria-hidden="true" className="size-7" />
+                </span>
+                <h1 className="text-[2.25rem] leading-[1.04] font-extrabold tracking-tight text-balance">
+                    {personal ? 'Pokušaj nije dostupan' : 'Kviz nije dostupan'}
+                </h1>
+                <p
+                    role="alert"
+                    className="text-[1.0625rem] leading-relaxed text-white/90"
+                >
+                    {message || 'Provjerite poveznicu i pokušajte ponovno.'}
+                </p>
+            </div>
+        </StoryShell>
     );
 }

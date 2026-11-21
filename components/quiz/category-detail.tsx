@@ -44,9 +44,9 @@ export function CategoryDetail({
         <div className="grid gap-4 sm:gap-5">
             <div className="lg:hidden">
                 <Button
-                    variant="ghost"
+                    variant="ghost-inverse"
                     size="sm"
-                    className="-ml-2"
+                    className="-ml-3"
                     onClick={() => onSelect(null)}
                 >
                     <ArrowLeft aria-hidden="true" />
@@ -189,11 +189,14 @@ function PreparedQuizzes({ category }: { category: PublicQuestionCategory }) {
     return (
         <section aria-labelledby="prepared-heading" className="grid gap-3">
             <div className="flex items-baseline justify-between gap-3 px-1 pt-2">
-                <h2 id="prepared-heading" className="text-lg font-bold">
+                <h2
+                    id="prepared-heading"
+                    className="text-xl font-extrabold tracking-tight"
+                >
                     Pripremljeni kvizovi
                 </h2>
                 {catalog && catalog.totalRecords > 0 && (
-                    <span className="text-sm text-muted">
+                    <span className="text-sm font-bold text-white/85">
                         {quizzesLabel(catalog.totalRecords)}
                     </span>
                 )}
@@ -252,21 +255,43 @@ function QuizCard({ item }: { item: PublicQuizCatalogItem }) {
     return (
         <Link
             href={`/quiz/take/${item.instanceId}/${encodeURIComponent(item.publicCode)}`}
-            className="group card flex items-center gap-4 p-4 transition-[border-color,scale] duration-150 hover:border-primary/60 active:scale-[0.99] motion-reduce:transition-none sm:p-5"
+            className="group card flex items-center gap-4 p-3 pr-4 transition-[scale] duration-150 active:scale-[0.99] motion-reduce:transition-none sm:p-4 sm:pr-5"
         >
-            <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-primary-soft text-primary">
-                <ClipboardList aria-hidden="true" className="size-5" />
+            <span
+                aria-hidden="true"
+                className="flex h-20 w-16 shrink-0 flex-col justify-between rounded-2xl bg-primary p-2 text-white transition-transform duration-200 group-hover:-rotate-3 motion-reduce:transition-none"
+            >
+                <span className="flex gap-0.5">
+                    {Array.from(
+                        {
+                            length: Math.min(
+                                Math.max(item.questionCount, 1),
+                                8,
+                            ),
+                        },
+                        (_, position) => (
+                            <span
+                                key={position}
+                                className="h-0.5 flex-1 rounded-full bg-white/75"
+                            />
+                        ),
+                    )}
+                </span>
+                <span className="text-center text-[1.75rem] leading-none font-extrabold">
+                    {item.questionCount}
+                </span>
+                <ClipboardList className="mx-auto size-3.5 text-white/80" />
             </span>
             <span className="min-w-0 flex-1">
-                <span className="block font-semibold leading-snug text-fg group-hover:text-primary">
+                <span className="block text-[1.0625rem] leading-snug font-extrabold text-fg group-hover:text-primary">
                     {item.name}
                 </span>
                 {item.description && (
-                    <span className="mt-0.5 line-clamp-2 text-sm text-muted">
+                    <span className="mt-1 line-clamp-2 text-sm text-muted">
                         {item.description}
                     </span>
                 )}
-                <span className="mt-1.5 block text-xs font-semibold text-muted">
+                <span className="mt-1.5 block text-xs font-bold text-primary">
                     {questionsLabel(item.questionCount)}
                 </span>
             </span>

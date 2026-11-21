@@ -1,31 +1,31 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ThemeSwitcher } from './theme';
 
 function Brand({ title }: { title: string }) {
     return (
         <Link
             href="/"
-            className="flex min-h-11 min-w-0 items-center gap-2.5 rounded-xl font-bold tracking-tight text-fg"
+            className="flex min-h-11 min-w-0 items-center gap-3 rounded-full pr-2 font-bold tracking-tight text-white"
         >
-            <Image
-                src="/brand/quiz-logo.svg"
-                alt=""
-                width={36}
-                height={36}
-                className="size-8 shrink-0 sm:size-9"
-            />
-            <span className="truncate">{title}</span>
+            <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white">
+                <Image
+                    src="/brand/quiz-logo.svg"
+                    alt=""
+                    width={30}
+                    height={30}
+                />
+            </span>
+            <span className="truncate text-[1.0625rem]">{title}</span>
         </Link>
     );
 }
 
 export function SiteHeader({ title }: { title: string }) {
     return (
-        <header className="border-b border-line bg-surface pt-[env(safe-area-inset-top)]">
-            <div className="gutter mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 sm:h-16">
+        <header className="pt-[env(safe-area-inset-top)]">
+            <div className="gutter mx-auto flex h-16 w-full max-w-5xl items-center justify-between gap-4 sm:h-20">
                 <Brand title={title} />
-                <p className="hidden text-sm font-medium text-muted sm:block">
+                <p className="hidden rounded-full bg-white/16 px-3.5 py-1.5 text-sm font-bold sm:block">
                     Provjerite svoje znanje
                 </p>
             </div>
@@ -35,13 +35,10 @@ export function SiteHeader({ title }: { title: string }) {
 
 export function SiteFooter({ title }: { title: string }) {
     return (
-        <footer className="border-t border-line bg-surface pb-[env(safe-area-inset-bottom)]">
-            <div className="gutter mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-4 py-5">
-                <div className="min-w-0">
-                    <p className="text-sm font-semibold text-fg">{title}</p>
-                    <p className="text-sm text-muted">Kvizovi Crvenog križa</p>
-                </div>
-                <ThemeSwitcher />
+        <footer className="border-t border-white/15 pb-[env(safe-area-inset-bottom)]">
+            <div className="gutter mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-1 py-6 text-sm">
+                <p className="font-bold">{title}</p>
+                <p className="text-white/80">Kvizovi Crvenog križa</p>
             </div>
         </footer>
     );

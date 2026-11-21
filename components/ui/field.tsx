@@ -12,7 +12,7 @@ import { cx } from '@/lib/cx';
 type WithClass<T> = Omit<T, 'className'> & { className?: string };
 
 export const controlClass =
-    'w-full rounded-xl border border-control bg-surface text-base text-fg placeholder:text-muted transition-[border-color,box-shadow] duration-150 focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/15 data-invalid:border-danger';
+    'w-full rounded-2xl border border-control bg-surface text-base text-fg placeholder:text-muted transition-[border-color,box-shadow] duration-150 focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/15 data-invalid:border-danger';
 
 export function Field({
     className,

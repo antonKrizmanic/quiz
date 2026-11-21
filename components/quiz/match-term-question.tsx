@@ -1,16 +1,9 @@
 'use client';
 
-import { Radio, RadioGroup, RadioIndicator } from '@ui-sdk/react/radio';
-import { ChevronRight, Unlink } from 'lucide-react';
+import { Button } from '@ui-sdk/react/button';
+import { Toggle } from '@ui-sdk/react/toggle';
+import { Check, X } from 'lucide-react';
 import { useState } from 'react';
-import { Button, buttonClass } from '@/components/ui/button';
-import {
-    createSheetController,
-    Sheet,
-    SheetClose,
-    SheetContent,
-    SheetTrigger,
-} from '@/components/ui/sheet';
 import { cx } from '@/lib/cx';
 import type { PublicQuizQuestion, QuizAnswer } from '@/types/quiz-public';
 
@@ -20,208 +13,181 @@ type MatchTermQuestionProps = {
     onChange: (answer: QuizAnswer) => void;
 };
 
+type Side = 'left' | 'right';
+
+const chip =
+    'flex min-h-16 w-full items-center rounded-[1.125rem] px-3.5 py-3 text-left text-[0.9375rem] leading-snug font-bold transition-[background-color,color,box-shadow,scale] duration-150 active:scale-[0.98] motion-reduce:transition-none';
+
 export function MatchTermQuestion({
     question,
     answer,
     onChange,
 }: MatchTermQuestionProps) {
-    const [sheet] = useState(() => createSheetController());
-    const [activeId, setActiveId] = useState<string | null>(null);
-    const [filling, setFilling] = useState(false);
+    const [pending, setPending] = useState<{ side: Side; id: string } | null>(
+        null,
+    );
     const { leftOptions, rightOptions } = question;
 
     const rightFor = (leftId: string) =>
         answer.matches.find((match) => match.leftOptionId === leftId)
-            ?.rightOptionId ?? null;
-    const leftFor = (rightId: string) =>
-        answer.matches.find((match) => match.rightOptionId === rightId)
-            ?.leftOptionId ?? null;
-    const textOf = (options: typeof leftOptions, id: string | null) =>
-        options.find((option) => option.id === id)?.text ?? null;
-
-    const matchedCount = leftOptions.filter((left) => rightFor(left.id)).length;
-    const activeIndex = leftOptions.findIndex((left) => left.id === activeId);
-    const active = leftOptions[activeIndex] ?? null;
-
-    function assign(leftId: string, rightId: string | null) {
-        const matches = answer.matches.filter(
-            (match) =>
-                match.leftOptionId !== leftId &&
-                (rightId === null || match.rightOptionId !== rightId),
+            ?.rightOptionId;
+    const pairs = leftOptions.flatMap((left, index) => {
+        const right = rightOptions.find(
+            (option) => option.id === rightFor(left.id),
         );
-        if (rightId)
-            matches.push({ leftOptionId: leftId, rightOptionId: rightId });
+        return right ? [{ left, right, number: index + 1 }] : [];
+    });
+    const freeLeft = leftOptions.filter((left) => !rightFor(left.id));
+    const freeRight = rightOptions.filter(
+        (right) =>
+            !answer.matches.some((match) => match.rightOptionId === right.id),
+    );
+    const pendingText = pending
+        ? (pending.side === 'left' ? leftOptions : rightOptions).find(
+              (option) => option.id === pending.id,
+          )?.text
+        : null;
+
+    function setMatches(matches: QuizAnswer['matches']) {
         onChange({ choiceOptionIds: [], text: null, matches });
-        return matches;
     }
 
-    function choose(rightId: string, closeAfter: boolean) {
-        if (!active) return;
-        const matches = assign(active.id, rightId);
-        if (!closeAfter) return;
-        const next = filling
-            ? [
-                  ...leftOptions.slice(activeIndex + 1),
-                  ...leftOptions.slice(0, activeIndex),
-              ].find(
-                  (left) =>
-                      !matches.some((match) => match.leftOptionId === left.id),
-              )
-            : undefined;
-        if (next) setActiveId(next.id);
-        else sheet.close();
+    function pick(side: Side, id: string) {
+        if (!pending || pending.side === side) {
+            setPending(pending?.id === id ? null : { side, id });
+            return;
+        }
+        const leftId = side === 'left' ? id : pending.id;
+        const rightId = side === 'right' ? id : pending.id;
+        setMatches([
+            ...answer.matches.filter(
+                (match) =>
+                    match.leftOptionId !== leftId &&
+                    match.rightOptionId !== rightId,
+            ),
+            { leftOptionId: leftId, rightOptionId: rightId },
+        ]);
+        setPending(null);
+    }
+
+    function unpair(leftId: string) {
+        setMatches(
+            answer.matches.filter((match) => match.leftOptionId !== leftId),
+        );
     }
 
     return (
-        <div className="grid gap-3">
-            <p className="text-sm font-medium text-muted" aria-live="polite">
-                Povezano {matchedCount} od {leftOptions.length}
+        <div className="grid gap-4">
+            <p
+                aria-live="polite"
+                className="text-xs font-extrabold tracking-[0.08em] text-white/85 uppercase"
+            >
+                Povezano {pairs.length} od {leftOptions.length}
+                {pendingText && (
+                    <span className="sr-only">
+                        . Odabrano: {pendingText}. Sada odaberite{' '}
+                        {pending?.side === 'left' ? 'odgovor' : 'pojam'}.
+                    </span>
+                )}
             </p>
-            <Sheet controller={sheet}>
-                <ul className="grid gap-2.5">
-                    {leftOptions.map((left, index) => {
-                        const rightText = textOf(
-                            rightOptions,
-                            rightFor(left.id),
-                        );
-                        return (
-                            <li key={left.id}>
-                                <SheetTrigger
-                                    onClick={() => {
-                                        setActiveId(left.id);
-                                        setFilling(!rightText);
-                                    }}
+
+            {pairs.length > 0 && (
+                <ul className="grid gap-2">
+                    {pairs.map(({ left, right, number }) => (
+                        <li
+                            key={left.id}
+                            className="flex items-center gap-3 rounded-[1.125rem] bg-white py-1.5 pr-1.5 pl-3 text-ink"
+                        >
+                            <span
+                                aria-hidden="true"
+                                className="grid size-7 shrink-0 place-items-center rounded-full bg-(--story) text-[0.8125rem] font-extrabold text-white"
+                            >
+                                {number}
+                            </span>
+                            <p className="min-w-0 flex-1 py-1.5 text-[0.9375rem] leading-snug font-bold">
+                                {left.text}{' '}
+                                <span className="font-semibold text-ink/65">
+                                    → {right.text}
+                                </span>
+                            </p>
+                            <Button
+                                aria-label={`Ukloni par ${left.text}`}
+                                onClick={() => unpair(left.id)}
+                                className="grid size-11 shrink-0 place-items-center rounded-[0.875rem] bg-[color-mix(in_oklab,var(--story)_10%,white)] text-(--story) transition-colors hover:bg-[color-mix(in_oklab,var(--story)_18%,white)]"
+                            >
+                                <X
+                                    aria-hidden="true"
+                                    className="size-[1.125rem]"
+                                />
+                            </Button>
+                        </li>
+                    ))}
+                </ul>
+            )}
+
+            {freeLeft.length > 0 ? (
+                <div className="grid grid-cols-2 gap-2.5">
+                    <div className="grid content-start gap-2.5">
+                        <p className="text-xs font-extrabold tracking-[0.08em] text-white/85 uppercase">
+                            Pojam
+                        </p>
+                        {freeLeft.map((left) => {
+                            const selected =
+                                pending?.side === 'left' &&
+                                pending.id === left.id;
+                            return (
+                                <Toggle
+                                    key={left.id}
+                                    pressed={selected}
+                                    onPressedChange={() =>
+                                        pick('left', left.id)
+                                    }
                                     className={cx(
-                                        'group flex min-h-16 w-full items-center gap-3 rounded-2xl border bg-surface p-3 pr-3.5 text-left transition-[border-color,background-color,scale] duration-150 hover:border-control active:scale-[0.99] motion-reduce:transition-none',
-                                        rightText
-                                            ? 'border-primary/50'
-                                            : 'border-line',
+                                        chip,
+                                        selected
+                                            ? 'bg-highlight text-ink shadow-[0_0_0_3px_#fff]'
+                                            : 'bg-white text-ink',
                                     )}
                                 >
-                                    <span
-                                        aria-hidden="true"
-                                        className={cx(
-                                            'grid size-9 shrink-0 place-items-center rounded-xl text-sm font-bold',
-                                            rightText
-                                                ? 'bg-primary text-on-primary'
-                                                : 'bg-sunken text-muted',
-                                        )}
-                                    >
-                                        {index + 1}
-                                    </span>
-                                    <span className="grid min-w-0 flex-1 gap-0.5">
-                                        <span className="font-semibold leading-snug text-fg">
-                                            {left.text}
-                                        </span>
-                                        <span
-                                            className={cx(
-                                                'text-sm leading-snug',
-                                                rightText
-                                                    ? 'font-medium text-primary'
-                                                    : 'text-muted',
-                                            )}
-                                        >
-                                            {rightText ? (
-                                                <>
-                                                    <span className="sr-only">
-                                                        Par:{' '}
-                                                    </span>
-                                                    {rightText}
-                                                </>
-                                            ) : (
-                                                'Odaberite par'
-                                            )}
-                                        </span>
-                                    </span>
-                                    <ChevronRight
-                                        aria-hidden="true"
-                                        className="size-5 shrink-0 text-muted"
-                                    />
-                                </SheetTrigger>
-                            </li>
-                        );
-                    })}
-                </ul>
-
-                <SheetContent
-                    title={active?.text ?? 'Odaberite par'}
-                    description={
-                        active
-                            ? `Pojam ${activeIndex + 1} od ${leftOptions.length}. Odaberite odgovarajući par.`
-                            : undefined
-                    }
-                    footer={
-                        <div className="flex gap-2">
-                            {active && rightFor(active.id) && (
-                                <Button
-                                    variant="secondary"
-                                    size="lg"
-                                    className="flex-1"
-                                    onClick={() => assign(active.id, null)}
+                                    {left.text}
+                                </Toggle>
+                            );
+                        })}
+                    </div>
+                    <div className="grid content-start gap-2.5">
+                        <p className="text-xs font-extrabold tracking-[0.08em] text-white/85 uppercase">
+                            Odgovor
+                        </p>
+                        {freeRight.map((right) => {
+                            const selected =
+                                pending?.side === 'right' &&
+                                pending.id === right.id;
+                            return (
+                                <Toggle
+                                    key={right.id}
+                                    pressed={selected}
+                                    onPressedChange={() =>
+                                        pick('right', right.id)
+                                    }
+                                    className={cx(
+                                        chip,
+                                        selected
+                                            ? 'bg-highlight text-ink shadow-[0_0_0_3px_#fff]'
+                                            : 'border-2 border-dashed border-white/75 bg-white/10 font-semibold text-white hover:bg-white/16',
+                                    )}
                                 >
-                                    <Unlink aria-hidden="true" />
-                                    Ukloni par
-                                </Button>
-                            )}
-                            <SheetClose
-                                className={cx(
-                                    buttonClass({ size: 'lg' }),
-                                    'flex-1',
-                                )}
-                            >
-                                Gotovo
-                            </SheetClose>
-                        </div>
-                    }
-                >
-                    {active && (
-                        <RadioGroup
-                            key={active.id}
-                            aria-label={`Par za pojam ${active.text}`}
-                            value={rightFor(active.id)}
-                            onValueChange={(value, details) => {
-                                if (value)
-                                    choose(
-                                        value,
-                                        details.reason === 'item-press',
-                                    );
-                            }}
-                            className="grid gap-2"
-                        >
-                            {rightOptions.map((right) => {
-                                const owner = leftFor(right.id);
-                                const ownerText =
-                                    owner && owner !== active.id
-                                        ? textOf(leftOptions, owner)
-                                        : null;
-                                return (
-                                    <label
-                                        key={right.id}
-                                        className="group flex min-h-14 cursor-pointer items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3 transition-colors hover:border-control has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary has-data-checked:border-primary has-data-checked:bg-primary-soft"
-                                    >
-                                        <span className="grid min-w-0 flex-1 gap-0.5">
-                                            <span className="leading-snug text-fg">
-                                                {right.text}
-                                            </span>
-                                            {ownerText && (
-                                                <span className="text-xs text-muted">
-                                                    Trenutno uz: {ownerText}
-                                                </span>
-                                            )}
-                                        </span>
-                                        <Radio
-                                            value={right.id}
-                                            className="grid size-6 shrink-0 place-items-center rounded-full border-2 border-control bg-surface focus-visible:outline-none data-checked:border-primary"
-                                        >
-                                            <RadioIndicator className="size-3 rounded-full bg-primary" />
-                                        </Radio>
-                                    </label>
-                                );
-                            })}
-                        </RadioGroup>
-                    )}
-                </SheetContent>
-            </Sheet>
+                                    {right.text}
+                                </Toggle>
+                            );
+                        })}
+                    </div>
+                </div>
+            ) : (
+                <p className="flex items-center gap-2 rounded-[1.125rem] bg-white/16 px-4 py-3 text-[0.9375rem] font-bold">
+                    <Check aria-hidden="true" className="size-5" />
+                    Svi pojmovi su povezani.
+                </p>
+            )}
         </div>
     );
 }

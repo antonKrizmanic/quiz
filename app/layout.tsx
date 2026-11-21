@@ -1,11 +1,17 @@
 import type { Metadata, Viewport } from 'next';
+import { Bricolage_Grotesque } from 'next/font/google';
 import { headers } from 'next/headers';
 import { SiteFooter, SiteHeader } from '@/components/app/site-chrome';
-import { AppPreferences } from '@/components/app/theme';
 import { ConfigProvider } from '@/components/quiz/config-provider';
 import { getCityConfig } from '@/lib/city-config';
 import { getPublicQuizApiUrl } from '@/lib/quiz-api-url';
 import '@/styles/global.css';
+
+const storyFont = Bricolage_Grotesque({
+    subsets: ['latin', 'latin-ext'],
+    display: 'swap',
+    variable: '--font-bricolage',
+});
 
 export const metadata: Metadata = {
     title: {
@@ -44,10 +50,8 @@ export const viewport: Viewport = {
     width: 'device-width',
     initialScale: 1,
     viewportFit: 'cover',
-    themeColor: [
-        { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-        { media: '(prefers-color-scheme: dark)', color: '#161d25' },
-    ],
+    themeColor: '#c8102e',
+    colorScheme: 'light',
 };
 
 export default async function RootLayout({
@@ -56,22 +60,17 @@ export default async function RootLayout({
     const city = getCityConfig((await headers()).get('x-quiz-city'));
     const apiBaseUrl = getPublicQuizApiUrl();
     return (
-        <html lang="hr" suppressHydrationWarning>
+        <html lang="hr" className={storyFont.variable}>
             <body>
-                <AppPreferences>
-                    <div className="flex min-h-dvh flex-col">
-                        <SiteHeader title={city.title} />
-                        <main className="gutter mx-auto w-full max-w-5xl flex-1 pt-4 pb-10 sm:pt-8 sm:pb-16">
-                            <ConfigProvider
-                                config={city}
-                                apiBaseUrl={apiBaseUrl}
-                            >
-                                {children}
-                            </ConfigProvider>
-                        </main>
-                        <SiteFooter title={city.title} />
-                    </div>
-                </AppPreferences>
+                <div className="flex min-h-dvh flex-col">
+                    <SiteHeader title={city.title} />
+                    <main className="gutter mx-auto w-full max-w-5xl flex-1 pt-2 pb-10 sm:pt-6 sm:pb-16">
+                        <ConfigProvider config={city} apiBaseUrl={apiBaseUrl}>
+                            {children}
+                        </ConfigProvider>
+                    </main>
+                    <SiteFooter title={city.title} />
+                </div>
             </body>
         </html>
     );
